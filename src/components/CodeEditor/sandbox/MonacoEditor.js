@@ -1,8 +1,13 @@
 import { useRef, useEffect } from "react";
 import { Editor } from "@monaco-editor/react";
 
-function MonacoEditor({ language, userCode, setUserCode }) {
+function MonacoEditor({ language, userCode, selectedTheme, setUserCode }) {
   const editorRef = useRef(null);
+
+  const onMount = (editor) => {
+    editorRef.current = editor;
+    editor.focus();
+  };
 
   useEffect(() => {
     if (editorRef.current) {
@@ -21,8 +26,9 @@ function MonacoEditor({ language, userCode, setUserCode }) {
       options={{
         minimap: { enabled: true },
       }}
+      onMount={onMount}
       onChange={handleEditorChange}
-      theme="vs-dark"
+      theme={selectedTheme}
       editorRef={editorRef}
     />
   );

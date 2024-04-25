@@ -1,6 +1,6 @@
-import { Button } from "@mui/material";
 import { connect } from "react-redux";
 import { submitCode } from "../../../redux/actions";
+import { PlayCircleFilled as PlayCircleFilledIcon } from "@mui/icons-material";
 
 function SubmitHandlerComponent({ userCode, language, state, submitCode }) {
   console.log(state);
@@ -17,17 +17,13 @@ function SubmitHandlerComponent({ userCode, language, state, submitCode }) {
   };
 
   return (
-    <div className="w-60">
-      <Button
-        variant="contained"
-        size="large"
-        fullWidth
-        style={{ backgroundColor: "#4caf50", color: "#fff" }}
+    <>
+      <PlayCircleFilledIcon
+        style={{ fontSize: 40 }}
+        className="text-green-500 cursor-pointer"
         onClick={submitHandler}
-      >
-        Build & Run
-      </Button>
-    </div>
+      />
+    </>
   );
 }
 

@@ -1,46 +1,43 @@
-import { Typography, Paper, Grid } from "@mui/material";
+import { Paper, Grid } from "@mui/material";
 
-function SideNav() {
+function Details() {
   return (
     <article className="p-4">
-      <Typography variant="h3" className="mb-4">
-        Finding Window
-      </Typography>
-      <div className="mb-4">
-        <Typography variant="body1">
-          Hacker has two strings S and T. He has to find the minimum
-          (contiguous) substring Window of S. So that T is a subsequence of
-          Window.
-        </Typography>
-      </div>
+      <h1 className="text-3xl font-bold mb-4">Program Question</h1>
+      <section>
+        <h2 className="text-2xl font-semibold mb-4">Finding Window</h2>
+        <div className="mb-4">
+          <p className="text-base">
+            Hacker has two strings S and T. He has to find the minimum
+            (contiguous) substring Window of S. So that T is a subsequence of
+            Window.
+          </p>
+        </div>
+      </section>
       <hr className="my-4" />
       <Grid container spacing={4}>
         <Grid item xs={6}>
           <Paper elevation={3} className="p-4">
-            <Typography variant="h4">Sample Input</Typography>
+            <h3 className="text-xl font-semibold mb-2">Sample Input</h3>
             <div className="bg-gray-200 p-3 rounded mt-3">
-              <Typography variant="body2" height="100px">
-                this is a placeholder
-              </Typography>
+              <p className="text-sm">this is a placeholder</p>
             </div>
           </Paper>
         </Grid>
         <Grid item xs={6}>
           <Paper elevation={3} className="p-4">
-            <Typography variant="h4">Sample Output</Typography>
+            <h3 className="text-xl font-semibold mb-2">Sample Output</h3>
             <div className="bg-gray-200 p-3 rounded mt-3">
-              <Typography variant="body2" height="100px">
-                placeholder a is this
-              </Typography>
+              <p className="text-sm">placeholder a is this</p>
             </div>
           </Paper>
         </Grid>
       </Grid>
       <hr className="my-4" />
       <section>
-        <Typography variant="h3">Explanation</Typography>
+        <h2 className="text-2xl font-semibold">Explanation</h2>
         <Paper elevation={3} className="p-4 bg-gray-200 rounded mt-4">
-          <code>
+          <code className="text-sm">
             "bcde" is the answer because it occurs before "bdde" which has the
             same length. "deb" is not a smaller window because the elements of T
             in the window must occur in order.
@@ -49,52 +46,48 @@ function SideNav() {
       </section>
       <hr className="my-4" />
       <article>
-        <Typography variant="h3">Note:</Typography>
-        <Typography variant="body1" className="mb-4">
+        <h2 className="text-2xl font-semibold">Note:</h2>
+        <p className="text-base">
           Your code must be able to print the sample output from the provided
           sample input. However, your code is run against multiple hidden test
           cases. Therefore, your code must pass these hidden test cases to solve
           the problem statement.
-        </Typography>
+        </p>
         <ul className="p-0">
-          <Typography variant="h4" className="mb-2">
-            Limits
-          </Typography>
+          <h3 className="text-xl font-semibold">Limits</h3>
           <li>
-            <Typography variant="body2">
+            <p className="text-sm">
               <i>Time Limit: 1.0 sec(s) for each input file</i>
-            </Typography>
+            </p>
           </li>
           <li>
-            <Typography variant="body2">
+            <p className="text-sm">
               <i>Memory Limit: 256 MB</i>
-            </Typography>
+            </p>
           </li>
           <li>
-            <Typography variant="body2">
+            <p className="text-sm">
               <i>Source Limit: 1024 KB</i>
-            </Typography>
+            </p>
           </li>
         </ul>
         <article>
-          <Typography variant="h4">Scoring</Typography>
-          <Typography variant="body2" className="mb-2">
-            Score is assigned if any testcase passes
-          </Typography>
+          <h3 className="text-xl font-semibold">Scoring</h3>
+          <p className="text-sm">Score is assigned if any testcase passes</p>
         </article>
         <article>
-          <Typography variant="h4">Allowed Languages</Typography>
-          <Typography variant="body2" className="mb-4">
+          <h3 className="text-xl font-semibold">Allowed Languages</h3>
+          <p className="text-sm">
             Bash, C, C++14, C++17, Clojure, C#, D, Erlang, F#, Go, Groovy,
             Haskell, Java 8, Java 14, JavaScript(Node.js), Julia, Kotlin, Lisp
             (SBCL), Lua, Objective-C, OCaml, Octave, Pascal, Perl, PHP, Python,
             Python 3, Python 3.8, Racket, Ruby, Rust, Scala, Swift, TypeScript,
             Visual Basic
-          </Typography>
+          </p>
         </article>
       </article>
     </article>
   );
 }
 
-export default SideNav;
+export default Details;
