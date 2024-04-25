@@ -41,8 +41,7 @@ const initialCodes = {
 function Sandbox() {
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
-  const [codeEditorExtand, setCodeEditorExtend] = useState(false);
-
+  const [codeEditorExtend, setCodeEditorExtend] = useState(false);
   const [userCode, setUserCode] = useState(
     initialCodes[
       programmingLanguages.find((language) => language.id === selectedLanguage)
@@ -70,7 +69,7 @@ function Sandbox() {
     );
   };
 
-  if (codeEditorExtand)
+  if (codeEditorExtend) {
     return (
       <Modal
         ModalView={() => (
@@ -84,22 +83,21 @@ function Sandbox() {
         )}
       />
     );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col overflow-auto">
-      <div className="bg-gray-100 border-b border-gray-200">
-        <Options
-          programmingLanguages={programmingLanguages}
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
-          selectedTheme={selectedTheme}
-          setSelectedTheme={setSelectedTheme}
-          onReset={onReset}
-          setCodeEditorExtend={setCodeEditorExtend}
-        />
-      </div>
+    <div className="min-h-screen flex flex-col overflow-auto bg-gray-100">
+      <Options
+        programmingLanguages={programmingLanguages}
+        selectedLanguage={selectedLanguage}
+        setSelectedLanguage={setSelectedLanguage}
+        selectedTheme={selectedTheme}
+        setSelectedTheme={setSelectedTheme}
+        onReset={onReset}
+        setCodeEditorExtend={setCodeEditorExtend}
+      />
 
-      <div className="flex-1 relative">
+      <div className="flex-1 relative mb-2">
         <div className="h-[600px]">
           <MonacoEditor
             language={
@@ -125,16 +123,18 @@ function Sandbox() {
         </div>
       </div>
 
-      <div className=" p-4">
+      <hr />
+
+      <div>
         <div className="mb-4">
-          <p className="text-sm font-medium text-gray-600">stdIn:</p>
-          <div className="text-sm text-gray-800 bg-gray-200 p-2 rounded-lg h-16 overflow-y-auto">
+          <p className="text-xl mb-1 mt-1 font-medium text-gray-600">stdIn:</p>
+          <div className="text-sm text-gray-800 bg-gray-200 p-4 rounded-lg h-16 overflow-y-auto">
             print(1,2)
           </div>
         </div>
         <div>
-          <p className="text-sm font-medium text-gray-600">stdOut:</p>
-          <div className="text-sm text-gray-800 bg-gray-200 p-2 rounded-lg h-[20vh] overflow-y-auto">
+          <p className="text-xl mb-1 font-medium text-gray-600">stdOut:</p>
+          <div className="text-sm text-gray-800 bg-gray-200 p-4 rounded-lg h-[20vh] overflow-y-auto">
             the output is 100
           </div>
         </div>
