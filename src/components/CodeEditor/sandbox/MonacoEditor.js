@@ -25,6 +25,7 @@ function MonacoEditor({ language, userCode, selectedTheme, setUserCode }) {
       language={language}
       options={{
         minimap: { enabled: true },
+        fontSize: 14,
       }}
       onMount={onMount}
       onChange={handleEditorChange}

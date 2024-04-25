@@ -41,7 +41,7 @@ const initialCodes = {
 function Sandbox() {
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
-  const [codeEditorExtand, setCodeEditorExtand] = useState(false);
+  const [codeEditorExtand, setCodeEditorExtend] = useState(false);
 
   const [userCode, setUserCode] = useState(
     initialCodes[
@@ -79,7 +79,7 @@ function Sandbox() {
             language={selectedLanguage}
             setUserCode={setUserCode}
             selectedTheme={selectedTheme}
-            setCodeEditorExtand={setCodeEditorExtand}
+            setCodeEditorExtend={setCodeEditorExtend}
           />
         )}
       />
@@ -95,7 +95,7 @@ function Sandbox() {
           selectedTheme={selectedTheme}
           setSelectedTheme={setSelectedTheme}
           onReset={onReset}
-          setCodeEditorExtand={setCodeEditorExtand}
+          setCodeEditorExtend={setCodeEditorExtend}
         />
       </div>
 

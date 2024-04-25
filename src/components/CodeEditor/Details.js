@@ -2,17 +2,16 @@ import { Paper, Grid } from "@mui/material";
 
 function Details() {
   return (
-    <article className="p-4">
-      <h1 className="text-3xl font-bold mb-4">Program Question</h1>
-      <section>
+    <article className="p-4 pt-0">
+      <h1 className="text-3xl font-bold mb-2">Program Question</h1>
+      <hr />
+      <section className="mt-4 mb-6">
         <h2 className="text-2xl font-semibold mb-4">Finding Window</h2>
-        <div className="mb-4">
-          <p className="text-base">
-            Hacker has two strings S and T. He has to find the minimum
-            (contiguous) substring Window of S. So that T is a subsequence of
-            Window.
-          </p>
-        </div>
+        <p className="text-base">
+          Hacker has two strings S and T. He has to find the minimum
+          (contiguous) substring Window of S. So that T is a subsequence of
+          Window.
+        </p>
       </section>
       <hr className="my-4" />
       <Grid container spacing={4}>
@@ -34,7 +33,7 @@ function Details() {
         </Grid>
       </Grid>
       <hr className="my-4" />
-      <section>
+      <section className="mb-6">
         <h2 className="text-2xl font-semibold">Explanation</h2>
         <Paper elevation={3} className="p-4 bg-gray-200 rounded mt-4">
           <code className="text-sm">

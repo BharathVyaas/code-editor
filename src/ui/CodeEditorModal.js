@@ -8,7 +8,7 @@ function CodeEditorModal({
   language,
   setUserCode,
   selectedTheme,
-  setCodeEditorExtand,
+  setCodeEditorExtend,
 }) {
   const editorRef = useRef(null);
 
@@ -25,7 +25,7 @@ function CodeEditorModal({
 
   const onModalClose = () => {
     setUserCode(editorRef.current?.getValue());
-    setCodeEditorExtand(false);
+    setCodeEditorExtend(false);
   };
 
   return (
