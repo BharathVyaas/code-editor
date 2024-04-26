@@ -3,7 +3,7 @@ function ThemeSelector({ themes, selectedTheme, setSelectedTheme }) {
     <div className="relative">
       <select
         id="theme-select"
-        className="w-[8rem] block appearance-none bg-white border border-gray-300 rounded-md py-1 px-2 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"
+        className="w-[8rem] block appearance-none bg-white border border-gray-300 rounded-md  py-[2px] px-2 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"
         value={selectedTheme}
         onChange={(e) => setSelectedTheme(e.target.value)}
       >

@@ -44,7 +44,7 @@ function Options({
 
   return (
     <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between flex-wrap align-middle shadow-md">
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-2">
         <label className="text-sm font-medium text-gray-600">Language:</label>
         <TechnologySelector
           programmingLanguages={programmingLanguages}
@@ -53,19 +53,21 @@ function Options({
         />
       </div>
 
-      <div className="flex space-x-4 items-center">
+      <div className="flex space-x-4 items-center justify-between">
         <span
           onClick={handleReset}
           className="cursor-pointer text-gray-500 hover:text-gray-800"
         >
           <RefreshIcon />
         </span>
+
         <span
           onClick={onCodeEditorExpand}
           className="cursor-pointer text-gray-500 hover:text-gray-800"
         >
           <OpenWithIcon />
         </span>
+
         <div className="flex items-center space-x-2">
           <label className="text-sm font-medium text-gray-600">Theme:</label>
           <ThemeSelector

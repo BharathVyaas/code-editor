@@ -5,17 +5,19 @@ import {
   fetchDataRequest,
   fetchDataSuccess,
 } from "../slices/codeEditorSlice";
-import { takeLatest } from "redux-saga/effects";
+import { takeLatest, put, call } from "redux-saga/effects";
 
 function* submitUserCodeSaga(action) {
   try {
-    yield fetchDataRequest();
+    yield put(fetchDataRequest());
 
-    const res = submitUserCodeApi(action.payload);
-    yield fetchDataSuccess({ data: res.data, status: res.status });
+    const res = yield call(submitUserCodeApi, action.payload);
+    console.log(res);
+
+    yield put(fetchDataSuccess({ data: res.data, status: res.status }));
   } catch (error) {
     console.error(error);
-    fetchDataError(error.status);
+    yield put(fetchDataError(error.status));
   }
 }
 

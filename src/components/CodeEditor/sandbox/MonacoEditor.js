@@ -4,9 +4,11 @@ import { Editor } from "@monaco-editor/react";
 function MonacoEditor({ language, userCode, selectedTheme, setUserCode }) {
   const editorRef = useRef(null);
 
-  const onMount = (editor) => {
+  const onMount = (editor, _) => {
     editorRef.current = editor;
     editor.focus();
+
+    editorRef.current.onDidPaste((e) => editorRef.current.setValue(userCode));
   };
 
   useEffect(() => {

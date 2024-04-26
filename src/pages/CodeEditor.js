@@ -9,10 +9,10 @@ function CodeEditor() {
         <img src={Naresh_IT_Logo} alt="Naresh IT Logo" className="h-12" />
       </header>
       <main className="flex-1 p-4 pt-2 lg:pt-0 lg:p-8 flex flex-col lg:flex-row">
-        <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-4 overflow-y-auto">
+        <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6 pb-0 overflow-y-auto">
           <Details />
         </aside>
-        <section className="w-full lg:w-1/2 p-4 relative">
+        <section className="w-full lg:w-1/2 p-6 pb-0 relative">
           <Sandbox />
         </section>
       </main>

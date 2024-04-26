@@ -4,6 +4,7 @@ import SubmitHandler from "./sandbox/SubmitHandler";
 import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
+import StdInOutComponent from "./sandbox/StdInOut";
 
 const programmingLanguages = [
   { id: 1, name: "python" },
@@ -75,7 +76,11 @@ function Sandbox() {
         ModalView={() => (
           <CodeEditorModal
             userCode={userCode}
-            language={selectedLanguage}
+            language={
+              programmingLanguages.find(
+                (language) => language.id === selectedLanguage
+              )?.name
+            }
             setUserCode={setUserCode}
             selectedTheme={selectedTheme}
             setCodeEditorExtend={setCodeEditorExtend}
@@ -86,7 +91,7 @@ function Sandbox() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col overflow-auto bg-gray-100">
+    <div className="flex flex-col overflow-auto bg-gray-100">
       <Options
         programmingLanguages={programmingLanguages}
         selectedLanguage={selectedLanguage}
@@ -97,8 +102,8 @@ function Sandbox() {
         setCodeEditorExtend={setCodeEditorExtend}
       />
 
-      <div className="flex-1 relative mb-2">
-        <div className="h-[600px]">
+      <div className="relative mb-2">
+        <div className="h-[500px]">
           <MonacoEditor
             language={
               programmingLanguages.find(
@@ -111,7 +116,7 @@ function Sandbox() {
           />
         </div>
 
-        <div className="absolute bottom-4 right-4">
+        <div className="absolute bottom-6 right-5">
           <SubmitHandler
             userCode={userCode}
             language={
@@ -126,18 +131,7 @@ function Sandbox() {
       <hr />
 
       <div>
-        <div className="mb-4">
-          <p className="text-xl mb-1 mt-1 font-medium text-gray-600">stdIn:</p>
-          <div className="text-sm text-gray-800 bg-gray-200 p-4 rounded-lg h-16 overflow-y-auto">
-            print(1,2)
-          </div>
-        </div>
-        <div>
-          <p className="text-xl mb-1 font-medium text-gray-600">stdOut:</p>
-          <div className="text-sm text-gray-800 bg-gray-200 p-4 rounded-lg h-[20vh] overflow-y-auto">
-            the output is 100
-          </div>
-        </div>
+        <StdInOutComponent />
       </div>
     </div>
   );
