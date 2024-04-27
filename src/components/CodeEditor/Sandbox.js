@@ -5,6 +5,8 @@ import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
 import StdInOutComponent from "./sandbox/StdInOut";
+import { updateUserCode } from "../../redux/slices/codeEditorSlice";
+import { connect } from "react-redux";
 
 const programmingLanguages = [
   { id: 1, name: "python" },
@@ -39,16 +41,10 @@ const initialCodes = {
   }`,
 };
 
-function Sandbox() {
+function SandboxComponent({ userCode: _, setUserCode }) {
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
-  const [userCode, setUserCode] = useState(
-    initialCodes[
-      programmingLanguages.find((language) => language.id === selectedLanguage)
-        ?.name
-    ]
-  );
 
   useEffect(() => {
     setUserCode(
@@ -58,7 +54,7 @@ function Sandbox() {
         )?.name
       ]
     );
-  }, [selectedLanguage]);
+  }, [selectedLanguage, setUserCode]);
 
   const onReset = () => {
     setUserCode(
@@ -75,13 +71,11 @@ function Sandbox() {
       <Modal
         ModalView={() => (
           <CodeEditorModal
-            userCode={userCode}
             language={
               programmingLanguages.find(
                 (language) => language.id === selectedLanguage
               )?.name
             }
-            setUserCode={setUserCode}
             selectedTheme={selectedTheme}
             setCodeEditorExtend={setCodeEditorExtend}
           />
@@ -103,22 +97,26 @@ function Sandbox() {
       />
 
       <div className="relative mb-2">
-        <div className="h-[500px]">
+        <div className="h-[460px]">
           <MonacoEditor
             language={
               programmingLanguages.find(
                 (language) => language.id === selectedLanguage
               )?.name
             }
+            defaultCode={
+              initialCodes[
+                programmingLanguages.find(
+                  (language) => language.id === selectedLanguage
+                )?.name
+              ]
+            }
             selectedTheme={selectedTheme}
-            userCode={userCode}
-            setUserCode={setUserCode}
           />
         </div>
 
-        <div className="absolute bottom-6 right-5">
+        <div className="absolute bottom-4 right-5">
           <SubmitHandler
-            userCode={userCode}
             language={
               programmingLanguages.find(
                 (language) => language.id === selectedLanguage
@@ -136,5 +134,15 @@ function Sandbox() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userCode: state.codeEditor.present.userCode,
+});
+
+const mapDispatchToProps = {
+  setUserCode: (updatedCode) => updateUserCode(updatedCode),
+};
+
+const Sandbox = connect(mapStateToProps, mapDispatchToProps)(SandboxComponent);
 
 export default Sandbox;

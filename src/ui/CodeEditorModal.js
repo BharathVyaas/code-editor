@@ -2,8 +2,10 @@ import { Editor } from "@monaco-editor/react";
 import { Button } from "@mui/material";
 import { useCallback, useEffect, useRef } from "react";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
+import { updateUserCode } from "../redux/slices/codeEditorSlice";
+import { connect } from "react-redux";
 
-function CodeEditorModal({
+function CodeEditorModalComponent({
   userCode,
   language,
   setUserCode,
@@ -55,6 +57,9 @@ function CodeEditorModal({
           defaultValue={userCode}
           language={language}
           options={{
+            find: {
+              useRegx: true,
+            },
             minimap: { enabled: true },
           }}
           onMount={onMount}
@@ -73,5 +78,18 @@ function CodeEditorModal({
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  userCode: state.codeEditor.present.userCode,
+});
+
+const mapDispatchToProps = {
+  setUserCode: (updatedCode) => updateUserCode(updatedCode),
+};
+
+const CodeEditorModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CodeEditorModalComponent);
 
 export default CodeEditorModal;

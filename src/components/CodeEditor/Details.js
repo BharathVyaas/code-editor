@@ -2,7 +2,7 @@ import { Paper, Grid } from "@mui/material";
 
 function Details() {
   return (
-    <article className="p-4 pt-0">
+    <article className="p-4 pt-0 overflow-auto">
       <h1 className="text-3xl font-bold mb-2 text-gray-900">
         Program Question
       </h1>
@@ -89,11 +89,7 @@ function Details() {
             Allowed Languages
           </h3>
           <p className="text-sm text-gray-700">
-            Bash, C, C++14, C++17, Clojure, C#, D, Erlang, F#, Go, Groovy,
-            Haskell, Java 8, Java 14, JavaScript(Node.js), Julia, Kotlin, Lisp
-            (SBCL), Lua, Objective-C, OCaml, Octave, Pascal, Perl, PHP, Python,
-            Python 3, Python 3.8, Racket, Ruby, Rust, Scala, Swift, TypeScript,
-            Visual Basic
+            Bash, C, C++14, C++17, Clojure, C#, D
           </p>
         </article>
       </article>
