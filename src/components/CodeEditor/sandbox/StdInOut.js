@@ -91,8 +91,8 @@ function StdInOutComponent({
                   <code className="text-sm text-gray-800 flex">
                     {submitCodeIsStatus !== 300 && (
                       <>
-                        <span className="text-black">user@nareshit:</span>
-                        <span>~$</span>
+                        <span className="text-[#1976d2]">user@nareshit:</span>
+                        <span className="text-[#eb4034]">~$</span>
                       </>
                     )}
                     {submitCodeIsStatus === 200 && (

@@ -86,15 +86,17 @@ function SandboxComponent({ userCode: _, setUserCode }) {
 
   return (
     <div className="flex flex-col overflow-auto bg-gray-100">
-      <Options
-        programmingLanguages={programmingLanguages}
-        selectedLanguage={selectedLanguage}
-        setSelectedLanguage={setSelectedLanguage}
-        selectedTheme={selectedTheme}
-        setSelectedTheme={setSelectedTheme}
-        onReset={onReset}
-        setCodeEditorExtend={setCodeEditorExtend}
-      />
+      <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between flex-wrap align-middle shadow-md">
+        <Options
+          programmingLanguages={programmingLanguages}
+          selectedLanguage={selectedLanguage}
+          setSelectedLanguage={setSelectedLanguage}
+          selectedTheme={selectedTheme}
+          setSelectedTheme={setSelectedTheme}
+          onReset={onReset}
+          setCodeEditorExtend={setCodeEditorExtend}
+        />
+      </div>
 
       <div className="relative mb-2">
         <div className="h-[460px]">

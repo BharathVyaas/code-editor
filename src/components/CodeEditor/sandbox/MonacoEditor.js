@@ -112,10 +112,10 @@ function MonacoEditorComponent({
           scrollBeyondLastColumn: 5,
           scrollBeyondLastLine: true,
           selectOnLineNumbers: true,
-          selectionClipboard: true,
+          selectionClipboard: false,
           selectionHighlight: true,
           showFoldingControls: "mouseover",
-          smoothScrolling: false,
+          smoothScrolling: true,
           suggestOnTriggerCharacters: true,
           wordBasedSuggestions: true,
           wordSeparators: "~!@#$%^&*()-=+[{]}|;:'\",.<>/?",
@@ -138,7 +138,7 @@ function MonacoEditorComponent({
       {showWarning && (
         <Dialog open={showWarning}>
           <DialogTitle sx={warningDialogStyles}>
-            <Typography variant="h6" color="error">
+            <Typography variant="body3" color="error">
               Warning!
             </Typography>
           </DialogTitle>

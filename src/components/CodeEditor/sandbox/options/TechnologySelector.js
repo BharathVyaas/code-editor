@@ -7,7 +7,7 @@ function TechnologySelector({
     <div className="relative">
       <select
         id="technology-selector-select"
-        className="w-[8rem] block appearance-none bg-white border border-gray-300 rounded-md py-[2px] px-2 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"
+        className="w-[8rem] block appearance-none bg-white border border-gray-300 text-gray-700 rounded-md py-[2px] px-2 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"
         value={selectedLanguage}
         onChange={(e) => setSelectedLanguage(Number(e.target.value))}
       >

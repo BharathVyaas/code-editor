@@ -1,27 +1,51 @@
-import { Paper } from "@mui/material";
+import { Editor } from "@monaco-editor/react";
+import { useState } from "react";
 
+import { Resizable } from "react-resizable";
 function ProgramSubmmition() {
+  const [width, setWidth] = useState(100);
+  const [height, setHeight] = useState(100);
+
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div>
-        <nav className="flex">
-          <ul className="flex">
-            <li className="bg-white">
-              <Paper elevation={3} className="p-4">
-                <h3 className="text-xl font-semibold mb-2 text-gray-900">
-                  Sample Input
-                </h3>
-                <div className="bg-gray-100 p-3 rounded mt-3">
-                  <p className="text-sm text-gray-700">this is a placeholder</p>
-                </div>
-              </Paper>
-            </li>
-            <li className="bg-white">Task 2</li>
-          </ul>
-          <p>+</p>
-        </nav>
+    <div className="flex flex-wrap">
+      <div className="relative" style={{ width }}>
+        <Resizable
+          width={width}
+          height={height}
+          minConstraints={[window.innerWidth * 0.2, window.innerHeight * 0.2]}
+          maxConstraints={[window.innerWidth * 0.9, window.innerHeight * 0.9]}
+          onResize={(_, { size }) => {
+            setWidth(size.width);
+            setHeight(size.height);
+          }}
+          handle={
+            <div className="absolute top-0 right-0 w-1 bg-red-500 h-full cursor-e-resize"></div>
+          }
+        >
+          <div style={{ width: width, height }} className="bg-gray-200">
+            <Editor
+              defaultLanguage="javascript"
+              width="100%"
+              height="100%"
+              theme="vs-dark"
+              value={String(width)}
+              options={{ automaticLayout: true }}
+            />
+          </div>
+        </Resizable>
       </div>
-      <div className="w-full h-[20vh]"></div>
+      <div
+        style={{ width: window.innerWidth - width, height: height }}
+        className="bg-yellow-300"
+      >
+        {width - window.innerWidth}
+      </div>
+      <div
+        className="bg-green-400 w-full"
+        style={{ height: window.innerHeight - height }}
+      >
+        {window.innerHeight - height}
+      </div>
     </div>
   );
 }

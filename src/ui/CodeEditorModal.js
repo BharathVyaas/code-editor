@@ -41,11 +41,7 @@ function CodeEditorModalComponent({
     editorRef.current = editor;
     editor.focus();
 
-    console.log(editorRef.current);
-
-    editorRef.current.onDidPaste((e) =>
-      console.log(editorRef.current.setValue(userCode))
-    );
+    editorRef.current.onDidPaste((e) => editorRef.current.setValue(userCode));
   };
 
   return (

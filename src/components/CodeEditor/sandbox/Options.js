@@ -44,7 +44,7 @@ function Options({
   };
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between flex-wrap align-middle shadow-md">
+    <>
       <div className="flex items-center space-x-2">
         <label className="text-sm font-medium text-gray-600">Language:</label>
         <TechnologySelector
@@ -114,7 +114,7 @@ function Options({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }
 
