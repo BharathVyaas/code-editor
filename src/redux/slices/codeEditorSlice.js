@@ -13,9 +13,33 @@ export const codeEditorSlice = createSlice({
   },
 });
 
+export const retrieveDetailsSlice = createPostSlice({
+  name: "retrieveDetails",
+});
+export const retrieveTestCasesSlice = createPostSlice({
+  name: "retrieveTestCases",
+});
+export const submitCodeSlice = createPostSlice({ name: "submitCode" });
+export const submitCsharpCodeSlice = createPostSlice({
+  name: "submitCsharpCode",
+});
+
+// actions
 export const { updateUserCode } = codeEditorSlice.actions;
 
-export const submitCodeSlice = createPostSlice({ name: "submitCode" });
+export const {
+  fetchDataRequest: retrieveDetailsRequest,
+  fetchDataSuccess: retrieveDetailsSuccess,
+  fetchDataError: rretrieveDetailsError,
+  resetState: retrieveDetailsReset,
+} = retrieveDetailsSlice.actions;
+
+export const {
+  fetchDataRequest: retrieveTestCasesRequest,
+  fetchDataSuccess: retrieveTestCasesSuccess,
+  fetchDataError: rretrieveTestCasesError,
+  resetState: retrieveTestCasesReset,
+} = retrieveTestCasesSlice.actions;
 
 export const {
   fetchDataRequest: submitCodeRequest,
@@ -23,3 +47,10 @@ export const {
   fetchDataError: submitCodeError,
   resetState: submitCodeReset,
 } = submitCodeSlice.actions;
+
+export const {
+  fetchDataRequest: submitCsharpCodeRequest,
+  fetchDataSuccess: submitCsharpCodeSuccess,
+  fetchDataError: submitCsharpCodeError,
+  resetState: submitCsharpCodeReset,
+} = submitCsharpCodeSlice.actions;

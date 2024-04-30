@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Paper,
   Tabs,
@@ -16,11 +16,30 @@ import { InfoOutlined } from "@mui/icons-material";
 function StdInOutComponent({
   submitCodeData,
   submitCodeIsLoading,
-  submitCodeIsStatus,
+  submitCodeIsState,
   submitCodeIsError,
+  retrievedTestCases,
 }) {
   const [selectedTab, setSelectedTab] = useState("Test Cases");
-  const [selectedTask, setSelectedTask] = useState(0); // Initial task
+  const [selectedTask, setSelectedTask] = useState(0);
+  const outputRef = useRef(null);
+
+  const { output, responseCode, errorMessage } = submitCodeData || {
+    output: null,
+    responseCode: 201,
+    errorMessage: null,
+  };
+
+  useEffect(() => {
+    console.log("change", submitCodeIsState === "reslove", outputRef.current);
+    if (submitCodeIsState === "reslove") {
+      setSelectedTab("Test Results");
+
+      if (outputRef.current) {
+        outputRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [submitCodeIsState]);
 
   const handleChange = (_, newTab) => {
     setSelectedTab(newTab);
@@ -45,10 +64,13 @@ function StdInOutComponent({
         <Paper elevation={3}>
           {selectedTab === "Test Cases" && (
             <Tabs value={selectedTask} onChange={handleTaskChange}>
-              <Tab label="Task 1" value={0} />
-              <Tab label="Task 2" value={1} />
-              <Tab label="Task 3" value={2} />
-              <Tab label="Task 4" value={3} />
+              {retrievedTestCases.map((testCase, index) => (
+                <Tab
+                  key={testCase.TestCaseId}
+                  label={`test case ${index + 1}`}
+                  value={index}
+                />
+              ))}
             </Tabs>
           )}
         </Paper>
@@ -60,9 +82,9 @@ function StdInOutComponent({
                   <Typography variant="subtitle1" fontWeight="bold">
                     Input:
                   </Typography>
-                  <div className="bg-gray-100 p-3 rounded ">
+                  <div className="bg-gray-100 p-3 rounded">
                     <p className="text-sm text-gray-700">
-                      this is a placeholder
+                      {retrievedTestCases[selectedTask]?.SampleInput}
                     </p>
                   </div>
                 </Box>
@@ -72,53 +94,67 @@ function StdInOutComponent({
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
                     <p className="text-sm text-gray-700">
-                      this is a placeholder
+                      {retrievedTestCases[selectedTask]?.SampleOutput}
                     </p>
                   </div>
                 </Box>
               </Box>
             )}
-            {selectedTab === "Test Results" && (
-              <div className="flex flex-col gap-4">
-                <Typography
-                  variant="h6"
-                  component="h2"
-                  className="text-gray-800"
-                >
-                  Test Results:
-                </Typography>
-                <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
-                  <code className="text-sm text-gray-800 flex">
-                    {submitCodeIsStatus !== 300 && (
-                      <>
-                        <span className="text-[#1976d2]">user@nareshit:</span>
-                        <span className="text-[#eb4034]">~$</span>
-                      </>
-                    )}
-                    {submitCodeIsStatus === 200 && (
-                      <span className="text-gray-600 ms-2">
-                        <pre>{submitCodeData}</pre>
-                      </span>
-                    )}
-                    {submitCodeIsStatus === 300 && (
-                      <span className="text-red-600">
-                        <pre>{submitCodeData}</pre>
-                      </span>
-                    )}
-                    {submitCodeIsError ? (
-                      <span className="text-red-400 ms-2">Error occurred.</span>
-                    ) : submitCodeIsLoading ? (
-                      <span className="text-yellow-400 ms-2">Loading...</span>
-                    ) : null}
-                  </code>
+            <div ref={outputRef}>
+              {selectedTab === "Test Results" && (
+                <div className="flex flex-col gap-4">
+                  {responseCode === 301 ? (
+                    <Typography
+                      variant="h6"
+                      component="h2"
+                      className="text-red-700"
+                    >
+                      Runtime Error:
+                    </Typography>
+                  ) : (
+                    <Typography
+                      variant="h6"
+                      component="h2"
+                      className="text-green-800"
+                    >
+                      Executed Successfully:
+                    </Typography>
+                  )}
+                  <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
+                    <code className="text-sm text-gray-800 flex">
+                      {responseCode !== 301 && (
+                        <>
+                          <span className="text-[#1976d2]">user@nareshit:</span>
+                          <span className="text-[#eb4034]">~$</span>
+                        </>
+                      )}
+                      {responseCode === 201 && (
+                        <span className="text-gray-600 ms-2">
+                          <pre>{output}</pre>
+                        </span>
+                      )}
+                      {responseCode === 301 && (
+                        <span className="text-red-600">
+                          <pre>{errorMessage}</pre>
+                        </span>
+                      )}
+                      {submitCodeIsError ? (
+                        <span className="text-red-400 ms-2">
+                          Error occurred.
+                        </span>
+                      ) : submitCodeIsLoading ? (
+                        <span className="text-yellow-400 ms-2">Loading...</span>
+                      ) : null}
+                    </code>
+                  </div>
+                  {submitCodeIsError && (
+                    <Typography variant="body2" color="error">
+                      Error occurred. <InfoOutlined fontSize="small" />
+                    </Typography>
+                  )}
                 </div>
-                {submitCodeIsError && (
-                  <Typography variant="body2" color="error">
-                    Error occurred. <InfoOutlined fontSize="small" />
-                  </Typography>
-                )}
-              </div>
-            )}
+              )}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -130,9 +166,10 @@ const mapState = (state) => ({
   submitCodeData: state.submitCode.data,
   submitCodeIsPending: state.submitCode.isPending,
   submitCodeIsLoading: state.submitCode.isLoading,
-  submitCodeIsStatus: state.submitCode.status,
+  submitCodeIsState: state.submitCode.state,
   submitCodeIsError: state.submitCode.isError,
   userCode: state.codeEditor.present.userCode,
+  retrievedTestCases: state.retrieveTestCases.data,
 });
 
 const mapDispatch = {

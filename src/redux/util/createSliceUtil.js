@@ -7,6 +7,7 @@ const baseState = {
   isError: false,
   status: null,
   state: "stale",
+  statusMessage: null,
 };
 
 export const createGetSlice = ({ name, state, reducers }) =>
@@ -34,12 +35,14 @@ export const createPostSlice = ({ name, state, reducers }) =>
         state.data = null;
         state.isError = false;
         state.isPending = true;
+        state.statusMessage = null;
       },
       fetchDataSuccess(state, action) {
         state.isLoading = false;
         state.data = action.payload.data;
         state.status = action.payload.status;
-        state.state = "response";
+        state.statusMessage = action.payload.statusMessage;
+        state.state = "reslove";
         state.isError = false;
         state.isPending = false;
       },
@@ -49,6 +52,7 @@ export const createPostSlice = ({ name, state, reducers }) =>
         state.status = "reject";
         state.isLoading = false;
         state.status = action.payload.status;
+        state.statusMessage = action.payload.statusMessage;
       },
       resetState(state) {
         state.isLoading = baseState.isLoading;
@@ -57,6 +61,7 @@ export const createPostSlice = ({ name, state, reducers }) =>
         state.isError = baseState.isError;
         state.status = baseState.status;
         state.state = baseState.state;
+        state.statusMessage = baseState.state.statusMessage;
       },
       ...reducers,
     },

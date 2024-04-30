@@ -1,68 +1,53 @@
 import { Paper, Grid } from "@mui/material";
-import { connect } from "react-redux";
 
-function DetailsComponent({ retrievedDetails }) {
-  const {
-    ProgramDescription,
-    Explanation,
-    ProgramName,
-    SampleInput,
-    SampleOutput,
-    Image,
-  } = retrievedDetails;
+function Details() {
   return (
     <article className="p-4 pt-0 overflow-auto">
       <h1 className="text-3xl font-bold mb-2 text-gray-900">
-        Program Questions
+        Program Question
       </h1>
       <hr className="border-gray-300 my-4" />
       <section className="mt-4 mb-6">
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">
-          {ProgramName && ProgramName}
+          Finding Window
         </h2>
-        <p className="text-base text-gray-700 max-h-[10rem] overflow-y-auto">
-          {ProgramDescription && ProgramDescription}
+        <p className="text-base text-gray-700">
+          Hacker has two strings S and T. He has to find the minimum
+          (contiguous) substring Window of S. So that T is a subsequence of
+          Window.
         </p>
       </section>
       <hr className="border-gray-300 my-4" />
       <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={6}>
           <Paper elevation={3} className="p-4">
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Input
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[3rem] lg:min-h-[5rem]">
-              <p className="text-sm text-gray-700">{SampleInput}</p>
+            <div className="bg-gray-100 p-3 rounded mt-3">
+              <p className="text-sm text-gray-700">this is a placeholder</p>
             </div>
           </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={6}>
           <Paper elevation={3} className="p-4">
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Output
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[3rem] lg:min-h-[5rem]">
-              <p className="text-sm text-gray-700">{SampleOutput}</p>
+            <div className="bg-gray-100 p-3 rounded mt-3">
+              <p className="text-sm text-gray-700">placeholder a is this</p>
             </div>
           </Paper>
         </Grid>
       </Grid>
-
       <hr className="border-gray-300 my-4" />
-
-      <div className="mx-auto max-w-xs">
-        <img src={Image} alt="Program" className="w-full h-auto" />
-      </div>
-      <hr className="border-gray-300 my-4" />
-
       <section className="mb-6">
         <h2 className="text-2xl font-semibold text-gray-900">Explanation</h2>
-        <Paper
-          elevation={3}
-          className="p-4 bg-gray-100 rounded mt-4 max-h-[8rem] overflow-auto"
-        >
+        <Paper elevation={3} className="p-4 bg-gray-100 rounded mt-4">
           <code className="text-sm text-gray-700">
-            {Explanation && Explanation}
+            "bcde" is the answer because it occurs before "bdde" which has the
+            same length. "deb" is not a smaller window because the elements of T
+            in the window must occur in order.
           </code>
         </Paper>
       </section>
@@ -111,11 +96,5 @@ function DetailsComponent({ retrievedDetails }) {
     </article>
   );
 }
-
-const mapState = (state) => ({
-  retrievedDetails: state.retrieveDetails.data,
-});
-
-const Details = connect(mapState, null)(DetailsComponent);
 
 export default Details;

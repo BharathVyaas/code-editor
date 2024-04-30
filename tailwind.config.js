@@ -2,7 +2,9 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      "nareshit-primary": "#EB2424",
+    },
   },
   plugins: [],
 };

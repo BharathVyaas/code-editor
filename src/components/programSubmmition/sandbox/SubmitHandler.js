@@ -1,33 +1,18 @@
 import { connect } from "react-redux";
-import { submitCode, submitCsharpCode } from "../../../redux/actions";
+import { submitCode } from "../../../redux/actions";
 import { Button } from "@mui/material";
 //import { PlayCircleFilled as PlayCircleFilledIcon } from "@mui/icons-material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
-function SubmitHandlerComponent({
-  userCode,
-  retrievedDetails,
-  language,
-  submitCodeDispatch,
-  submitCsharpCodeDispatch,
-}) {
+function SubmitHandlerComponent({ userCode, language, submitCodeDispatch }) {
+  //console.log(state);
   const submitHandler = async () => {
     try {
-      if (language === "csharp") {
-        submitCsharpCodeDispatch({
-          Code: userCode,
-          Language: language,
-          ProgramName: retrievedDetails.ProgramName,
-          ProgramId: "NA",
-        });
-      } else {
-        submitCodeDispatch({
-          Code: userCode,
-          Language: language,
-          ProgramName: retrievedDetails.ProgramName,
-          ProgramId: "NA",
-        });
-      }
+      submitCodeDispatch({
+        Code: userCode,
+        Language: language,
+        ProgramName: "HelloWorld123",
+      });
     } catch (error) {
       console.error(error);
     }
@@ -72,14 +57,11 @@ function SubmitHandlerComponent({
 }
 
 const mapState = (state) => ({
-  retrievedDetails: state.retrieveDetails.data,
   userCode: state.codeEditor.present.userCode,
-  state: state,
 });
 
 const mapDispatch = {
   submitCodeDispatch: (item) => submitCode(item),
-  submitCsharpCodeDispatch: (item) => submitCsharpCode(item),
 };
 
 const SubmitHandler = connect(mapState, mapDispatch)(SubmitHandlerComponent);
