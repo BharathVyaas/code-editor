@@ -13,21 +13,12 @@ function SubmitHandlerComponent({
 }) {
   const submitHandler = async () => {
     try {
-      if (language === "csharp") {
-        submitCsharpCodeDispatch({
-          Code: userCode,
-          Language: language,
-          ProgramName: retrievedDetails.ProgramName,
-          ProgramId: "NA",
-        });
-      } else {
-        submitCodeDispatch({
-          Code: userCode,
-          Language: language,
-          ProgramName: retrievedDetails.ProgramName,
-          ProgramId: "NA",
-        });
-      }
+      submitCodeDispatch({
+        Code: userCode,
+        Language: language,
+        ProgramName: retrievedDetails.ProgramName,
+        ProgramId: "NA",
+      });
     } catch (error) {
       console.error(error);
     }

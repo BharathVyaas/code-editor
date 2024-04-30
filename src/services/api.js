@@ -17,13 +17,23 @@ export const submitUserCodeApi = (payload) => {
   }
 };
 
-export const submitUserCsharpCodeApi = (payload) => {
+export const submitUserCsharpCodeApi1 = async (payload) => {
   try {
     console.log(payload);
     const response1 = apiCS.post("api/codeexecute", payload);
+
+    return response1;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const submitUserCsharpCodeApi2 = async (payload, response1) => {
+  try {
+    console.log(payload);
     const response2 = apiCS.post("api/codeexecute", {
       ...payload,
-      ProgramId: response1.data,
+      ProgramId: response1.data || "NA",
     });
     return response2;
   } catch (error) {

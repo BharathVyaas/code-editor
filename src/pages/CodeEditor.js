@@ -32,7 +32,7 @@ function CodeEditorComponent({
           />
         </header>
         <main className="flex-1 p-4 pt-2 lg:pt-0 lg:p-8 lg:flex flex-col lg:flex-row max-h-[92vh]">
-          <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6  border-b-2 borderb-black overflow-y-auto max-h-[30vh] lg:max-h-[100%] lg:mb-0">
+          <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6  border-b-2 borderb-black overflow-y-auto mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
             <Details />
           </aside>
           <section className="w-full lg:w-1/2 p-6 border-b-2 relative overflow-y-auto max-h-[60vh] md:max-h-[100%]">

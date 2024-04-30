@@ -2,7 +2,8 @@ import {
   retrieveDetailsApi,
   retrieveTestCasesApi,
   submitUserCodeApi,
-  submitUserCsharpCodeApi,
+  submitUserCsharpCodeApi1,
+  submitUserCsharpCodeApi2,
 } from "../../services/api";
 import { types } from "../actions/types";
 import {
@@ -45,8 +46,9 @@ function* submitUserCsharpCodeSaga(action) {
   try {
     yield put(submitCsharpCodeRequest());
 
-    const res = yield call(submitUserCsharpCodeApi, action.payload);
+    let res = yield call(submitUserCsharpCodeApi1, action.payload);
     console.log(res);
+    res = yield call(submitUserCsharpCodeApi2, action.payload, res);
 
     yield put(
       submitCsharpCodeSuccess({

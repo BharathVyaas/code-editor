@@ -45,8 +45,13 @@ function Options({
 
   return (
     <>
-      <div className="flex items-center space-x-2">
-        <label className="text-sm font-medium text-gray-600">Language:</label>
+      <div className="flex items-center space-x-2 w-auto">
+        <label
+          htmlFor="technology-selector-select"
+          className="text-sm font-medium text-gray-600"
+        >
+          Language:
+        </label>
         <TechnologySelector
           programmingLanguages={programmingLanguages}
           selectedLanguage={selectedLanguage}
@@ -54,19 +59,24 @@ function Options({
         />
       </div>
 
-      <div className="flex space-x-4 items-center justify-between">
-        <div>
-          <Button
-            className="text-green-400 cursor-pointer"
-            color="success"
-            startIcon={<BackupIcon />}
-          >
-            Submit
-          </Button>
-        </div>
+      <div>
+        <Button
+          className="text-green-400 cursor-pointer"
+          color="success"
+          startIcon={<BackupIcon />}
+        >
+          Submit
+        </Button>
+      </div>
 
+      <div className="flex justify-between w-full sm:w-auto sm:space-x-4 items-center">
         <div className="flex items-center space-x-2">
-          <label className="text-sm font-medium text-gray-600">Theme:</label>
+          <label
+            htmlFor="theme-select"
+            className="text-sm font-medium text-gray-600"
+          >
+            Theme:
+          </label>
           <ThemeSelector
             themes={themes}
             selectedTheme={selectedTheme}

@@ -26,7 +26,7 @@ function StdInOutComponent({
 
   const { output, responseCode, errorMessage } = submitCodeData || {
     output: null,
-    responseCode: 201,
+    responseCode: null,
     errorMessage: null,
   };
 
@@ -111,13 +111,21 @@ function StdInOutComponent({
                     >
                       Runtime Error:
                     </Typography>
-                  ) : (
+                  ) : responseCode === 201 ? (
                     <Typography
                       variant="h6"
                       component="h2"
                       className="text-green-800"
                     >
                       Executed Successfully:
+                    </Typography>
+                  ) : (
+                    <Typography
+                      variant="h6"
+                      component="h2"
+                      className="text-gray-800"
+                    >
+                      Test Results:
                     </Typography>
                   )}
                   <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
