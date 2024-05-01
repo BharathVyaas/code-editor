@@ -51,7 +51,13 @@ function DetailsComponent({ retrievedDetails }) {
       <hr className="border-gray-300 my-4" />
 
       <div className="mx-auto max-w-xs">
-        <img src={Image} alt="Program" className="w-full h-auto" />
+        <img
+          src={Image}
+          alt="Program"
+          height="300"
+          width="300"
+          className="mx-auto"
+        />
       </div>
       <hr className="border-gray-300 my-4" />
 

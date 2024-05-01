@@ -13,12 +13,21 @@ function SubmitHandlerComponent({
 }) {
   const submitHandler = async () => {
     try {
-      submitCodeDispatch({
-        Code: userCode,
-        Language: language,
-        ProgramName: retrievedDetails.ProgramName,
-        ProgramId: "NA",
-      });
+      if (language === "csharp") {
+        submitCsharpCodeDispatch({
+          Code: userCode,
+          Language: language,
+          ProgramName: retrievedDetails.ProgramName,
+          ProgramId: "NA",
+        });
+      } else {
+        submitCodeDispatch({
+          Code: userCode,
+          Language: language,
+          ProgramName: retrievedDetails.ProgramName,
+          ProgramId: "NA",
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -41,14 +50,21 @@ function SubmitHandlerComponent({
       <Button
         color="success"
         variant="contained"
-        size="small"
-        sx={{ paddingInline: 1.6, paddingBlock: 0.1, paddingTop: 0.4 }}
+        sx={{ paddingBlock: 0.6 }}
         onClick={submitHandler}
         startIcon={
           <PlayArrowIcon fontSize="20" sx={{ padding: 0, margin: 0 }} />
         }
       >
         Run
+      </Button>
+      <Button
+        color="success"
+        variant="contained"
+        sx={{ paddingBlock: 0.6, marginInlineStart: 1.4 }}
+        onClick={submitHandler}
+      >
+        Execute Test Cases
       </Button>
 
       {/* <Button

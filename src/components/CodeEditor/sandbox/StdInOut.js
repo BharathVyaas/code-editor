@@ -12,8 +12,12 @@ import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
+import SubmitHandler from "./SubmitHandler";
 
 function StdInOutComponent({
+  language,
   submitCodeData,
   submitCodeIsLoading,
   submitCodeIsState,
@@ -51,24 +55,41 @@ function StdInOutComponent({
 
   return (
     <div className="flex flex-col w-full">
-      <Tabs
-        value={selectedTab}
-        onChange={handleChange}
-        sx={{ minHeight: "unset", minWidth: "unset" }}
-      >
-        <Tab label="Test Cases" value="Test Cases" />
-        <Tab label="Test Results" value="Test Results" />
-      </Tabs>
+      <div className="flex justify-between">
+        <Tabs
+          value={selectedTab}
+          onChange={handleChange}
+          sx={{ minHeight: "unset", minWidth: "unset" }}
+        >
+          <Tab label="Test Cases" value="Test Cases" />
+          <Tab label="Test Results" value="Test Results" />
+        </Tabs>
+        <div className="my-auto flex flex-wrap">
+          <SubmitHandler language={language} />
+        </div>
+      </div>
 
       <div className="bg-gray-100 w-full mt-2">
         <Paper elevation={3}>
           {selectedTab === "Test Cases" && (
-            <Tabs value={selectedTask} onChange={handleTaskChange}>
+            <Tabs
+              value={selectedTask}
+              onChange={handleTaskChange}
+              sx={{ maxHeight: "1rem", display: "flex", alignItems: "center" }}
+            >
               {retrievedTestCases.map((testCase, index) => (
                 <Tab
                   key={testCase.TestCaseId}
                   label={`test case ${index + 1}`}
                   value={index}
+                  iconPosition="end"
+                  icon={
+                    testCase.TestCaseId % 2 ? (
+                      <DoneIcon sx={{ color: "green", mb: 0.3 }} />
+                    ) : (
+                      <ClearIcon sx={{ color: "red", mb: 0.3 }} />
+                    )
+                  }
                 />
               ))}
             </Tabs>
@@ -84,7 +105,7 @@ function StdInOutComponent({
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
                     <p className="text-sm text-gray-700">
-                      {retrievedTestCases[selectedTask]?.SampleInput}
+                      {retrievedTestCases[selectedTask]?.SampleInputValue}
                     </p>
                   </div>
                 </Box>
@@ -94,7 +115,7 @@ function StdInOutComponent({
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
                     <p className="text-sm text-gray-700">
-                      {retrievedTestCases[selectedTask]?.SampleOutput}
+                      {retrievedTestCases[selectedTask]?.SampleOutputValue}
                     </p>
                   </div>
                 </Box>
@@ -109,7 +130,7 @@ function StdInOutComponent({
                       component="h2"
                       className="text-red-700"
                     >
-                      Runtime Error:
+                      Build Failed:
                     </Typography>
                   ) : responseCode === 201 ? (
                     <Typography
@@ -117,7 +138,7 @@ function StdInOutComponent({
                       component="h2"
                       className="text-green-800"
                     >
-                      Executed Successfully:
+                      Build Success:
                     </Typography>
                   ) : (
                     <Typography
@@ -130,12 +151,12 @@ function StdInOutComponent({
                   )}
                   <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
                     <code className="text-sm text-gray-800 flex">
-                      {responseCode !== 301 && (
+                      {/* {responseCode !== 301 && (
                         <>
                           <span className="text-[#1976d2]">user@nareshit:</span>
                           <span className="text-[#eb4034]">~$</span>
                         </>
-                      )}
+                      )} */}
                       {responseCode === 201 && (
                         <span className="text-gray-600 ms-2">
                           <pre>{output}</pre>

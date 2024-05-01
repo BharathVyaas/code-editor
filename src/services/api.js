@@ -33,7 +33,7 @@ export const submitUserCsharpCodeApi2 = async (payload, response1) => {
     console.log(payload);
     const response2 = apiCS.post("api/codeexecute", {
       ...payload,
-      ProgramId: response1.data || "NA",
+      ProgramId: response1.data.output || "NA",
     });
     return response2;
   } catch (error) {

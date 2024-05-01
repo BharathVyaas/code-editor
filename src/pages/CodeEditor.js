@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { types } from "../redux/actions/types";
 import Loading from "../shared/Loading";
 import Error from "../shared/Error";
+import { useLocation } from "react-router-dom";
 
 function CodeEditorComponent({
   isDataRetrieving,
@@ -13,11 +14,17 @@ function CodeEditorComponent({
   retrieveDataDispatch,
   retrieveDataState,
 }) {
-  useEffect(() => {
-    retrieveDataDispatch("E281CF31-13C3-481E-8602-3EF0AD23C3ED");
-  }, [retrieveDataDispatch]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const programId = queryParams.get("program_id");
 
-  if (isDataRetrievingFailed) return <Error />;
+  useEffect(() => {
+    if (programId) retrieveDataDispatch(programId);
+  }, [retrieveDataDispatch, programId]);
+
+  console.log(isDataRetrievingFailed, isDataRetrieving);
+
+  if (isDataRetrievingFailed || !programId) return <Error />;
 
   if (isDataRetrieving) return <Loading />;
 

@@ -20,7 +20,7 @@ import {
   submitCsharpCodeSuccess,
   submitCsharpCodeError,
 } from "../slices/codeEditorSlice";
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put, call, delay } from "redux-saga/effects";
 
 function* submitUserCodeSaga(action) {
   try {
@@ -48,7 +48,11 @@ function* submitUserCsharpCodeSaga(action) {
 
     let res = yield call(submitUserCsharpCodeApi1, action.payload);
     console.log(res);
+
+    yield delay(30000);
+
     res = yield call(submitUserCsharpCodeApi2, action.payload, res);
+    console.log(res);
 
     yield put(
       submitCsharpCodeSuccess({

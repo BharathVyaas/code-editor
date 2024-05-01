@@ -1,6 +1,5 @@
 import MonacoEditor from "./sandbox/MonacoEditor";
 import { useState, useEffect } from "react";
-import SubmitHandler from "./sandbox/SubmitHandler";
 import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
@@ -116,22 +115,18 @@ function SandboxComponent({ userCode: _, setUserCode }) {
             selectedTheme={selectedTheme}
           />
         </div>
-
-        <div className="absolute bottom-4 right-5">
-          <SubmitHandler
-            language={
-              programmingLanguages.find(
-                (language) => language.id === selectedLanguage
-              )?.name
-            }
-          />
-        </div>
       </div>
 
       <hr />
 
       <div>
-        <StdInOutComponent />
+        <StdInOutComponent
+          language={
+            programmingLanguages.find(
+              (language) => language.id === selectedLanguage
+            )?.name
+          }
+        />
       </div>
     </div>
   );
