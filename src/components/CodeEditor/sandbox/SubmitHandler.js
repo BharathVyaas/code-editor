@@ -6,11 +6,16 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 function SubmitHandlerComponent({
   userCode,
+  submitCodeData,
   retrievedDetails,
   language,
   submitCodeDispatch,
   submitCsharpCodeDispatch,
 }) {
+  const { responseCode } = submitCodeData || {
+    responseCode: null,
+  };
+
   const submitHandler = async () => {
     try {
       if (language === "csharp") {
@@ -59,6 +64,7 @@ function SubmitHandlerComponent({
         Run
       </Button>
       <Button
+        disabled={responseCode !== 201}
         color="success"
         variant="contained"
         sx={{ paddingBlock: 0.6, marginInlineStart: 1.4 }}
@@ -81,7 +87,7 @@ function SubmitHandlerComponent({
 const mapState = (state) => ({
   retrievedDetails: state.retrieveDetails.data,
   userCode: state.codeEditor.present.userCode,
-  state: state,
+  submitCodeData: state.submitCode.data,
 });
 
 const mapDispatch = {

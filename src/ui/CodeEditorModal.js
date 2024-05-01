@@ -13,6 +13,7 @@ function CodeEditorModalComponent({
   setCodeEditorExtend,
 }) {
   const editorRef = useRef(null);
+
   const onModalClose = useCallback(() => {
     setUserCode(editorRef.current?.getValue());
     setCodeEditorExtend(false);

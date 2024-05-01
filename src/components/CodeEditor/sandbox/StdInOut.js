@@ -15,6 +15,8 @@ import { InfoOutlined } from "@mui/icons-material";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import SubmitHandler from "./SubmitHandler";
+import Error from "../../../shared/Error";
+import { useNavigate } from "react-router";
 
 function StdInOutComponent({
   language,
@@ -24,6 +26,7 @@ function StdInOutComponent({
   submitCodeIsError,
   retrievedTestCases,
 }) {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Test Cases");
   const [selectedTask, setSelectedTask] = useState(0);
   const outputRef = useRef(null);
@@ -43,6 +46,8 @@ function StdInOutComponent({
       }
     }
   }, [submitCodeIsState]);
+
+  if (!retrievedTestCases) return navigate("/error");
 
   const handleChange = (_, newTab) => {
     setSelectedTab(newTab);

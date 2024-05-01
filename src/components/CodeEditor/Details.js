@@ -9,6 +9,7 @@ function DetailsComponent({ retrievedDetails }) {
     SampleInput,
     SampleOutput,
     Image,
+    Constraints,
   } = retrievedDetails;
 
   return (
@@ -21,18 +22,34 @@ function DetailsComponent({ retrievedDetails }) {
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">
           {ProgramName && ProgramName}
         </h2>
-        <p className="text-base text-gray-700 max-h-[10rem] overflow-y-auto">
+        <p className="text-base text-gray-700">
           {ProgramDescription && ProgramDescription}
         </p>
       </section>
       <hr className="border-gray-300 my-4" />
+
+      {Image && (
+        <>
+          <div className="mx-auto max-w-xs">
+            <img
+              src={Image}
+              alt="Program"
+              height="300"
+              width="300"
+              className="mx-auto"
+            />
+          </div>
+          <hr className="border-gray-300 my-4" />
+        </>
+      )}
+
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <Paper elevation={3} className="p-4">
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Input
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[3rem] lg:min-h-[5rem]">
+            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[1rem] lg:min-h-[2rem]">
               <p className="text-sm text-gray-700">{SampleInput}</p>
             </div>
           </Paper>
@@ -42,7 +59,7 @@ function DetailsComponent({ retrievedDetails }) {
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Output
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[3rem] lg:min-h-[5rem]">
+            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[1rem] lg:min-h-[2rem]">
               <p className="text-sm text-gray-700">{SampleOutput}</p>
             </div>
           </Paper>
@@ -51,27 +68,21 @@ function DetailsComponent({ retrievedDetails }) {
 
       <hr className="border-gray-300 my-4" />
 
-      <div className="mx-auto max-w-xs">
-        <img
-          src={Image}
-          alt="Program"
-          height="300"
-          width="300"
-          className="mx-auto"
-        />
-      </div>
-      <hr className="border-gray-300 my-4" />
+      {Constraints && (
+        <>
+          <div className="max-w-xs">
+            <h4 className="text-xl font-semibold mb-2">Constraints:</h4>
+            <div className="bg-gray-100 p-4 rounded">
+              <pre className="text-md font-mono">{Constraints}</pre>
+            </div>
+          </div>
+          <hr className="border-gray-300 my-4" />
+        </>
+      )}
 
       <section className="mb-6">
         <h2 className="text-2xl font-semibold text-gray-900">Explanation</h2>
-        <Paper
-          elevation={3}
-          className="p-4 bg-gray-100 rounded mt-4 max-h-[8rem] overflow-auto"
-        >
-          <code className="text-sm text-gray-700">
-            {Explanation && Explanation}
-          </code>
-        </Paper>
+        <p className="mt-4">{Explanation && Explanation}</p>
       </section>
       <hr className="border-gray-300 my-4" />
       <article>

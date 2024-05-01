@@ -1,5 +1,5 @@
 import MonacoEditor from "./sandbox/MonacoEditor";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
@@ -20,15 +20,25 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
 
-  const DefaultPrograms = JSON.parse(retrievedDetails.DefaultProgram);
+  const DefaultPrograms = useMemo(
+    () => JSON.parse(retrievedDetails.DefaultProgram),
+    [retrievedDetails]
+  );
 
   useEffect(() => {
+    console.log(
+      DefaultPrograms[
+        programmingLanguages.find(
+          (language) => language.id === selectedLanguage
+        )?.name || ""
+      ]
+    );
     setUserCode(
       DefaultPrograms[
         programmingLanguages.find(
           (language) => language.id === selectedLanguage
-        )?.name
-      ]
+        )?.name || ""
+      ] || ""
     );
   }, [selectedLanguage, setUserCode, DefaultPrograms]);
 
@@ -37,8 +47,8 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
       DefaultPrograms[
         programmingLanguages.find(
           (language) => language.id === selectedLanguage
-        )?.name
-      ]
+        )?.name || ""
+      ] || ""
     );
   };
 
@@ -62,7 +72,7 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
 
   return (
     <div className="flex flex-col overflow-auto bg-gray-100">
-      <div className="bg-white border-b border-gray-200 w-full px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap align-middle shadow-md">
+      <div className="bg-white border-b border-gray-200 w-full px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap lg:flex-nowrap overflow-x-auto hide-scroll align-middle shadow-md">
         <Options
           programmingLanguages={programmingLanguages}
           selectedLanguage={selectedLanguage}
@@ -86,7 +96,7 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
               DefaultPrograms[
                 programmingLanguages.find(
                   (language) => language.id === selectedLanguage
-                )?.name
+                )?.name || ""
               ]
             }
             selectedTheme={selectedTheme}

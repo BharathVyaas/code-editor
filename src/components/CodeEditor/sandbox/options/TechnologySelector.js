@@ -15,6 +15,7 @@ function TechnologySelector({
       labelId="technology-selector-label"
       id="technology-selector-select"
       size="small"
+      sx={{ minWidth: "8rem" }}
       value={selectedLanguage}
       onChange={handleChange}
       label="Technology"
