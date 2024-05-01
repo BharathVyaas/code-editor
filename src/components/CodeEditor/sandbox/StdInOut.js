@@ -35,7 +35,6 @@ function StdInOutComponent({
   };
 
   useEffect(() => {
-    console.log("change", submitCodeIsState === "reslove", outputRef.current);
     if (submitCodeIsState === "reslove") {
       setSelectedTab("Test Results");
 

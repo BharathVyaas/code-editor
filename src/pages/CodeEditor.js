@@ -22,8 +22,6 @@ function CodeEditorComponent({
     if (programId) retrieveDataDispatch(programId);
   }, [retrieveDataDispatch, programId]);
 
-  console.log(isDataRetrievingFailed, isDataRetrieving);
-
   if (isDataRetrievingFailed || !programId) return <Error />;
 
   if (isDataRetrieving) return <Loading />;

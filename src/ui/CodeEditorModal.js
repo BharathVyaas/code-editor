@@ -40,8 +40,6 @@ function CodeEditorModalComponent({
   const onMount = (editor, _) => {
     editorRef.current = editor;
     editor.focus();
-
-    editorRef.current.onDidPaste((e) => editorRef.current.setValue(userCode));
   };
 
   return (

@@ -1,45 +1,19 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { Editor } from "@monaco-editor/react";
 import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
 
 function MonacoEditorComponent({
   language,
   userCode,
-  defaultCode,
   selectedTheme,
-  pastUserCode,
   setUserCode,
 }) {
   const editorRef = useRef(null);
-  const pasteRef = useRef(0);
-  const [didPaste, setDidPaste] = useState(0);
-  const [showWarning, setShowWarning] = useState(false);
-
-  const handlePaste = () => {
-    setDidPaste((prev) => prev + 1);
-    setShowWarning(true); // Show the warning message
-  };
-
-  useEffect(() => {
-    if (didPaste > 0 && pasteRef.current !== didPaste) {
-      pasteRef.current = didPaste;
-      setUserCode(pastUserCode || defaultCode); // Reset code on paste
-    }
-  }, [didPaste, pastUserCode, defaultCode, pasteRef, setUserCode]);
 
   const onMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
-    editor.onDidPaste(() => handlePaste());
   };
 
   useEffect(() => {
@@ -50,16 +24,6 @@ function MonacoEditorComponent({
 
   const handleEditorChange = (newCode) => {
     setUserCode(newCode);
-  };
-
-  const warningDialogStyles = {
-    "& .MuiDialogTitle-root": {
-      backgroundColor: "#ffe0e0", // Light red background
-      padding: "16px 24px", // Adjust padding for content
-    },
-    "& .MuiDialogContent-root": {
-      padding: "16px 24px", // Adjust padding for content
-    },
   };
 
   return (
@@ -134,24 +98,6 @@ function MonacoEditorComponent({
         theme={selectedTheme}
         editorRef={editorRef}
       />
-
-      {showWarning && (
-        <Dialog open={showWarning}>
-          <DialogTitle sx={warningDialogStyles}>
-            <Typography variant="body3" color="error">
-              Warning!
-            </Typography>
-          </DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">
-              Copying and pasting code during the test is not allowed.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setShowWarning(false)}>OK</Button>
-          </DialogActions>
-        </Dialog>
-      )}
     </>
   );
 }

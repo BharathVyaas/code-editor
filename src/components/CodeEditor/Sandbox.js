@@ -15,49 +15,26 @@ const programmingLanguages = [
   { id: 5, name: "csharp" },
 ];
 
-const initialCodes = {
-  python: `print("Hello, world!")`,
-  javascript: `console.log("Hello, world!");`,
-  java: `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
-    }
-}`,
-  c: `#include <stdio.h>
-
-  int main() {
-      printf("Hello, world!\n");
-      return 0;
-  }`,
-  csharp: `using System;
-
-  class Program
-  {
-      static void Main(string[] args)
-      {
-          Console.WriteLine("Hello, world!");
-      }
-  }`,
-};
-
-function SandboxComponent({ userCode: _, setUserCode }) {
+function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
 
+  const DefaultPrograms = JSON.parse(retrievedDetails.DefaultProgram);
+
   useEffect(() => {
     setUserCode(
-      initialCodes[
+      DefaultPrograms[
         programmingLanguages.find(
           (language) => language.id === selectedLanguage
         )?.name
       ]
     );
-  }, [selectedLanguage, setUserCode]);
+  }, [selectedLanguage, setUserCode, DefaultPrograms]);
 
   const onReset = () => {
     setUserCode(
-      initialCodes[
+      DefaultPrograms[
         programmingLanguages.find(
           (language) => language.id === selectedLanguage
         )?.name
@@ -106,7 +83,7 @@ function SandboxComponent({ userCode: _, setUserCode }) {
               )?.name
             }
             defaultCode={
-              initialCodes[
+              DefaultPrograms[
                 programmingLanguages.find(
                   (language) => language.id === selectedLanguage
                 )?.name
@@ -134,6 +111,7 @@ function SandboxComponent({ userCode: _, setUserCode }) {
 
 const mapStateToProps = (state) => ({
   userCode: state.codeEditor.present.userCode,
+  retrievedDetails: state.retrieveDetails.data,
 });
 
 const mapDispatchToProps = {

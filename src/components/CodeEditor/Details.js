@@ -10,6 +10,7 @@ function DetailsComponent({ retrievedDetails }) {
     SampleOutput,
     Image,
   } = retrievedDetails;
+
   return (
     <article className="p-4 pt-0 overflow-auto">
       <h1 className="text-3xl font-bold mb-2 text-gray-900">
