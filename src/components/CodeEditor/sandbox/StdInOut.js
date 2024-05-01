@@ -15,7 +15,6 @@ import { InfoOutlined } from "@mui/icons-material";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import SubmitHandler from "./SubmitHandler";
-import Error from "../../../shared/Error";
 import { useNavigate } from "react-router";
 
 function StdInOutComponent({
@@ -59,17 +58,19 @@ function StdInOutComponent({
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex justify-between">
-        <Tabs
-          value={selectedTab}
-          onChange={handleChange}
-          sx={{ minHeight: "unset", minWidth: "unset" }}
-        >
-          <Tab label="Test Cases" value="Test Cases" />
-          <Tab label="Test Results" value="Test Results" />
-        </Tabs>
-        <div className="my-auto flex flex-wrap">
-          <SubmitHandler language={language} />
+      <div className="">
+        <div className="flex flex-wrap-reverse justify-between">
+          <Tabs
+            value={selectedTab}
+            onChange={handleChange}
+            sx={{ minHeight: "unset", minWidth: "unset" }}
+          >
+            <Tab label="Test Cases" value="Test Cases" />
+            <Tab label="Test Results" value="Test Results" />
+          </Tabs>
+          <div className="my-auto flex flex-wrap">
+            <SubmitHandler language={language} />
+          </div>
         </div>
       </div>
 

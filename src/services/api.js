@@ -1,63 +1,56 @@
 import axios from "axios";
 
 const baseURL = "https://www.nareshit.net/";
-// for code compile
 const baseURLCS = "http://49.207.10.13:3008/";
 
 const api = axios.create({ baseURL });
 const apiCS = axios.create({ baseURL: baseURLCS });
 
-export const submitUserCodeApi = (payload) => {
+export const submitUserCodeApi = async (payload) => {
   try {
-    const response = apiCS.post("api/codeexecute", payload);
-
+    const response = await apiCS.post("api/codeexecute", payload);
     return response;
   } catch (error) {
-    return error;
+    throw error; // Throw the error to be caught by Redux Saga
   }
 };
 
 export const submitUserCsharpCodeApi1 = async (payload) => {
   try {
-    console.log(payload);
-    const response1 = apiCS.post("api/codeexecute", payload);
-
+    const response1 = await apiCS.post("api/codeexecute", payload);
     return response1;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
 export const submitUserCsharpCodeApi2 = async (payload, response1) => {
   try {
-    console.log(payload);
-    const response2 = apiCS.post("api/codeexecute", {
+    const response2 = await apiCS.post("api/codeexecute", {
       ...payload,
-      ProgramId: response1.data.output || "NA",
+      ProgramId: response1.output || "NA",
     });
     return response2;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
-export const retrieveDetailsApi = (payload) => {
+export const retrieveDetailsApi = async (payload) => {
   try {
-    const response = api.get(`retrieveProgramQuestions/${payload}`);
-
+    const response = await api.get(`retrieveProgramQuestions/${payload}`);
     return response;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 
-export const retrieveTestCasesApi = (payload) => {
+export const retrieveTestCasesApi = async (payload) => {
   try {
-    const response = api.get(`retrieveProgramTestCase/${payload}`);
-
+    const response = await api.get(`retrieveProgramTestCase/${payload}`);
     return response;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
 

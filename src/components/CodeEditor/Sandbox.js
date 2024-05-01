@@ -26,13 +26,6 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
   );
 
   useEffect(() => {
-    console.log(
-      DefaultPrograms[
-        programmingLanguages.find(
-          (language) => language.id === selectedLanguage
-        )?.name || ""
-      ]
-    );
     setUserCode(
       DefaultPrograms[
         programmingLanguages.find(

@@ -122,7 +122,7 @@ function DetailsComponent({ retrievedDetails }) {
             Allowed Languages
           </h3>
           <p className="text-sm text-gray-700">
-            Bash, C, C++14, C++17, Clojure, C#, D
+            python, c, csharp, java, javascript
           </p>
         </article>
       </article>
