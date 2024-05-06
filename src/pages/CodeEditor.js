@@ -36,7 +36,7 @@ function CodeEditorComponent({
             className="h-[5.8vh]"
           />
         </header>
-        <main className="flex-1 p-4 pt-2 lg:pt-0 lg:p-8 lg:flex flex-col lg:flex-row max-h-[92vh]">
+        <main className="flex-1 pt-2 lg:pt-0 lg:flex flex-col lg:flex-row max-h-[92vh] overflow-hidden">
           <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6  border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
             <Details />
           </aside>

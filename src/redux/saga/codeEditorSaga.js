@@ -1,6 +1,7 @@
 import {
   retrieveDetailsApi,
   retrieveTestCasesApi,
+  submitUserCCodeApi1,
   submitUserCodeApi,
   submitUserCsharpCodeApi1,
   submitUserCsharpCodeApi2,
@@ -38,24 +39,21 @@ function* submitUserCodeSaga(action) {
     );
   } catch (error) {
     console.error(error);
-    yield put(submitCodeError(error.status));
+    yield put(
+      submitCodeError({ status: error.status, statusMessage: error.message })
+    );
   }
 }
 
 function* submitUserCsharpCodeSaga(action) {
   try {
-    yield put(submitCsharpCodeRequest());
+    yield put(submitCodeRequest());
 
-    let res = yield call(submitUserCsharpCodeApi1, action.payload);
-    console.log(res);
-
-    yield delay(30000);
-
-    res = yield call(submitUserCsharpCodeApi2, action.payload, res);
+    const res = yield call(submitUserCCodeApi1, { code: action.payload.Code });
     console.log(res);
 
     yield put(
-      submitCsharpCodeSuccess({
+      submitCodeSuccess({
         data: res.data,
         status: res.status,
         statusMessage: res.data.message,
@@ -63,7 +61,9 @@ function* submitUserCsharpCodeSaga(action) {
     );
   } catch (error) {
     console.error(error);
-    yield put(submitCsharpCodeError(error.status));
+    yield put(
+      submitCodeError({ status: error.status, statusMessage: error.message })
+    );
   }
 }
 
@@ -83,7 +83,12 @@ function* retrieveDetailsSaga(action) {
     );
   } catch (error) {
     console.error(error);
-    yield put(rretrieveDetailsError(error.status));
+    yield put(
+      rretrieveDetailsError({
+        status: error.status,
+        statusMessage: error.message,
+      })
+    );
   }
 }
 
@@ -103,7 +108,12 @@ function* retrieveTestCasesSaga(action) {
     );
   } catch (error) {
     console.error(error);
-    yield put(rretrieveTestCasesError(error.status));
+    yield put(
+      rretrieveTestCasesError({
+        status: error.status,
+        statusMessage: error.message,
+      })
+    );
   }
 }
 
@@ -135,8 +145,12 @@ function* retieveDetailsTestCasesSaga(action) {
     );
   } catch (error) {
     console.error(error);
-    yield put(rretrieveTestCasesError(error.status));
-    yield put(rretrieveTestCasesError(error.status));
+    yield put(
+      rretrieveTestCasesError({
+        status: error.status,
+        statusMessage: error.message,
+      })
+    );
   }
 }
 

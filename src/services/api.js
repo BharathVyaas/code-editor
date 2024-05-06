@@ -1,17 +1,28 @@
 import axios from "axios";
 
 const baseURL = "https://www.nareshit.net/";
-const baseURLCS = "http://49.207.10.13:3008/";
+const compilerURL = "http://49.207.10.13:3008/";
+const baseURLCS = "http://49.207.10.13:8080/";
 
 const api = axios.create({ baseURL });
+const compilerApi = axios.create({ baseURL: compilerURL });
 const apiCS = axios.create({ baseURL: baseURLCS });
 
 export const submitUserCodeApi = async (payload) => {
   try {
-    const response = await apiCS.post("api/codeexecute", payload);
+    const response = await compilerApi.post("api/codeexecute", payload);
     return response;
   } catch (error) {
     throw error; // Throw the error to be caught by Redux Saga
+  }
+};
+
+export const submitUserCCodeApi1 = async (payload) => {
+  try {
+    const response1 = await apiCS.post("/", payload);
+    return response1;
+  } catch (error) {
+    throw error;
   }
 };
 

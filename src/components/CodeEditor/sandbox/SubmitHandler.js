@@ -18,20 +18,21 @@ function SubmitHandlerComponent({
 
   const submitHandler = async () => {
     try {
-      // if (language === "csharp") {
-      //   submitCsharpCodeDispatch({
-      //     Code: userCode,
-      //     Language: language,
-      //     ProgramName: retrievedDetails.ProgramName,
-      //     ProgramId: "NA",
-      //   });
-      // } else {
-      submitCodeDispatch({
-        Code: userCode,
-        Language: language,
-        ProgramName: retrievedDetails.ProgramName,
-        ProgramId: "NA",
-      });
+      if (language === "c") {
+        submitCsharpCodeDispatch({
+          Code: userCode,
+          Language: language,
+          ProgramName: retrievedDetails.ProgramName,
+          ProgramId: "NA",
+        });
+      } else {
+        submitCodeDispatch({
+          Code: userCode,
+          Language: language,
+          ProgramName: retrievedDetails.ProgramName,
+          ProgramId: "NA",
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -69,7 +70,7 @@ function SubmitHandlerComponent({
         sx={{ paddingBlock: 0.6, marginInlineStart: 1.4 }}
         onClick={submitHandler}
       >
-        Execute Test Cases
+        Execute Tests
       </Button>
 
       {/* <Button
