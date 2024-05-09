@@ -11,11 +11,7 @@ function Details() {
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">
           Finding Window
         </h2>
-        <p className="text-base text-gray-700">
-          Hacker has two strings S and T. He has to find the minimum
-          (contiguous) substring Window of S. So that T is a subsequence of
-          Window.
-        </p>
+        <textarea style={{ width: "100%" }} className="bg-gray-100" />
       </section>
       <hr className="border-gray-300 my-4" />
       <Grid container spacing={4}>
@@ -24,9 +20,7 @@ function Details() {
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Input
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3">
-              <p className="text-sm text-gray-700">this is a placeholder</p>
-            </div>
+            <textarea style={{ width: "100%" }} className="bg-gray-100" />
           </Paper>
         </Grid>
         <Grid item xs={6}>
@@ -34,9 +28,7 @@ function Details() {
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Output
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3">
-              <p className="text-sm text-gray-700">placeholder a is this</p>
-            </div>
+            <textarea style={{ width: "100%" }} className="bg-gray-100" />
           </Paper>
         </Grid>
       </Grid>
@@ -45,9 +37,11 @@ function Details() {
         <h2 className="text-2xl font-semibold text-gray-900">Explanation</h2>
         <Paper elevation={3} className="p-4 bg-gray-100 rounded mt-4">
           <code className="text-sm text-gray-700">
-            "bcde" is the answer because it occurs before "bdde" which has the
-            same length. "deb" is not a smaller window because the elements of T
-            in the window must occur in order.
+            <textarea
+              style={{ width: "100%" }}
+              className="bg-gray-100"
+              rows={4}
+            />
           </code>
         </Paper>
       </section>

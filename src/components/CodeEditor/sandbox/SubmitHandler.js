@@ -7,9 +7,9 @@ import { useRef } from "react";
 
 function SubmitHandlerComponent({
   userCode,
-  toggleInput,
   userInput,
   submitCodeData,
+  onTestCasesHanlder,
   retrievedDetails,
   language,
   submitCodeDispatch,
@@ -72,9 +72,9 @@ function SubmitHandlerComponent({
         color="success"
         variant="contained"
         sx={{ paddingBlock: 0.6, marginInlineStart: 1.4 }}
-        onClick={() => toggleInput((prev) => !prev)}
+        onClick={() => onTestCasesHanlder()}
       >
-        Add Input
+        Execute TestCases
       </Button>
 
       {/* <Button

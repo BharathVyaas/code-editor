@@ -121,9 +121,7 @@ function DetailsComponent({ retrievedDetails }) {
           <h3 className="text-xl font-semibold text-gray-900">
             Allowed Languages
           </h3>
-          <p className="text-sm text-gray-700">
-            python, c, csharp, java, javascript
-          </p>
+          <p className="text-sm text-gray-700">java</p>
         </article>
       </article>
     </article>

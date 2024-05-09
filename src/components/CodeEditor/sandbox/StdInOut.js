@@ -78,7 +78,6 @@ function StdInOutComponent({
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Test Cases");
   const [selectedTask, setSelectedTask] = useState(0);
-  const [takeInput, serTakeInput] = useState(false);
   const outputRef = useRef(null);
   const [userInput, setUserInput] = useState(``);
   const [testCasesOutput, setTestCasesOutput] = useState({});
@@ -91,28 +90,24 @@ function StdInOutComponent({
 
   useEffect(() => {
     if (submitCodeIsState === "reslove") {
-      setSelectedTab("Test Results");
-
       if (outputRef.current) {
         outputRef.current.scrollIntoView({ behavior: "smooth" });
       }
     }
   }, [submitCodeIsState]);
 
-  useEffect(() => {
-    if (responseCode === 201) {
-      onTestCases(
-        retrievedTestCases.map((testCase) => ({
-          input: testCase.SampleInputValue,
-          output: testCase.SampleOutputValue,
-          id: testCase.TestCaseId,
-        })),
-        { userCode, language, retrievedDetails },
-        ({ err, data }) =>
-          setTestCasesOutput((prev) => ({ ...prev, [data.testCaseId]: data }))
-      );
-    }
-  }, [responseCode]);
+  const onTestCasesHanlder = () => {
+    onTestCases(
+      retrievedTestCases.map((testCase) => ({
+        input: testCase.SampleInputValue,
+        output: testCase.SampleOutputValue,
+        id: testCase.TestCaseId,
+      })),
+      { userCode, language, retrievedDetails },
+      ({ err, data }) =>
+        setTestCasesOutput((prev) => ({ ...prev, [data.testCaseId]: data }))
+    );
+  };
 
   if (!retrievedTestCases) return navigate("/error");
 
@@ -138,8 +133,8 @@ function StdInOutComponent({
           </Tabs>
           <div className="my-auto flex flex-wrap">
             <SubmitHandler
+              onTestCasesHanlder={onTestCasesHanlder}
               userInput={userInput}
-              toggleInput={serTakeInput}
               language={language}
             />
           </div>
@@ -174,21 +169,19 @@ function StdInOutComponent({
           )}
         </Paper>
 
-        <Collapse in={takeInput}>
-          <TextField
-            sx={{ marginBlock: ".4rem" }}
-            id="standard-multiline-static"
-            value={userInput}
-            onChange={(eventData) => {
-              setUserInput(eventData.target.value);
-            }}
-            label="Enter your input"
-            multiline
-            fullWidth
-            rows={4}
-            variant="filled"
-          />
-        </Collapse>
+        <TextField
+          sx={{ marginTop: ".6rem" }}
+          id="standard-multiline-static"
+          value={userInput}
+          onChange={(eventData) => {
+            setUserInput(eventData.target.value);
+          }}
+          label="Enter your input"
+          multiline
+          fullWidth
+          rows={2}
+          variant="filled"
+        />
 
         <Card className="w-full mt-2">
           <CardContent>

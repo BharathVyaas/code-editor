@@ -60,21 +60,13 @@ function StdInOutComponent({
                   <Typography variant="subtitle1" fontWeight="bold">
                     Input:
                   </Typography>
-                  <div className="bg-gray-100 p-3 rounded ">
-                    <p className="text-sm text-gray-700">
-                      this is a placeholder
-                    </p>
-                  </div>
+                  <textarea style={{ width: "100%" }} className="bg-gray-100" />
                 </Box>
                 <Box className="flex flex-col gap-2">
                   <Typography variant="subtitle1" fontWeight="bold">
                     Output:
                   </Typography>
-                  <div className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm text-gray-700">
-                      this is a placeholder
-                    </p>
-                  </div>
+                  <textarea className="bg-gray-100 p-3 rounded" />
                 </Box>
               </Box>
             )}

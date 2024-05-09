@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Resizable } from "react-resizable";
-import Naresh_IT_Logo from "../assets/Naresh_IT_Logo.png";
-import Sandbox from "../components/programSubmmition/Sandbox";
-import StdInOut from "../components/programSubmmition/sandbox/StdInOut";
-import Details from "../components/programSubmmition/Details";
+import Naresh_IT_Logo from "../../assets/Naresh_IT_Logo.png";
+import Sandbox from "../../components/programSubmmition/Sandbox";
+import StdInOut from "../../components/programSubmmition/sandbox/StdInOut";
+import Details from "../../components/programSubmmition/Details";
 
 function ProgramSubmmition() {
   const [width, setWidth] = useState(window.innerWidth * 0.6);

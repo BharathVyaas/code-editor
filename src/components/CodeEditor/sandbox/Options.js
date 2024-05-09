@@ -48,7 +48,7 @@ function Options({
       <div className="flex items-center space-x-2 w-auto">
         <label
           htmlFor="technology-selector-select"
-          className="text-sm font-medium text-gray-600"
+          className="font-medium text-gray-600"
         >
           Language:
         </label>
@@ -59,7 +59,7 @@ function Options({
         />
       </div>
 
-      <div>
+      <div className="">
         <Button
           className="text-green-400 cursor-pointer"
           color="success"
@@ -71,10 +71,7 @@ function Options({
 
       <div className="flex justify-between w-full lg:flex-row-reverse xl:flex-row sm:w-auto sm:space-x-4 items-center">
         <div className="flex items-center space-x-2 lg:invisible xl:visible lg:w-0 lg:h-0 xl:w-auto xl:h-auto w-auto h-auto">
-          <label
-            htmlFor="theme-select"
-            className="text-sm font-medium text-gray-600"
-          >
+          <label htmlFor="theme-select" className="font-medium text-gray-600">
             Theme:
           </label>
           <ThemeSelector
