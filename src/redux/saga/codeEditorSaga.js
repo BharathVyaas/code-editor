@@ -13,10 +13,10 @@ import {
   submitCodeError,
   retrieveDetailsRequest,
   retrieveDetailsSuccess,
-  rretrieveDetailsError,
+  retrieveDetailsError,
   retrieveTestCasesRequest,
   retrieveTestCasesSuccess,
-  rretrieveTestCasesError,
+  retrieveTestCasesError,
   submitCsharpCodeRequest,
   submitCsharpCodeSuccess,
   submitCsharpCodeError,
@@ -49,7 +49,10 @@ function* submitUserCsharpCodeSaga(action) {
   try {
     yield put(submitCodeRequest());
 
-    const res = yield call(submitUserCCodeApi1, { code: action.payload.Code });
+    const res = yield call(submitUserCCodeApi1, {
+      code: action.payload.Code,
+      Parameters: action.payload.Parameters,
+    });
     console.log(res);
 
     yield put(
@@ -84,7 +87,7 @@ function* retrieveDetailsSaga(action) {
   } catch (error) {
     console.error(error);
     yield put(
-      rretrieveDetailsError({
+      retrieveDetailsError({
         status: error.status,
         statusMessage: error.message,
       })
@@ -109,7 +112,7 @@ function* retrieveTestCasesSaga(action) {
   } catch (error) {
     console.error(error);
     yield put(
-      rretrieveTestCasesError({
+      retrieveTestCasesError({
         status: error.status,
         statusMessage: error.message,
       })
@@ -146,7 +149,7 @@ function* retieveDetailsTestCasesSaga(action) {
   } catch (error) {
     console.error(error);
     yield put(
-      rretrieveTestCasesError({
+      retrieveTestCasesError({
         status: error.status,
         statusMessage: error.message,
       })

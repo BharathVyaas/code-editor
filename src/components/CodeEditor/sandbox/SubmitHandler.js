@@ -1,26 +1,30 @@
 import { connect } from "react-redux";
 import { submitCode, submitCsharpCode } from "../../../redux/actions";
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 //import { PlayCircleFilled as PlayCircleFilledIcon } from "@mui/icons-material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { useRef } from "react";
 
 function SubmitHandlerComponent({
   userCode,
+  toggleInput,
+  userInput,
   submitCodeData,
   retrievedDetails,
   language,
   submitCodeDispatch,
   submitCsharpCodeDispatch,
 }) {
-  const { responseCode } = submitCodeData || {
-    responseCode: null,
-  };
+  // const { responseCode } = submitCodeData || {
+  //   responseCode: null,
+  // };
 
   const submitHandler = async () => {
     try {
       if (language === "c") {
         submitCsharpCodeDispatch({
           Code: userCode,
+          Parameters: userInput.split("\n"),
           Language: language,
           ProgramName: retrievedDetails.ProgramName,
           ProgramId: "NA",
@@ -28,6 +32,7 @@ function SubmitHandlerComponent({
       } else {
         submitCodeDispatch({
           Code: userCode,
+          Parameters: userInput.split("\n"),
           Language: language,
           ProgramName: retrievedDetails.ProgramName,
           ProgramId: "NA",
@@ -64,13 +69,12 @@ function SubmitHandlerComponent({
         Run
       </Button>
       <Button
-        disabled={responseCode !== 201}
         color="success"
         variant="contained"
         sx={{ paddingBlock: 0.6, marginInlineStart: 1.4 }}
-        onClick={submitHandler}
+        onClick={() => toggleInput((prev) => !prev)}
       >
-        Execute Tests
+        Add Input
       </Button>
 
       {/* <Button

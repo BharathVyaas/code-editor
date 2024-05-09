@@ -7,6 +7,8 @@ import {
   Typography,
   CardContent,
   Card,
+  TextField,
+  Collapse,
 } from "@mui/material";
 import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { submitCode } from "../../../redux/actions";
@@ -16,10 +18,58 @@ import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import SubmitHandler from "./SubmitHandler";
 import { useNavigate } from "react-router";
+import axios from "axios";
+
+async function onTestCases(
+  testCases,
+  { userCode, language, retrievedDetails },
+  handler
+) {
+  try {
+    for (const testCase of testCases) {
+      const input = testCase.input.replace(",", "\n");
+      const output = testCase.output;
+      const id = testCase.id;
+
+      const res = await axios.post(
+        language === "c"
+          ? "http://49.207.10.13:8080/"
+          : "http://49.207.10.13:3008/api/codeexecute",
+        language !== "c"
+          ? {
+              Code: userCode,
+              Parameters: input.split("\n"),
+              Language: language,
+              ProgramName: retrievedDetails.ProgramName,
+              ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
+            }
+          : {
+              code: userCode,
+              Parameters: input.split("\n"),
+            }
+      );
+
+      if (res.data.output === output) {
+        handler({
+          data: { testCaseId: id, flag: true, output: res.data.output },
+        });
+      } else {
+        handler({
+          data: { testCaseId: id, flag: false, output: res.data.output },
+        });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    handler({ err: error });
+  }
+}
 
 function StdInOutComponent({
   language,
+  userCode,
   submitCodeData,
+  retrievedDetails,
   submitCodeIsLoading,
   submitCodeIsState,
   submitCodeIsError,
@@ -28,7 +78,10 @@ function StdInOutComponent({
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Test Cases");
   const [selectedTask, setSelectedTask] = useState(0);
+  const [takeInput, serTakeInput] = useState(false);
   const outputRef = useRef(null);
+  const [userInput, setUserInput] = useState(``);
+  const [testCasesOutput, setTestCasesOutput] = useState({});
 
   const { output, responseCode, errorMessage } = submitCodeData || {
     output: null,
@@ -45,6 +98,21 @@ function StdInOutComponent({
       }
     }
   }, [submitCodeIsState]);
+
+  useEffect(() => {
+    if (responseCode === 201) {
+      onTestCases(
+        retrievedTestCases.map((testCase) => ({
+          input: testCase.SampleInputValue,
+          output: testCase.SampleOutputValue,
+          id: testCase.TestCaseId,
+        })),
+        { userCode, language, retrievedDetails },
+        ({ err, data }) =>
+          setTestCasesOutput((prev) => ({ ...prev, [data.testCaseId]: data }))
+      );
+    }
+  }, [responseCode]);
 
   if (!retrievedTestCases) return navigate("/error");
 
@@ -65,11 +133,15 @@ function StdInOutComponent({
             onChange={handleChange}
             sx={{ minHeight: "unset", minWidth: "unset" }}
           >
-            <Tab label="Test Cases" value="Test Cases" />
             <Tab label="Test Results" value="Test Results" />
+            <Tab label="Test Cases" value="Test Cases" />
           </Tabs>
           <div className="my-auto flex flex-wrap">
-            <SubmitHandler language={language} />
+            <SubmitHandler
+              userInput={userInput}
+              toggleInput={serTakeInput}
+              language={language}
+            />
           </div>
         </div>
       </div>
@@ -89,10 +161,11 @@ function StdInOutComponent({
                   value={index}
                   iconPosition="end"
                   icon={
-                    testCase.TestCaseId % 2 ? (
+                    testCasesOutput?.[testCase.TestCaseId]?.flag === true ? (
                       <DoneIcon sx={{ color: "green", mb: 0.3 }} />
                     ) : (
-                      <ClearIcon sx={{ color: "red", mb: 0.3 }} />
+                      testCasesOutput?.[testCase.TestCaseId]?.flag ===
+                        false && <ClearIcon sx={{ color: "red", mb: 0.3 }} />
                     )
                   }
                 />
@@ -100,6 +173,23 @@ function StdInOutComponent({
             </Tabs>
           )}
         </Paper>
+
+        <Collapse in={takeInput}>
+          <TextField
+            sx={{ marginBlock: ".4rem" }}
+            id="standard-multiline-static"
+            value={userInput}
+            onChange={(eventData) => {
+              setUserInput(eventData.target.value);
+            }}
+            label="Enter your input"
+            multiline
+            fullWidth
+            rows={4}
+            variant="filled"
+          />
+        </Collapse>
+
         <Card className="w-full mt-2">
           <CardContent>
             {selectedTab === "Test Cases" && (
@@ -109,7 +199,7 @@ function StdInOutComponent({
                     Input:
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-gray-700 min-h-3">
                       {retrievedTestCases[selectedTask]?.SampleInputValue}
                     </p>
                   </div>
@@ -119,8 +209,14 @@ function StdInOutComponent({
                     Output:
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm text-gray-700">
-                      {retrievedTestCases[selectedTask]?.SampleOutputValue}
+                    <p className="text-sm text-gray-700 min-h-3">
+                      {testCasesOutput?.[
+                        retrievedTestCases[selectedTask]?.TestCaseId
+                      ]?.output ||
+                        testCasesOutput?.[
+                          retrievedTestCases[selectedTask]?.TestCaseId
+                        ]?.errorMessage ||
+                        ""}
                     </p>
                   </div>
                 </Box>
@@ -198,6 +294,7 @@ function StdInOutComponent({
 
 const mapState = (state) => ({
   submitCodeData: state.submitCode.data,
+  retrievedDetails: state.retrieveDetails.data,
   submitCodeIsPending: state.submitCode.isPending,
   submitCodeIsLoading: state.submitCode.isLoading,
   submitCodeIsState: state.submitCode.state,

@@ -2,11 +2,11 @@ import axios from "axios";
 
 const baseURL = "https://www.nareshit.net/";
 const compilerURL = "http://49.207.10.13:3008/";
-const baseURLCS = "http://49.207.10.13:8080/";
+const compilerC = "http://49.207.10.13:8080/";
 
 const api = axios.create({ baseURL });
 const compilerApi = axios.create({ baseURL: compilerURL });
-const apiCS = axios.create({ baseURL: baseURLCS });
+const apiCS = axios.create({ baseURL: compilerC });
 
 export const submitUserCodeApi = async (payload) => {
   try {

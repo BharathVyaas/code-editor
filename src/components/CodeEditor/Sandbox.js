@@ -78,7 +78,7 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
       </div>
 
       <div className="relative mb-2">
-        <div className="h-[350px]">
+        <div className="h-[360px]">
           <MonacoEditor
             language={
               programmingLanguages.find(

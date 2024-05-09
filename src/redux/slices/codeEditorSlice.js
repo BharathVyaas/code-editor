@@ -30,14 +30,14 @@ export const { updateUserCode } = codeEditorSlice.actions;
 export const {
   fetchDataRequest: retrieveDetailsRequest,
   fetchDataSuccess: retrieveDetailsSuccess,
-  fetchDataError: rretrieveDetailsError,
+  fetchDataError: retrieveDetailsError,
   resetState: retrieveDetailsReset,
 } = retrieveDetailsSlice.actions;
 
 export const {
   fetchDataRequest: retrieveTestCasesRequest,
   fetchDataSuccess: retrieveTestCasesSuccess,
-  fetchDataError: rretrieveTestCasesError,
+  fetchDataError: retrieveTestCasesError,
   resetState: retrieveTestCasesReset,
 } = retrieveTestCasesSlice.actions;
 
