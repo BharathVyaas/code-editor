@@ -2,6 +2,8 @@ import { connect } from "react-redux";
 import { submitCode, submitCsharpCode } from "../../../redux/actions";
 import { Button } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import { UserContext } from "../../../context/UserContext";
+import { useContext } from "react";
 
 function SubmitHandlerComponent({
   userCode,
@@ -12,6 +14,9 @@ function SubmitHandlerComponent({
   submitCodeDispatch,
   submitCsharpCodeDispatch,
 }) {
+  const { user } = useContext(UserContext);
+  const userName = user?.username;
+
   const submitHandler = async () => {
     try {
       if (language === "c") {
@@ -21,6 +26,7 @@ function SubmitHandlerComponent({
           Language: language,
           ProgramName: retrievedDetails.ProgramName,
           ProgramId: "NA",
+          UserName: userName,
         });
       } else {
         submitCodeDispatch({
@@ -29,6 +35,7 @@ function SubmitHandlerComponent({
           Language: language,
           ProgramName: retrievedDetails.ProgramName,
           ProgramId: "NA",
+          UserName: userName,
         });
       }
     } catch (error) {

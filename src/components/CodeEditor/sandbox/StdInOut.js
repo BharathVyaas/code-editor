@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   Paper,
   Tabs,
@@ -19,10 +19,11 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SubmitHandler from "./SubmitHandler";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { UserContext } from "../../../context/UserContext";
 
 async function onTestCases(
   testCases,
-  { userCode, language, retrievedDetails },
+  { userCode, language, retrievedDetails, userName },
   handler
 ) {
   try {
@@ -42,20 +43,30 @@ async function onTestCases(
               Language: language,
               ProgramName: retrievedDetails.ProgramName,
               ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
+              UserName: userName,
             }
           : {
               code: userCode,
               Parameters: input.split("\n"),
+              UserName: userName,
             }
       );
 
       if (res.data.output === output) {
         handler({
-          data: { testCaseId: id, flag: true, output: res.data.output },
+          data: {
+            testCaseId: id,
+            flag: true,
+            output: res.data.output || res.data.errorMessage,
+          },
         });
       } else {
         handler({
-          data: { testCaseId: id, flag: false, output: res.data.output },
+          data: {
+            testCaseId: id,
+            flag: false,
+            output: res.data.output || res.data.errorMessage,
+          },
         });
       }
     }
@@ -80,9 +91,12 @@ function StdInOutComponent({
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("Test Cases");
   const [selectedTask, setSelectedTask] = useState(0);
-  const [takeInput, serTakeInput] = useState(false);
+  const [takeInput, setTakeInput] = useState(false);
   const outputRef = useRef(null);
   const [userInput, setUserInput] = useState(``);
+  const collapseRef = useRef(false);
+  const { user } = useContext(UserContext);
+  const userName = user?.username;
 
   const { output, responseCode, errorMessage } = submitCodeData || {
     output: null,
@@ -91,8 +105,15 @@ function StdInOutComponent({
   };
 
   useEffect(() => {
+    if (selectedTab === "Test Cases") {
+      setTakeInput(false);
+    }
+  }, [selectedTab]);
+
+  useEffect(() => {
     if (submitCodeIsState === "reslove") {
       setSelectedTab("Test Results");
+      collapseRef.current = true;
 
       if (outputRef.current) {
         outputRef.current.scrollIntoView({ behavior: "smooth" });
@@ -101,27 +122,29 @@ function StdInOutComponent({
   }, [submitCodeIsState]);
 
   useEffect(() => {
+    if (collapseRef.current && selectedTab === "Test Results") {
+      setTakeInput(true);
+    }
+  }, [collapseRef.current]);
+
+  useEffect(() => {
     if (responseCode === 201) {
       onTestCases(
         retrievedTestCases.map((testCase) => ({
           input: testCase.SampleInputValue,
           output: testCase.SampleOutputValue,
-          id: testCase.TestCaseId,
+          id: testCase?.TestCaseId || -1,
         })),
-        { userCode, language, retrievedDetails },
+        { userCode, language, retrievedDetails, userName },
         ({ err: _, data }) => {
-          setTestCasesOutput((prev) => ({ ...prev, [data.testCaseId]: data }));
+          setTestCasesOutput((prev) => ({
+            ...prev,
+            [data?.testCaseId || -1]: data,
+          }));
         }
       );
     }
-  }, [
-    responseCode,
-    userCode,
-    language,
-    retrievedDetails,
-    retrievedTestCases,
-    setTestCasesOutput,
-  ]);
+  }, [responseCode]);
 
   useEffect(() => {
     if (
@@ -158,12 +181,28 @@ function StdInOutComponent({
           <div className="my-auto flex flex-wrap">
             <SubmitHandler
               userInput={userInput}
-              toggleInput={serTakeInput}
+              toggleInput={setTakeInput}
               language={language}
             />
           </div>
         </div>
       </div>
+
+      <Collapse in={takeInput}>
+        <TextField
+          sx={{ marginBlock: ".4rem" }}
+          id="standard-multiline-static"
+          value={userInput}
+          onChange={(eventData) => {
+            setUserInput(eventData.target.value);
+          }}
+          label="Enter your input"
+          multiline
+          fullWidth
+          rows={4}
+          variant="filled"
+        />
+      </Collapse>
 
       <div className="bg-gray-100 w-full mt-2">
         <Paper elevation={3}>
@@ -192,22 +231,6 @@ function StdInOutComponent({
             </Tabs>
           )}
         </Paper>
-
-        <Collapse in={takeInput}>
-          <TextField
-            sx={{ marginBlock: ".4rem" }}
-            id="standard-multiline-static"
-            value={userInput}
-            onChange={(eventData) => {
-              setUserInput(eventData.target.value);
-            }}
-            label="Enter your input"
-            multiline
-            fullWidth
-            rows={4}
-            variant="filled"
-          />
-        </Collapse>
 
         <Card className="w-full mt-2">
           <CardContent>
@@ -271,12 +294,6 @@ function StdInOutComponent({
                   )}
                   <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
                     <code className="text-sm text-gray-800 flex">
-                      {/* {responseCode !== 301 && (
-                        <>
-                          <span className="text-[#1976d2]">user@nareshit:</span>
-                          <span className="text-[#eb4034]">~$</span>
-                        </>
-                      )} */}
                       {responseCode === 201 && (
                         <span className="text-gray-600 ms-2">
                           <pre>{output}</pre>
