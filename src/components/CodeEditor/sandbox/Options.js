@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import { useState } from "react";
-import BackupIcon from "@mui/icons-material/Backup";
+import SubmitTest from "./options/SubmitTest";
 
 const themes = ["vs-dark", "hc-light", "hc-black"];
 
@@ -23,6 +23,7 @@ function Options({
   setSelectedTheme,
   onReset,
   setCodeEditorExtend,
+  testCasesOutput,
 }) {
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
 
@@ -60,13 +61,7 @@ function Options({
       </div>
 
       <div className="">
-        <Button
-          className="text-green-400 cursor-pointer"
-          color="success"
-          startIcon={<BackupIcon />}
-        >
-          Submit
-        </Button>
+        <SubmitTest testCasesOutput={testCasesOutput} />
       </div>
 
       <div className="flex justify-between w-full lg:flex-row-reverse xl:flex-row sm:w-auto sm:space-x-4 items-center">

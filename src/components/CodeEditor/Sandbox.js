@@ -19,6 +19,7 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
+  const [testCasesOutput, setTestCasesOutput] = useState({});
 
   const DefaultPrograms = useMemo(
     () => JSON.parse(retrievedDetails.DefaultProgram),
@@ -74,6 +75,7 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
           setSelectedTheme={setSelectedTheme}
           onReset={onReset}
           setCodeEditorExtend={setCodeEditorExtend}
+          testCasesOutput={testCasesOutput}
         />
       </div>
 
@@ -101,6 +103,8 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
 
       <div>
         <StdInOutComponent
+          testCasesOutput={testCasesOutput}
+          setTestCasesOutput={setTestCasesOutput}
           language={
             programmingLanguages.find(
               (language) => language.id === selectedLanguage

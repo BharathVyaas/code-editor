@@ -1,10 +1,9 @@
 import {
   retrieveDetailsApi,
   retrieveTestCasesApi,
+  submitTestApi,
   submitUserCCodeApi1,
   submitUserCodeApi,
-  submitUserCsharpCodeApi1,
-  submitUserCsharpCodeApi2,
 } from "../../services/api";
 import { types } from "../actions/types";
 import {
@@ -17,17 +16,37 @@ import {
   retrieveTestCasesRequest,
   retrieveTestCasesSuccess,
   retrieveTestCasesError,
-  submitCsharpCodeRequest,
-  submitCsharpCodeSuccess,
-  submitCsharpCodeError,
+  submitTestRequest,
 } from "../slices/codeEditorSlice";
-import { takeLatest, put, call, delay } from "redux-saga/effects";
+import { takeLatest, put, call } from "redux-saga/effects";
 
 function* submitUserCodeSaga(action) {
   try {
     yield put(submitCodeRequest());
 
     const res = yield call(submitUserCodeApi, action.payload);
+    console.log(res);
+
+    yield put(
+      submitCodeSuccess({
+        data: res.data,
+        status: res.status,
+        statusMessage: res.data.message,
+      })
+    );
+  } catch (error) {
+    console.error(error);
+    yield put(
+      submitCodeError({ status: error.status, statusMessage: error.message })
+    );
+  }
+}
+
+function* submitTestSaga(action) {
+  try {
+    yield put(submitTestRequest());
+
+    const res = yield call(submitTestApi, action.payload);
     console.log(res);
 
     yield put(
@@ -162,6 +181,7 @@ export function* watcherSaga() {
   yield takeLatest(types.SUBMIT_CSHARP_CODE, submitUserCsharpCodeSaga);
   yield takeLatest(types.RETRIEVE_DETAILS, retrieveDetailsSaga);
   yield takeLatest(types.RETRIEVE_TESTCASES, retrieveTestCasesSaga);
+  yield takeLatest(types.SUBMIT_TEST, submitTestSaga);
   yield takeLatest(
     types.RETRIEVE_DETAILS_TESTCASES,
     retieveDetailsTestCasesSaga

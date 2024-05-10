@@ -23,6 +23,7 @@ export const submitCodeSlice = createPostSlice({ name: "submitCode" });
 export const submitCsharpCodeSlice = createPostSlice({
   name: "submitCsharpCode",
 });
+export const submitTest = createPostSlice({ name: "submitTest" });
 
 // actions
 export const { updateUserCode } = codeEditorSlice.actions;
@@ -54,3 +55,10 @@ export const {
   fetchDataError: submitCsharpCodeError,
   resetState: submitCsharpCodeReset,
 } = submitCsharpCodeSlice.actions;
+
+export const {
+  fetchDataRequest: submitTestRequest,
+  fetchDataSuccess: submitTestSuccess,
+  fetchDataError: submitTestError,
+  resetState: submitTestReset,
+} = submitTest.actions;

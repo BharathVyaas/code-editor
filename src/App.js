@@ -8,9 +8,15 @@ import ErrorBoundary from "./shared/ErrorBoundary";
 import Auth from "./pages/Auth/Auth";
 import { UserProvider } from "./context/UserContext";
 import Problemset from "./pages/Problemset";
+import LandingPage from "./pages/Home/LandingPage";
 
 function App() {
   const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <LandingPage />,
+      errorElement: <ErrorBoundary />,
+    },
     {
       path: "/problem/:problemId",
       element: <CodeEditor />,

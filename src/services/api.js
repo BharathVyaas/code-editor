@@ -13,7 +13,7 @@ export const submitUserCodeApi = async (payload) => {
     const response = await compilerApi.post("api/codeexecute", payload);
     return response;
   } catch (error) {
-    throw error; // Throw the error to be caught by Redux Saga
+    throw error;
   }
 };
 
@@ -26,24 +26,12 @@ export const submitUserCCodeApi1 = async (payload) => {
   }
 };
 
-export const submitUserCsharpCodeApi1 = async (payload) => {
+export const submitTestApi = async (payload) => {
   try {
-    const response1 = await apiCS.post("api/codeexecute", payload);
-    return response1;
+    const response = await api.post("Insertion_StudentProgramDeatils", payload);
+    return response;
   } catch (error) {
-    throw error;
-  }
-};
-
-export const submitUserCsharpCodeApi2 = async (payload, response1) => {
-  try {
-    const response2 = await apiCS.post("api/codeexecute", {
-      ...payload,
-      ProgramId: response1.output || "NA",
-    });
-    return response2;
-  } catch (error) {
-    throw error;
+    throw error; // Throw the error to be caught by Redux Saga
   }
 };
 
