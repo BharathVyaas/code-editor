@@ -17,6 +17,8 @@ import {
   retrieveTestCasesSuccess,
   retrieveTestCasesError,
   submitTestRequest,
+  submitTestSuccess,
+  submitTestError,
 } from "../slices/codeEditorSlice";
 import { takeLatest, put, call } from "redux-saga/effects";
 
@@ -50,7 +52,7 @@ function* submitTestSaga(action) {
     console.log(res);
 
     yield put(
-      submitCodeSuccess({
+      submitTestSuccess({
         data: res.data,
         status: res.status,
         statusMessage: res.data.message,
@@ -59,7 +61,7 @@ function* submitTestSaga(action) {
   } catch (error) {
     console.error(error);
     yield put(
-      submitCodeError({ status: error.status, statusMessage: error.message })
+      submitTestError({ status: error.status, statusMessage: error.message })
     );
   }
 }

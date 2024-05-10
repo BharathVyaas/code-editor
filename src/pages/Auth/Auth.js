@@ -14,9 +14,10 @@ import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
   const [credentials, setCredentials] = useState({
-    email: "",
-    username: "",
+    email: user?.email || "",
+    username: user?.username || "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);

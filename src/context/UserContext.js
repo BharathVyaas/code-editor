@@ -1,7 +1,10 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState } from "react";
 
 const UserContext = createContext({
-  user: null,
+  user: {
+    username: localStorage.getItem("username") || null,
+    email: localStorage.getItem("email") || null,
+  },
   error: null,
   login: () => {},
   loginWithEmail: () => {},
@@ -9,11 +12,17 @@ const UserContext = createContext({
 });
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({
+    username: localStorage.getItem("username") || null,
+    email: localStorage.getItem("email") || null,
+  });
   const [error, setError] = useState(null);
 
-  const login = async (email) => {
-    setUser(email);
+  const login = async (user) => {
+    setUser(user);
+
+    localStorage.setItem("username", user?.username);
+    localStorage.setItem("email", user?.email);
   };
 
   return (

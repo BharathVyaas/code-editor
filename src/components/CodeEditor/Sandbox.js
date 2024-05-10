@@ -30,6 +30,10 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
   );
 
   useEffect(() => {
+    setTestCasesOutput({});
+  }, []);
+
+  useEffect(() => {
     setUserCode(
       DefaultPrograms[
         programmingLanguages.find(
