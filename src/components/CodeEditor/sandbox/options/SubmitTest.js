@@ -23,7 +23,7 @@ function SubmitTestComponent({
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [open, setOpen] = useState();
+  const [open, setOpen] = useState(false);
   const { isError } = useSelector((store) => store.submitTest);
 
   useEffect(() => {

@@ -98,6 +98,12 @@ function StdInOutComponent({
   const { user } = useContext(UserContext);
   const userName = user?.username;
 
+  useEffect(() => {
+    if (!retrievedDetails || !retrievedTestCases) {
+      navigate("/error");
+    }
+  }, [retrievedDetails, retrievedTestCases, navigate]);
+
   const { output, responseCode, errorMessage } = submitCodeData || {
     output: null,
     responseCode: null,
@@ -110,22 +116,22 @@ function StdInOutComponent({
     }
   }, [selectedTab]);
 
-  useEffect(() => {
-    if (submitCodeIsState === "reslove") {
-      setSelectedTab("Test Results");
-      collapseRef.current = true;
+  // useEffect(() => {
+  //   if (submitCodeIsState === "reslove") {
+  //     setSelectedTab("Test Results");
+  //     collapseRef.current = true;
 
-      if (outputRef.current) {
-        outputRef.current.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  }, [submitCodeIsState]);
+  //     if (outputRef.current) {
+  //       outputRef.current.scrollIntoView({ behavior: "smooth" });
+  //     }
+  //   }
+  // }, [submitCodeIsState]);
 
   useEffect(() => {
     if (collapseRef.current && selectedTab === "Test Results") {
       setTakeInput(true);
     }
-  }, [collapseRef.current]);
+  }, [collapseRef, selectedTab]);
 
   useEffect(() => {
     if (responseCode === 201) {
@@ -173,10 +179,41 @@ function StdInOutComponent({
           <Tabs
             value={selectedTab}
             onChange={handleChange}
-            sx={{ minHeight: "unset", minWidth: "unset" }}
+            sx={{
+              minHeight: "unset",
+              minWidth: "unset",
+              height: Object.values(testCasesOutput).length ? "4rem" : "3rem",
+            }}
           >
             <Tab label="Test Results" value="Test Results" />
-            <Tab label="Test Cases" value="Test Cases" />
+            <Tab
+              label="Test Cases"
+              value="Test Cases"
+              iconPosition="end"
+              icon={
+                Object.values(testCasesOutput).length ? (
+                  Object.values(testCasesOutput).filter(
+                    (testCase) => testCase.flag
+                  ).length === retrievedTestCases.length ? (
+                    <DoneIcon
+                      sx={{
+                        color: "green",
+                        mb: 0,
+                        padding: 0,
+                      }}
+                    />
+                  ) : (
+                    <ClearIcon
+                      sx={{
+                        color: "red",
+                        mb: 0,
+                        padding: 0,
+                      }}
+                    />
+                  )
+                ) : null
+              }
+            />
           </Tabs>
           <div className="my-auto flex flex-wrap">
             <SubmitHandler
@@ -212,22 +249,28 @@ function StdInOutComponent({
               onChange={handleTaskChange}
               sx={{ maxHeight: "1rem", display: "flex", alignItems: "center" }}
             >
-              {retrievedTestCases.map((testCase, index) => (
-                <Tab
-                  key={testCase.TestCaseId}
-                  label={`test case ${index + 1}`}
-                  value={index}
-                  iconPosition="end"
-                  icon={
-                    testCasesOutput?.[testCase.TestCaseId]?.flag === true ? (
-                      <DoneIcon sx={{ color: "green", mb: 0.3 }} />
-                    ) : (
-                      testCasesOutput?.[testCase.TestCaseId]?.flag ===
-                        false && <ClearIcon sx={{ color: "red", mb: 0.3 }} />
-                    )
-                  }
-                />
-              ))}
+              {retrievedTestCases.map((testCase, index) => {
+                if (retrievedTestCases && index < retrievedTestCases.length - 2)
+                  return (
+                    <Tab
+                      key={testCase.TestCaseId}
+                      label={`test case ${index + 1}`}
+                      value={index}
+                      iconPosition="end"
+                      icon={
+                        testCasesOutput?.[testCase.TestCaseId]?.flag ===
+                        true ? (
+                          <DoneIcon sx={{ color: "green", mb: 0.3 }} />
+                        ) : (
+                          testCasesOutput?.[testCase.TestCaseId]?.flag ===
+                            false && (
+                            <ClearIcon sx={{ color: "red", mb: 0.3 }} />
+                          )
+                        )
+                      }
+                    />
+                  );
+              })}
             </Tabs>
           )}
         </Paper>

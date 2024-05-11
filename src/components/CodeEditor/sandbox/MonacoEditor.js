@@ -1,7 +1,8 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
+import { Box, Button, Modal, Typography } from "@mui/material";
 
 function MonacoEditorComponent({
   language,
@@ -10,10 +11,19 @@ function MonacoEditorComponent({
   setUserCode,
 }) {
   const editorRef = useRef(null);
+  const [showWarn, setShowWarn] = useState(false);
 
   const onMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
+
+    editor.onKeyDown((event) => {
+      const { keyCode, ctrlKey, metaKey } = event;
+      if ((keyCode === 33 || keyCode === 52) && (metaKey || ctrlKey)) {
+        setShowWarn(true);
+        event.preventDefault();
+      }
+    });
   };
 
   useEffect(() => {
@@ -41,23 +51,23 @@ function MonacoEditorComponent({
           automaticLayout: true,
           codeLens: true,
           colorDecorators: true,
-          contextmenu: true,
+          contextmenu: false,
           cursorBlinking: "blink",
           cursorSmoothCaretAnimation: false,
           cursorStyle: "line",
           disableLayerHinting: false,
           disableMonospaceOptimizations: false,
           dragAndDrop: false,
-          fixedOverflowWidgets: false,
+          fixedOverflowWidgets: true,
           folding: true,
           foldingStrategy: "auto",
-          fontLigatures: false,
+          fontLigatures: true,
           formatOnPaste: false,
           formatOnType: false,
           hideCursorInOverviewRuler: false,
           highlightActiveIndentGuide: true,
           links: true,
-          mouseWheelZoom: false,
+          mouseWheelZoom: true,
           multiCursorMergeOverlapping: true,
           multiCursorModifier: "alt",
           overviewRulerBorder: true,
@@ -83,7 +93,7 @@ function MonacoEditorComponent({
           suggestOnTriggerCharacters: true,
           wordBasedSuggestions: true,
           wordSeparators: "~!@#$%^&*()-=+[{]}|;:'\",.<>/?",
-          wordWrap: "off",
+          wordWrap: "on",
           wordWrapBreakAfterCharacters: "\t})]?|&,;",
           wordWrapBreakBeforeCharacters: "{([+",
           wordWrapBreakObtrusiveCharacters: ".",
@@ -91,13 +101,46 @@ function MonacoEditorComponent({
           wordWrapMinified: true,
           wrappingIndent: "none",
           fontSize: 16,
-          minimap: { enabled: true },
         }}
         onMount={onMount}
         onChange={handleEditorChange}
         theme={selectedTheme}
         editorRef={editorRef}
       />
+
+      <Modal open={showWarn} onClose={() => setShowWarn(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500, // Adjust width for better readability
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 5, // Add border radius for a softer look
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Warning
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Copying and pasting is disabled during test.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "red",
+              ":hover": { backgroundColor: "red" },
+            }}
+            onClick={() => setShowWarn(false)}
+          >
+            Close
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
