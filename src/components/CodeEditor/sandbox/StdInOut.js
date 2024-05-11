@@ -89,7 +89,7 @@ function StdInOutComponent({
   setTestCasesOutput,
 }) {
   const navigate = useNavigate();
-  const [selectedTab, setSelectedTab] = useState("Test Cases");
+  const [selectedTab, setSelectedTab] = useState("Test Results");
   const [selectedTask, setSelectedTask] = useState(0);
   const [takeInput, setTakeInput] = useState(false);
   const outputRef = useRef(null);
@@ -217,6 +217,7 @@ function StdInOutComponent({
           </Tabs>
           <div className="my-auto flex flex-wrap">
             <SubmitHandler
+              setTestCasesOutput={setTestCasesOutput}
               userInput={userInput}
               toggleInput={setTakeInput}
               language={language}

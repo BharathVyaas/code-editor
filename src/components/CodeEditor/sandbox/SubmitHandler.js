@@ -1,9 +1,10 @@
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { submitCode, submitCsharpCode } from "../../../redux/actions";
 import { Button } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { UserContext } from "../../../context/UserContext";
 import { useContext } from "react";
+import { submitTestReset } from "../../../redux/slices/codeEditorSlice";
 
 function SubmitHandlerComponent({
   userCode,
@@ -13,9 +14,11 @@ function SubmitHandlerComponent({
   language,
   submitCodeDispatch,
   submitCsharpCodeDispatch,
+  setTestCasesOutput,
 }) {
   const { user } = useContext(UserContext);
   const userName = user?.username;
+  const dispatch = useDispatch();
 
   const submitHandler = async () => {
     try {
@@ -38,6 +41,9 @@ function SubmitHandlerComponent({
           UserName: userName,
         });
       }
+      console.log("hi");
+      dispatch(submitTestReset());
+      setTestCasesOutput({});
     } catch (error) {
       console.error(error);
     }

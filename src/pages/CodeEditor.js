@@ -2,7 +2,7 @@ import Sandbox from "../components/CodeEditor/Sandbox";
 import Details from "../components/CodeEditor/Details";
 import Naresh_IT_Logo from "../assets/Naresh_IT_Logo.png";
 import { useContext, useEffect, useState } from "react";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { types } from "../redux/actions/types";
 import Loading from "../shared/Loading";
 import Error from "../shared/Error";
@@ -20,6 +20,13 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
+import {
+  retrieveDetailsReset,
+  retrieveTestCasesReset,
+  submitCodeReset,
+  submitCsharpCodeReset,
+  submitTestReset,
+} from "../redux/slices/codeEditorSlice";
 
 function CodeEditorComponent({
   isDataRetrieving,
@@ -33,11 +40,17 @@ function CodeEditorComponent({
   } = useSelector((store) => store.retrieveTestCases);
   const { user } = useContext(UserContext);
   const [showTerms, setShowTerms] = useState(false);
-  const [agreeToTerms, setAgreeToTerms] = useState(true);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const programId = useParams().problemId;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setShowTerms(true);
+    dispatch(retrieveDetailsReset());
+    dispatch(retrieveTestCasesReset());
+    dispatch(submitCodeReset());
+    dispatch(submitCsharpCodeReset());
+    dispatch(submitTestReset());
   }, []);
 
   useEffect(() => {
@@ -130,10 +143,15 @@ function CodeEditorComponent({
               p: 4,
             }}
           >
-            <Typography variant="h5" id="modal-modal-title" gutterBottom>
+            <Typography
+              variant="h5"
+              id="modal-modal-title"
+              margin={"lg"}
+              gutterBottom
+            >
               Terms and Conditions for Online Testing
             </Typography>
-            <List dense={false}>
+            <List dense={false} sx={{ maxHeight: "60vh", overflowY: "auto" }}>
               <ListItem>
                 <ListItemIcon>
                   <span style={{ fontSize: 18, color: "blue" }}>1.</span>
@@ -202,7 +220,7 @@ function CodeEditorComponent({
                 variant="contained"
                 color="primary"
                 style={{ width: "6rem" }}
-                onClick={(e) => setShowTerms(false)} // Call handleCloseTerms to close the modal when clicked
+                onClick={(e) => setShowTerms(false)}
               >
                 Next
               </Button>
