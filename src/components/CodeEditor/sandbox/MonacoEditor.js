@@ -17,13 +17,13 @@ function MonacoEditorComponent({
     editorRef.current = editor;
     editor.focus();
 
-    editor.onKeyDown((event) => {
-      const { keyCode, ctrlKey, metaKey } = event;
-      if ((keyCode === 33 || keyCode === 52) && (metaKey || ctrlKey)) {
-        setShowWarn(true);
-        event.preventDefault();
-      }
-    });
+    // editor.onKeyDown((event) => {
+    //   const { keyCode, ctrlKey, metaKey } = event;
+    //   if ((keyCode === 33 || keyCode === 52) && (metaKey || ctrlKey)) {
+    //     setShowWarn(true);
+    //     event.preventDefault();
+    //   }
+    // });
   };
 
   useEffect(() => {

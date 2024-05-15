@@ -25,7 +25,7 @@ function SubmitHandlerComponent({
       if (language === "c") {
         submitCsharpCodeDispatch({
           Code: userCode,
-          Parameters: userInput.split("\n"),
+          Parameters: userInput.replaceAll("\n", " ").split(" "),
           Language: language,
           ProgramName: retrievedDetails.ProgramName,
           ProgramId: "NA",
@@ -34,14 +34,13 @@ function SubmitHandlerComponent({
       } else {
         submitCodeDispatch({
           Code: userCode,
-          Parameters: userInput.split("\n"),
+          Parameters: userInput.replaceAll("\n", " ").split(" "),
           Language: language,
           ProgramName: retrievedDetails.ProgramName,
           ProgramId: "NA",
           UserName: userName,
         });
       }
-      console.log("hi");
       dispatch(submitTestReset());
       setTestCasesOutput({});
     } catch (error) {

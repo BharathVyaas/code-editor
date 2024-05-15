@@ -8,11 +8,11 @@ import { updateUserCode } from "../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
 
 const programmingLanguages = [
-  // { id: 1, name: "python" },
-  // { id: 2, name: "javascript" },
-  { id: 1, name: "java" },
-  // { id: 4, name: "c" },
-  // { id: 5, name: "csharp" },
+  { id: 1, name: "python" },
+  { id: 2, name: "javascript" },
+  { id: 3, name: "java" },
+  { id: 4, name: "c" },
+  { id: 5, name: "csharp" },
 ];
 
 function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {

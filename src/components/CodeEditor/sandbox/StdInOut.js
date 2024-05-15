@@ -28,7 +28,7 @@ async function onTestCases(
 ) {
   try {
     for (const testCase of testCases) {
-      const input = testCase.input.replace(",", "\n");
+      const input = testCase.input;
       const output = testCase.output;
       const id = testCase.id;
 
@@ -52,7 +52,7 @@ async function onTestCases(
             }
       );
 
-      if (res.data.output === output) {
+      if (res.data.output.trim() === output.trim()) {
         handler({
           data: {
             testCaseId: id,
@@ -157,7 +157,6 @@ function StdInOutComponent({
       Object.values(testCasesOutput).filter((testCase) => testCase.flag)
         .length > 0
     ) {
-      setSelectedTab("Test Cases");
       outputRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [testCasesOutput]);
@@ -250,28 +249,22 @@ function StdInOutComponent({
               onChange={handleTaskChange}
               sx={{ maxHeight: "1rem", display: "flex", alignItems: "center" }}
             >
-              {retrievedTestCases.map((testCase, index) => {
-                if (retrievedTestCases && index < retrievedTestCases.length - 2)
-                  return (
-                    <Tab
-                      key={testCase.TestCaseId}
-                      label={`test case ${index + 1}`}
-                      value={index}
-                      iconPosition="end"
-                      icon={
-                        testCasesOutput?.[testCase.TestCaseId]?.flag ===
-                        true ? (
-                          <DoneIcon sx={{ color: "green", mb: 0.3 }} />
-                        ) : (
-                          testCasesOutput?.[testCase.TestCaseId]?.flag ===
-                            false && (
-                            <ClearIcon sx={{ color: "red", mb: 0.3 }} />
-                          )
-                        )
-                      }
-                    />
-                  );
-              })}
+              {retrievedTestCases.map((testCase, index) => (
+                <Tab
+                  key={testCase.TestCaseId}
+                  label={`test case ${index + 1}`}
+                  value={index}
+                  iconPosition="end"
+                  icon={
+                    testCasesOutput?.[testCase.TestCaseId]?.flag === true ? (
+                      <DoneIcon sx={{ color: "green", mb: 0.3 }} />
+                    ) : (
+                      testCasesOutput?.[testCase.TestCaseId]?.flag ===
+                        false && <ClearIcon sx={{ color: "red", mb: 0.3 }} />
+                    )
+                  }
+                />
+              ))}
             </Tabs>
           )}
         </Paper>

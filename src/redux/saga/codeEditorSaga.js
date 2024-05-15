@@ -27,7 +27,6 @@ function* submitUserCodeSaga(action) {
     yield put(submitCodeRequest());
 
     const res = yield call(submitUserCodeApi, action.payload);
-    console.log(res);
 
     yield put(
       submitCodeSuccess({
@@ -37,7 +36,6 @@ function* submitUserCodeSaga(action) {
       })
     );
   } catch (error) {
-    console.error(error);
     yield put(
       submitCodeError({ status: error.status, statusMessage: error.message })
     );
@@ -49,7 +47,6 @@ function* submitTestSaga(action) {
     yield put(submitTestRequest());
 
     const res = yield call(submitTestApi, action.payload);
-    console.log(res);
 
     yield put(
       submitTestSuccess({
@@ -59,7 +56,6 @@ function* submitTestSaga(action) {
       })
     );
   } catch (error) {
-    console.error(error);
     yield put(
       submitTestError({ status: error.status, statusMessage: error.message })
     );
@@ -74,7 +70,6 @@ function* submitUserCsharpCodeSaga(action) {
       code: action.payload.Code,
       Parameters: action.payload.Parameters,
     });
-    console.log(res);
 
     yield put(
       submitCodeSuccess({
@@ -84,7 +79,6 @@ function* submitUserCsharpCodeSaga(action) {
       })
     );
   } catch (error) {
-    console.error(error);
     yield put(
       submitCodeError({ status: error.status, statusMessage: error.message })
     );
@@ -96,7 +90,6 @@ function* retrieveDetailsSaga(action) {
     yield put(retrieveDetailsRequest());
 
     const res = yield call(retrieveDetailsApi, action.payload);
-    console.log(res);
 
     yield put(
       retrieveDetailsSuccess({
@@ -106,7 +99,6 @@ function* retrieveDetailsSaga(action) {
       })
     );
   } catch (error) {
-    console.error(error);
     yield put(
       retrieveDetailsError({
         status: error.status,
@@ -121,7 +113,6 @@ function* retrieveTestCasesSaga(action) {
     yield put(retrieveTestCasesRequest());
 
     const res = yield call(retrieveTestCasesApi, action.payload);
-    console.log(res);
 
     yield put(
       retrieveTestCasesSuccess({
@@ -131,7 +122,6 @@ function* retrieveTestCasesSaga(action) {
       })
     );
   } catch (error) {
-    console.error(error);
     yield put(
       retrieveTestCasesError({
         status: error.status,
@@ -147,7 +137,6 @@ function* retieveDetailsTestCasesSaga(action) {
     yield put(retrieveTestCasesRequest());
 
     let res = yield call(retrieveTestCasesApi, action.payload);
-    console.log(res);
 
     yield put(
       retrieveTestCasesSuccess({
@@ -158,7 +147,6 @@ function* retieveDetailsTestCasesSaga(action) {
     );
 
     res = yield call(retrieveDetailsApi, action.payload);
-    console.log(res);
 
     yield put(
       retrieveDetailsSuccess({
@@ -168,7 +156,6 @@ function* retieveDetailsTestCasesSaga(action) {
       })
     );
   } catch (error) {
-    console.error(error);
     yield put(
       retrieveTestCasesError({
         status: error.status,
