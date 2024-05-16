@@ -146,10 +146,7 @@ function MonacoEditorComponent({
 }
 
 const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.present.userCode,
-  pastUserCode:
-    state.codeEditor.past?.[1]?.userCode ||
-    state.codeEditor.past?.[0]?.userCode,
+  userCode: state.codeEditor.userCode,
 });
 
 const mapDispatchToProps = {

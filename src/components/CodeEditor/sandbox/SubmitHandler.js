@@ -75,7 +75,7 @@ function SubmitHandlerComponent({
 
 const mapState = (state) => ({
   retrievedDetails: state.retrieveDetails.data,
-  userCode: state.codeEditor.present.userCode,
+  userCode: state.codeEditor.userCode,
   submitCodeData: state.submitCode.data,
 });
 

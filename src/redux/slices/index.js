@@ -7,13 +7,17 @@ import {
   submitCsharpCodeSlice,
   submitTestSlice,
 } from "./codeEditorSlice";
-import undoable from "redux-undo";
+import { timerSlice } from "./examSlice";
 
 export const reducer = combineReducers({
-  codeEditor: undoable(codeEditorSlice.reducer, { limit: 3 }),
+  // CodeEditor
+  codeEditor: codeEditorSlice.reducer,
   submitCode: submitCodeSlice.reducer,
   submitTest: submitTestSlice.reducer,
   retrieveDetails: retrieveDetailsSlice.reducer,
   retrieveTestCases: retrieveTestCasesSlice.reducer,
   submitCsharpCode: submitCsharpCodeSlice.reducer,
+
+  // Timer
+  timer: timerSlice.reducer,
 });

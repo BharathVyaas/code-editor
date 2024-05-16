@@ -8,7 +8,7 @@ export const codeEditorSlice = createSlice({
   },
   reducers: {
     updateUserCode: (state, action) => {
-      return { ...state, userCode: action.payload };
+      state.userCode = action.payload;
     },
   },
 });

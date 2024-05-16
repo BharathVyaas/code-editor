@@ -4,7 +4,7 @@ import {
   CircularProgress,
   Modal,
   Typography,
-} from "@mui/material"; // Import CircularProgress
+} from "@mui/material";
 import BackupIcon from "@mui/icons-material/Backup";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { submitTest } from "../../../../redux/actions";
@@ -12,12 +12,14 @@ import { UserContext } from "../../../../context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { submitTestReset } from "../../../../redux/slices/codeEditorSlice";
+import { resetTimer, setShouldCount } from "../../../../redux/slices/examSlice";
 
 function SubmitTestComponent({
   testCasesOutput,
   submitTestDispatch,
   isLoading,
   submitTestState,
+  shouldCountDispatch,
 }) {
   const problemId = useParams().problemId;
   const { user } = useContext(UserContext);
@@ -53,6 +55,7 @@ function SubmitTestComponent({
       No_TestCasesPassed: testCasesPassCount,
       No_TestCasesFailed: testCasesFailCount,
     });
+    shouldCountDispatch(false);
   };
 
   return (
@@ -142,10 +145,13 @@ const mapState = (state) => ({
   isLoading: state.submitTest.isLoading,
   submitTestData: state.submitTest.data,
   submitTestState: state.submitTest.state,
+  shouldTimerCount: state.timer.shouldCount,
 });
 
 const mapDispatch = {
-  submitTestDispatch: (data) => submitTest(data),
+  submitTestDispatch: submitTest,
+  resetTimerDispatch: resetTimer,
+  shouldCountDispatch: setShouldCount,
 };
 
 const SubmitTest = connect(mapState, mapDispatch)(SubmitTestComponent);

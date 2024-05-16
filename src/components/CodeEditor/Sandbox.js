@@ -1,6 +1,6 @@
 import MonacoEditor from "./sandbox/MonacoEditor";
 import { useState, useEffect, useMemo } from "react";
-import Options from "./sandbox/Options";
+import OptionsComponent from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
 import StdInOutComponent from "./sandbox/StdInOut";
@@ -15,7 +15,7 @@ const programmingLanguages = [
   { id: 5, name: "csharp" },
 ];
 
-function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
+function SandboxComponent({ retrievedDetails, setUserCode }) {
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
@@ -73,8 +73,8 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
 
   return (
     <div className="flex flex-col overflow-auto bg-gray-100">
-      <div className="bg-white border-b border-gray-200 w-full px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap lg:flex-nowrap overflow-auto hide-scroll align-middle shadow-md">
-        <Options
+      <div className="bg-white border-b border-gray-200 w-full px-2 md:px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap lg:flex-nowrap overflow-auto hide-scroll align-middle shadow-md">
+        <OptionsComponent
           programmingLanguages={programmingLanguages}
           selectedLanguage={selectedLanguage}
           setSelectedLanguage={setSelectedLanguage}
@@ -124,7 +124,7 @@ function SandboxComponent({ userCode: _, retrievedDetails, setUserCode }) {
 }
 
 const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.present.userCode,
+  userCode: state.codeEditor.userCode,
   retrievedDetails: state.retrieveDetails.data,
 });
 

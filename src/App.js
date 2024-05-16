@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import CodeEditor from "./pages/CodeEditor";
-import store from "./redux";
+import { store } from "./redux";
 import { Provider } from "react-redux";
 import NotFound from "./pages/404 NotFound/NotFound";
 import ProgramSubmmition from "./pages/Admin/ProgramSubmmition";

@@ -338,7 +338,11 @@ function StdInOutComponent({
                       )}
                       {responseCode === 301 && (
                         <span className="text-red-600">
-                          <pre>{errorMessage}</pre>
+                          <pre>
+                            {typeof errorMessage === "string"
+                              ? errorMessage
+                              : JSON.stringify(errorMessage)}
+                          </pre>
                         </span>
                       )}
                       {submitCodeIsError ? (
@@ -372,7 +376,7 @@ const mapState = (state) => ({
   submitCodeIsLoading: state.submitCode.isLoading,
   submitCodeIsState: state.submitCode.state,
   submitCodeIsError: state.submitCode.isError,
-  userCode: state.codeEditor.present.userCode,
+  userCode: state.codeEditor.userCode,
   retrievedTestCases: state.retrieveTestCases.data,
 });
 

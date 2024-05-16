@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Typography,
-  Box,
   Button,
   Grid,
   Container,
@@ -13,6 +12,8 @@ import {
 import Naresh_IT_Logo from "../assets/Naresh_IT_Logo.png";
 import { UserContext } from "../context/UserContext";
 import { useContext } from "react";
+import { resetTimer, setShouldCount } from "../redux/slices/examSlice";
+import { connect } from "react-redux";
 
 const PROBLEMS = [
   {
@@ -47,12 +48,17 @@ const PROBLEMS = [
   },
 ];
 
-function Problemset() {
+function ProblemsetComponent({ shouldCountDispatch, resetTimerDispatch }) {
   const { user } = useContext(UserContext);
   const cardVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     exit: { opacity: 0, y: -20 },
+  };
+
+  const resetExamTimer = () => {
+    resetTimerDispatch();
+    shouldCountDispatch(false);
   };
 
   return (
@@ -86,6 +92,7 @@ function Problemset() {
                 >
                   <NavLink
                     to={`/problem/${problem.id}`}
+                    onClick={resetExamTimer}
                     className="block w-full h-full"
                   >
                     <Card className="hover:shadow-lg rounded-md">
@@ -94,6 +101,7 @@ function Problemset() {
                         subheader={problem.id}
                         action={
                           <Button
+                            onClick={resetExamTimer}
                             variant="contained"
                             color="primary"
                             size="small"
@@ -123,5 +131,12 @@ function Problemset() {
     </div>
   );
 }
+
+const mapDispatch = {
+  resetTimerDispatch: resetTimer,
+  shouldCountDispatch: setShouldCount,
+};
+
+const Problemset = connect(null, mapDispatch)(ProblemsetComponent);
 
 export default Problemset;

@@ -27,12 +27,14 @@ import {
   submitCsharpCodeReset,
   submitTestReset,
 } from "../redux/slices/codeEditorSlice";
+import { setShouldCount } from "../redux/slices/examSlice";
 
 function CodeEditorComponent({
   isDataRetrieving,
   isDataRetrievingFailed,
   retrieveDataDispatch,
   retrieveDataState,
+  shouldCountDispatch,
 }) {
   const {
     isError: isTestCasesRetrievingFailed,
@@ -69,29 +71,6 @@ function CodeEditorComponent({
     return () => window.removeEventListener("mousedown", handleRightClick);
   }, []);
 
-  useEffect(() => {
-    const handleUserKeyPress = (event) => {
-      if (event.keyCode === 123) {
-        event.preventDefault();
-      }
-      if (
-        event.getModifierState("Meta") ||
-        event.getModifierState("Fn") ||
-        event.getModifierState("Win")
-      ) {
-        event.preventDefault();
-      }
-    };
-
-    window.addEventListener("devtoolschange", function (e) {
-      console.log("is DevTools open?", e);
-    });
-
-    return () => {
-      window.removeEventListener("keydown", handleUserKeyPress);
-    };
-  }, []);
-
   if (isTestCasesRetrievingFailed || isDataRetrievingFailed) return <Error />;
 
   if (isTestCasesRetrieving || isDataRetrieving) return <Loading />;
@@ -100,31 +79,39 @@ function CodeEditorComponent({
     retrieveDataState === "reslove" && (
       <>
         <div className="flex flex-col bg-gray-100 hide-scroll">
+          {/* Header */}
           <header className="bg-white shadow-md px-4 py-2 border-b flex justify-between items-center">
+            {/* Logo and Username */}
             <img
               src={Naresh_IT_Logo}
               alt="Naresh IT Logo"
               className="h-[5.8vh]"
             />
-
             <p className="text-lg font-medium">{`Welcome, ${
               user?.username || "Guest"
             }`}</p>
           </header>
 
+          {/* Main Content */}
           <main className="flex-1 pt-2 lg:pt-0 lg:flex flex-col lg:flex-row max-h-[92vh] overflow-hidden">
+            {/* Sidebar */}
             <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6  border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
               <Details />
             </aside>
+
+            {/* Code Editor */}
             <section className="w-full lg:w-1/2 p-6 border-b-2 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
               <Sandbox />
             </section>
           </main>
+
+          {/* Footer */}
           <footer className="bg-white shadow-lg">
             {/* Add footer content if needed */}
           </footer>
         </div>
-        {/**  Trems and Conditions */}
+
+        {/* Terms and Conditions Modal */}
         <Modal
           open={showTerms}
           onClose={(e) => setAgreeToTerms(e.target.checked)}
@@ -137,7 +124,8 @@ function CodeEditorComponent({
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: 600,
+              width: "90%", // Adjusted for responsiveness
+              maxWidth: "600px", // Maximum width
               bgcolor: "background.paper",
               boxShadow: 24,
               p: 4,
@@ -220,7 +208,10 @@ function CodeEditorComponent({
                 variant="contained"
                 color="primary"
                 style={{ width: "6rem" }}
-                onClick={(e) => setShowTerms(false)}
+                onClick={(e) => {
+                  setShowTerms(false);
+                  shouldCountDispatch(true);
+                }}
               >
                 Next
               </Button>
@@ -246,6 +237,7 @@ const mapDispatch = {
     type: types.RETRIEVE_DETAILS_TESTCASES,
     payload: data,
   }),
+  shouldCountDispatch: setShouldCount,
 };
 
 const CodeEditor = connect(mapState, mapDispatch)(CodeEditorComponent);
