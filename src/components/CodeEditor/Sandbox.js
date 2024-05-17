@@ -7,19 +7,25 @@ import StdInOutComponent from "./sandbox/StdInOut";
 import { updateUserCode } from "../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
 
-const programmingLanguages = [
-  { id: 1, name: "python" },
-  { id: 2, name: "javascript" },
-  { id: 3, name: "java" },
-  { id: 4, name: "c" },
-  { id: 5, name: "csharp" },
-];
-
 function SandboxComponent({ retrievedDetails, setUserCode }) {
-  const [selectedLanguage, setSelectedLanguage] = useState(1);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
   const [testCasesOutput, setTestCasesOutput] = useState({});
+
+  const programmingLanguages = useMemo(() => {
+    return (
+      retrievedDetails?.Languages?.split(",")?.map((language) => ({
+        id: language,
+        name: language,
+      })) || []
+    );
+  }, [retrievedDetails]);
+
+  useEffect(() => {
+    if (programmingLanguages)
+      setSelectedLanguage(programmingLanguages?.[0]?.id);
+  }, [programmingLanguages]);
 
   const DefaultPrograms = useMemo(
     () =>
@@ -41,7 +47,7 @@ function SandboxComponent({ retrievedDetails, setUserCode }) {
         )?.name || ""
       ] || ""
     );
-  }, [selectedLanguage, setUserCode, DefaultPrograms]);
+  }, [selectedLanguage, setUserCode, DefaultPrograms, programmingLanguages]);
 
   const onReset = () => {
     setUserCode(

@@ -30,7 +30,7 @@ function TimerComponent({ timer, setTimerDispatch, shouldTimerCount }) {
 
   return (
     <div>
-      <div className="flex items-center bg-gray-200 rounded-md px-2 py-1">
+      <div className="flex items-center rounded-md px-2 py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5 text-gray-500"

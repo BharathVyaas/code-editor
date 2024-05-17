@@ -7,7 +7,7 @@ function TechnologySelector({
   setSelectedLanguage,
 }) {
   const handleChange = (event) => {
-    setSelectedLanguage(Number(event.target.value));
+    setSelectedLanguage(event.target.value);
   };
 
   return (
