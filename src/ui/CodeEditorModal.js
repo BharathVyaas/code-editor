@@ -146,7 +146,7 @@ function CodeEditorModalComponent({
 }
 
 const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.present.userCode,
+  userCode: state.codeEditor.userCode,
 });
 
 const mapDispatchToProps = {

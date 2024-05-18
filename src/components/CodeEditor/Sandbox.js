@@ -1,6 +1,6 @@
 import MonacoEditor from "./sandbox/MonacoEditor";
 import { useState, useEffect, useMemo } from "react";
-import OptionsComponent from "./sandbox/Options";
+import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
 import StdInOutComponent from "./sandbox/StdInOut";
@@ -79,8 +79,8 @@ function SandboxComponent({ retrievedDetails, setUserCode }) {
 
   return (
     <div className="flex flex-col overflow-auto bg-gray-100">
-      <div className="bg-white border-b border-gray-200 w-full px-2 md:px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap lg:flex-nowrap overflow-auto hide-scroll align-middle shadow-md">
-        <OptionsComponent
+      <div className="bg-white border-b border-gray-200 w-full md:px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap lg:flex-nowrap overflow-auto hide-scroll align-middle shadow-md">
+        <Options
           programmingLanguages={programmingLanguages}
           selectedLanguage={selectedLanguage}
           setSelectedLanguage={setSelectedLanguage}

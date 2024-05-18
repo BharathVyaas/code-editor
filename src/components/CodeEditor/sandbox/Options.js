@@ -1,7 +1,4 @@
-import RefreshIcon from "@mui/icons-material/Refresh";
-import OpenWithIcon from "@mui/icons-material/OpenWith";
-import ThemeSelector from "./options/ThemeSelector";
-import TechnologySelector from "./options/TechnologySelector";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -9,12 +6,16 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Grid,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
-import { useState } from "react";
-import SubmitTest from "./options/SubmitTest";
+import RefreshIcon from "@mui/icons-material/Refresh";
+import OpenWithIcon from "@mui/icons-material/OpenWith";
+import TechnologySelector from "./options/TechnologySelector";
 import Timer from "./options/Timer";
-
-const themes = ["vs-dark", "hc-light", "hc-black"];
+import SettingsCascader from "./options/SettingsCascader";
+import SubmitTest from "./options/SubmitTest";
 
 function Options({
   programmingLanguages,
@@ -47,53 +48,38 @@ function Options({
 
   return (
     <>
-      <div className="flex items-center space-x-2 w-auto">
-        <label
-          htmlFor="technology-selector-select"
-          className="font-medium text-gray-600"
-        >
-          Language:
-        </label>
-        <TechnologySelector
-          programmingLanguages={programmingLanguages}
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
-        />
-      </div>
+      <Grid container alignItems="center" spacing={0}>
+        <Grid item>
+          <div style={{ width: "4.8rem" }}>
+            <Timer />
+          </div>
+        </Grid>
+        <Grid item>
+          <TechnologySelector
+            programmingLanguages={programmingLanguages}
+            selectedLanguage={selectedLanguage}
+            setSelectedLanguage={setSelectedLanguage}
+          />
+        </Grid>
+      </Grid>
 
-      <div>
-        <Timer />
-      </div>
-
-      <div className="">
-        <SubmitTest testCasesOutput={testCasesOutput} />
-      </div>
-
-      <div className="flex items-center space-x-2 lg:invisible xl:visible lg:w-0 lg:h-0 xl:w-auto xl:h-auto w-auto h-auto">
-        <label htmlFor="theme-select" className="font-medium text-gray-600">
-          Theme:
-        </label>
-        <ThemeSelector
-          themes={themes}
-          selectedTheme={selectedTheme}
-          setSelectedTheme={setSelectedTheme}
-        />
-      </div>
-
-      <div className="flex space-x-4">
-        <span
-          onClick={onCodeEditorExpand}
-          className="cursor-pointer text-gray-500 hover:text-gray-800"
-        >
-          <OpenWithIcon />
-        </span>
-
-        <span
-          onClick={handleReset}
-          className="cursor-pointer text-gray-500 hover:text-gray-800"
-        >
-          <RefreshIcon />
-        </span>
+      <div className="flex space-x-3 items-center">
+        <Tooltip sx={{ marginInlineEnd: "-12px" }} title="Submit">
+          <SubmitTest testCasesOutput={testCasesOutput} />
+        </Tooltip>
+        <Tooltip title="Expand Editor">
+          <IconButton onClick={onCodeEditorExpand}>
+            <OpenWithIcon className="cursor-pointer text-gray-500 hover:text-gray-800" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Reset">
+          <IconButton onClick={handleReset}>
+            <RefreshIcon className="cursor-pointer text-gray-500 hover:text-gray-800" />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Settings">
+          <SettingsCascader setSelectedTheme={setSelectedTheme} />
+        </Tooltip>
       </div>
 
       <Dialog

@@ -1,8 +1,11 @@
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setShouldCount, setTimer } from "../../../../redux/slices/examSlice";
-import { useEffect } from "react";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Typography } from "@mui/material";
 
-function TimerComponent({ timer, setTimerDispatch, shouldTimerCount }) {
+function Timer({ timer, shouldTimerCount, setTimerDispatch }) {
   useEffect(() => {
     let interval;
     if (shouldTimerCount) {
@@ -12,53 +15,46 @@ function TimerComponent({ timer, setTimerDispatch, shouldTimerCount }) {
     }
 
     return () => {
-      if (interval) clearInterval(interval);
+      clearInterval(interval);
     };
-  }, [timer, setTimerDispatch, shouldTimerCount]);
+  }, [timer, shouldTimerCount, setTimerDispatch]);
 
   const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
-    const formattedTime =
+    return (
       (minutes < 10 ? "0" : "") +
       minutes +
       ":" +
       (seconds < 10 ? "0" : "") +
-      seconds;
-    return formattedTime;
+      seconds
+    );
   };
 
   return (
-    <div>
-      <div className="flex items-center rounded-md px-2 py-1">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5 text-gray-500"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zm0-9a1 1 0 011 1v4a1 1 0 01-2 0V8a1 1 0 011-1zm-1-1a1 1 0 110-2 1 1 0 010 2z"
-            clipRule="evenodd"
-          />
-        </svg>
-        <b className="text-gray-600">{formatTime(timer)}</b>
-      </div>
+    <div className="flex items-center space-x-1 px-2 py-1">
+      <AccessTimeIcon fontSize="small" />
+      <Typography variant="body2" color="textSecondary">
+        {formatTime(timer)}
+      </Typography>
     </div>
   );
 }
 
-const mapState = (state) => ({
+Timer.propTypes = {
+  timer: PropTypes.number.isRequired,
+  shouldTimerCount: PropTypes.bool.isRequired,
+  setTimerDispatch: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
   timer: state.timer.timer,
   shouldTimerCount: state.timer.shouldCount,
 });
 
-const mapDispatch = {
+const mapDispatchToProps = {
   setTimerDispatch: setTimer,
-  shouldCountDispatch: setShouldCount,
+  setShouldCountDispatch: setShouldCount,
 };
 
-const Timer = connect(mapState, mapDispatch)(TimerComponent);
-
-export default Timer;
+export default connect(mapStateToProps, mapDispatchToProps)(Timer);

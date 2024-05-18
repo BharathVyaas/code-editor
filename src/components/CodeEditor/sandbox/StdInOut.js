@@ -9,6 +9,7 @@ import {
   Card,
   TextField,
   Collapse,
+  CircularProgress,
 } from "@mui/material";
 import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { submitCode } from "../../../redux/actions";
@@ -52,7 +53,7 @@ async function onTestCases(
             }
       );
 
-      if (res.data.output.trim() === output.trim()) {
+      if (res.data.output?.trim() === output.trim()) {
         handler({
           data: {
             testCaseId: id,
@@ -72,7 +73,7 @@ async function onTestCases(
     }
   } catch (error) {
     console.error(error);
-    handler({ err: error });
+    handler({ err: error, flag: false });
   }
 }
 
@@ -92,6 +93,7 @@ function StdInOutComponent({
   const [selectedTab, setSelectedTab] = useState("Test Results");
   const [selectedTask, setSelectedTask] = useState(0);
   const [takeInput, setTakeInput] = useState(false);
+  const [testCasesEvel, setTestCasesEvel] = useState(false);
   const outputRef = useRef(null);
   const [userInput, setUserInput] = useState(``);
   const collapseRef = useRef(false);
@@ -128,6 +130,15 @@ function StdInOutComponent({
   // }, [submitCodeIsState]);
 
   useEffect(() => {
+    if (
+      Object.values(testCasesOutput).length === retrievedTestCases?.length &&
+      testCasesEvel
+    ) {
+      setTestCasesEvel(false);
+    }
+  }, [testCasesOutput, retrievedTestCases, testCasesEvel]);
+
+  useEffect(() => {
     if (collapseRef.current && selectedTab === "Test Results") {
       setTakeInput(true);
     }
@@ -135,6 +146,7 @@ function StdInOutComponent({
 
   useEffect(() => {
     if (responseCode === 201) {
+      setTestCasesEvel(true);
       onTestCases(
         retrievedTestCases.map((testCase) => ({
           input: testCase.SampleInputValue,
@@ -181,7 +193,7 @@ function StdInOutComponent({
             sx={{
               minHeight: "unset",
               minWidth: "unset",
-              height: Object.values(testCasesOutput).length ? "4rem" : "3rem",
+              height: Object.values(testCasesOutput).length ? "4rem" : "3.2rem",
             }}
           >
             <Tab label="Test Results" value="Test Results" />
@@ -190,7 +202,16 @@ function StdInOutComponent({
               value="Test Cases"
               iconPosition="end"
               icon={
-                Object.values(testCasesOutput).length ? (
+                testCasesEvel ? (
+                  <CircularProgress
+                    size={20}
+                    sx={{
+                      color: "default",
+                      mb: 0,
+                      padding: 0,
+                    }}
+                  />
+                ) : Object.values(testCasesOutput).length ? (
                   Object.values(testCasesOutput).filter(
                     (testCase) => testCase.flag
                   ).length === retrievedTestCases.length ? (

@@ -13,6 +13,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { submitTestReset } from "../../../../redux/slices/codeEditorSlice";
 import { resetTimer, setShouldCount } from "../../../../redux/slices/examSlice";
+import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 
 function SubmitTestComponent({
   testCasesOutput,
@@ -65,15 +66,17 @@ function SubmitTestComponent({
         color="success"
         disabled={isLoading}
         startIcon={
-          isLoading ? (
-            <CircularProgress size="small" color="secondary" />
+          submitTestState === "reslove" ? (
+            <SentimentVerySatisfiedIcon />
+          ) : isLoading ? (
+            <CircularProgress size={20} sx={{ color: "GrayText" }} />
           ) : (
             <BackupIcon />
           )
         }
         onClick={submitHanlder}
       >
-        Submit
+        {submitTestState === "reslove" ? "Done" : "Submit"}
       </Button>
       <Modal
         open={open}

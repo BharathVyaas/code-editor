@@ -53,7 +53,7 @@ function CodeEditorComponent({
     dispatch(submitCodeReset());
     dispatch(submitCsharpCodeReset());
     dispatch(submitTestReset());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (programId) retrieveDataDispatch(programId);
