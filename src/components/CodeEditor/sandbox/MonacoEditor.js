@@ -1,8 +1,8 @@
 import { useRef, useEffect, useState } from "react";
 import { Editor } from "@monaco-editor/react";
-import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
 import { Box, Button, Modal, Typography } from "@mui/material";
+import { updateUserCode } from "../../../redux/slices/examSlice";
 
 function MonacoEditorComponent({
   language,

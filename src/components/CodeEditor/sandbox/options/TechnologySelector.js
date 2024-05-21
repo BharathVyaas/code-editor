@@ -1,12 +1,14 @@
 import React from "react";
+import { useParams } from "react-router";
 
 function TechnologySelector({
   programmingLanguages,
   selectedLanguage,
   setSelectedLanguage,
 }) {
+  const { problemId } = useParams();
   const handleChange = (event) => {
-    setSelectedLanguage(event.target.value);
+    setSelectedLanguage({ key: problemId, language: event.target.value });
   };
 
   return (

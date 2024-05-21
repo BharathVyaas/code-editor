@@ -11,7 +11,6 @@ import {
   Collapse,
   CircularProgress,
 } from "@mui/material";
-import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
@@ -21,6 +20,7 @@ import SubmitHandler from "./SubmitHandler";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { UserContext } from "../../../context/UserContext";
+import { updateUserCode } from "../../../redux/slices/examSlice";
 
 async function onTestCases(
   testCases,
@@ -198,7 +198,20 @@ function StdInOutComponent({
           >
             <Tab label="Test Results" value="Test Results" />
             <Tab
-              label="Test Cases"
+              label={
+                <>
+                  <p>Test Cases</p>
+                  <p className="ms-2">
+                    ({" "}
+                    {
+                      Object.values(testCasesOutput).filter(
+                        (testCase) => testCase.flag
+                      ).length
+                    }{" "}
+                    / {retrievedTestCases.length} )
+                  </p>
+                </>
+              }
               value="Test Cases"
               iconPosition="end"
               icon={
@@ -270,22 +283,29 @@ function StdInOutComponent({
               onChange={handleTaskChange}
               sx={{ maxHeight: "1rem", display: "flex", alignItems: "center" }}
             >
-              {retrievedTestCases.map((testCase, index) => (
-                <Tab
-                  key={testCase.TestCaseId}
-                  label={`test case ${index + 1}`}
-                  value={index}
-                  iconPosition="end"
-                  icon={
-                    testCasesOutput?.[testCase.TestCaseId]?.flag === true ? (
-                      <DoneIcon sx={{ color: "green", mb: 0.3 }} />
-                    ) : (
-                      testCasesOutput?.[testCase.TestCaseId]?.flag ===
-                        false && <ClearIcon sx={{ color: "red", mb: 0.3 }} />
-                    )
-                  }
-                />
-              ))}
+              {retrievedTestCases.map((testCase, index) => {
+                if (index < retrievedTestCases.length - 1) {
+                  return (
+                    <Tab
+                      key={testCase.TestCaseId}
+                      label={`test case ${index + 1}`}
+                      value={index}
+                      iconPosition="end"
+                      icon={
+                        testCasesOutput?.[testCase.TestCaseId]?.flag ===
+                        true ? (
+                          <DoneIcon sx={{ color: "green", mb: 0.3 }} />
+                        ) : (
+                          testCasesOutput?.[testCase.TestCaseId]?.flag ===
+                            false && (
+                            <ClearIcon sx={{ color: "red", mb: 0.3 }} />
+                          )
+                        )
+                      }
+                    />
+                  );
+                }
+              })}
             </Tabs>
           )}
         </Paper>
@@ -301,6 +321,16 @@ function StdInOutComponent({
                   <div className="bg-gray-100 p-3 rounded">
                     <p className="text-sm text-gray-700 min-h-3">
                       {retrievedTestCases[selectedTask]?.SampleInputValue}
+                    </p>
+                  </div>
+                </Box>
+                <Box className="flex flex-col gap-2">
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    Expected Output:
+                  </Typography>
+                  <div className="bg-gray-100 p-3 rounded">
+                    <p className="text-sm text-gray-700 min-h-3">
+                      {retrievedTestCases[selectedTask]?.SampleOutputValue}
                     </p>
                   </div>
                 </Box>

@@ -4,14 +4,26 @@ import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
 import StdInOutComponent from "./sandbox/StdInOut";
-import { updateUserCode } from "../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
+import { setSelectedLanguage } from "../../redux/actions/types";
+import {
+  setSelectedLanguage as setDefaultLanguage,
+  updateUserCode,
+} from "../../redux/slices/examSlice";
+import { useParams } from "react-router";
 
-function SandboxComponent({ retrievedDetails, setUserCode }) {
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
+function SandboxComponent({
+  retrievedDetails,
+  setUserCode,
+  savedCode,
+  selectedLanguage,
+  setSelectedLanguage,
+  setDefaultLanguageDispatch,
+}) {
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
   const [testCasesOutput, setTestCasesOutput] = useState({});
+  const { problemId } = useParams();
 
   const programmingLanguages = useMemo(() => {
     return (
@@ -24,8 +36,8 @@ function SandboxComponent({ retrievedDetails, setUserCode }) {
 
   useEffect(() => {
     if (programmingLanguages)
-      setSelectedLanguage(programmingLanguages?.[0]?.id);
-  }, [programmingLanguages]);
+      setDefaultLanguageDispatch(programmingLanguages?.[0]?.id);
+  }, [programmingLanguages, setSelectedLanguage, setDefaultLanguageDispatch]);
 
   const DefaultPrograms = useMemo(
     () =>
@@ -41,13 +53,22 @@ function SandboxComponent({ retrievedDetails, setUserCode }) {
 
   useEffect(() => {
     setUserCode(
-      DefaultPrograms[
-        programmingLanguages.find(
-          (language) => language.id === selectedLanguage
-        )?.name || ""
-      ] || ""
+      savedCode[problemId]?.[selectedLanguage]
+        ? savedCode[problemId][selectedLanguage]
+        : DefaultPrograms[
+            programmingLanguages.find(
+              (language) => language.id === selectedLanguage
+            )?.name || ""
+          ] || ""
     );
-  }, [selectedLanguage, setUserCode, DefaultPrograms, programmingLanguages]);
+  }, [
+    selectedLanguage,
+    setUserCode,
+    DefaultPrograms,
+    programmingLanguages,
+    problemId,
+    savedCode,
+  ]);
 
   const onReset = () => {
     setUserCode(
@@ -131,11 +152,15 @@ function SandboxComponent({ retrievedDetails, setUserCode }) {
 
 const mapStateToProps = (state) => ({
   userCode: state.codeEditor.userCode,
+  selectedLanguage: state.codeEditor.selectedLanguage,
   retrievedDetails: state.retrieveDetails.data,
+  savedCode: state.monacoReducer.code,
 });
 
 const mapDispatchToProps = {
-  setUserCode: (updatedCode) => updateUserCode(updatedCode),
+  setUserCode: updateUserCode,
+  setSelectedLanguage,
+  setDefaultLanguageDispatch: setDefaultLanguage,
 };
 
 const Sandbox = connect(mapStateToProps, mapDispatchToProps)(SandboxComponent);

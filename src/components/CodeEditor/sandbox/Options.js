@@ -16,12 +16,12 @@ import TechnologySelector from "./options/TechnologySelector";
 import Timer from "./options/Timer";
 import SettingsCascader from "./options/SettingsCascader";
 import SubmitTest from "./options/SubmitTest";
+import Save from "./options/Save";
 
 function Options({
   programmingLanguages,
   selectedLanguage,
   setSelectedLanguage,
-  selectedTheme,
   setSelectedTheme,
   onReset,
   setCodeEditorExtend,
@@ -50,7 +50,7 @@ function Options({
     <>
       <Grid container alignItems="center" spacing={0}>
         <Grid item>
-          <div style={{ width: "4.8rem" }}>
+          <div style={{ width: "4.8rem" }} className=" cursor-not-allowed">
             <Timer />
           </div>
         </Grid>
@@ -63,18 +63,23 @@ function Options({
         </Grid>
       </Grid>
 
-      <div className="flex space-x-3 items-center">
+      <div className="flex space-x-2 items-center">
         <Tooltip sx={{ marginInlineEnd: "-12px" }} title="Submit">
           <SubmitTest testCasesOutput={testCasesOutput} />
         </Tooltip>
+        <Tooltip title="Save">
+          <IconButton>
+            <Save />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Expand Editor">
           <IconButton onClick={onCodeEditorExpand}>
-            <OpenWithIcon className="cursor-pointer text-gray-500 hover:text-gray-800" />
+            <OpenWithIcon className="cursor-pointer text-gray-500" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Reset">
           <IconButton onClick={handleReset}>
-            <RefreshIcon className="cursor-pointer text-gray-500 hover:text-gray-800" />
+            <RefreshIcon className="cursor-pointer text-gray-500" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Settings">

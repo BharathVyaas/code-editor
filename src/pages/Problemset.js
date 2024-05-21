@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import {
   Card,
@@ -8,48 +8,48 @@ import {
   Button,
   Grid,
   Container,
+  Fab,
+  Zoom,
 } from "@mui/material";
 import Naresh_IT_Logo from "../assets/Naresh_IT_Logo.png";
 import { UserContext } from "../context/UserContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { resetTimer, setShouldCount } from "../redux/slices/examSlice";
 import { connect } from "react-redux";
+import UpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 const PROBLEMS = [
   {
     name: "Fibonacci Series",
     id: "E281CF31-13C3-481E-8602-3EF0AD23C3ED",
-    description: `Write a  program to generate and display the Fibonacci series up to a specified number of terms. Program Description:Write a  program that generates and displays the Fibonacci series up to a specified number of terms.
-    `,
+    description: `Write a  program to generate and display the Fibonacci series up to a specified number of terms. Program Description:Write a  program that generates and displays the Fibonacci series up to a specified number of terms.`,
   },
   {
     name: "Palindrome",
     id: "DF89B0B7-2B62-4996-B79F-4D95EE745FD8",
-    description: `Write a java program which print the given three-digit number is palindrome or not   Program is determined by the following rules:   if the given number is a three digit number,   and that number is a palindrome then print a message that "the number is palindrome".   else print a message that "the number is not a palindrome"  if the given number is negative or zero, print a message that "the given number is -ve kindly provide the +ve number"   if the given number is not a three digit number then print the message that "this program can work for the 3 digit number only
-    `,
+    description: `Write a java program which print the given three-digit number is palindrome or not. Program is determined by the following rules: if the given number is a three digit number, and that number is a palindrome then print a message that "the number is palindrome". else print a message that "the number is not a palindrome". if the given number is negative or zero, print a message that "the given number is -ve kindly provide the +ve number". if the given number is not a three digit number then print the message that "this program can work for the 3 digit number only.`,
   },
   {
     name: "SwitchCase",
     id: "D9808F82-A58C-4416-94E0-4ECB607A7447",
-    description: `Display the name of a month based on its number (1-12) using switch case.
-    `,
+    description: `Display the name of a month based on its number (1-12) using switch case.`,
   },
   {
     name: "Sum Of Digits",
     id: "01E5C6F7-EA00-44B3-BD28-603EF7900072",
-    description: `Write a Java program to read a number from the user between 0 and 1000 and sum all the digits in the number.
-    `,
+    description: `Write a Java program to read a number from the user between 0 and 1000 and sum all the digits in the number.`,
   },
   {
     name: "Sum Of Two PrimeNumbers",
     id: "0FD917E1-690A-44F1-920F-7764D9969459",
-    description: `Write a program in Java to check whether a number can be expressed as the sum of two prime.
-    `,
+    description: `Write a program in Java to check whether a number can be expressed as the sum of two prime.`,
   },
 ];
 
 function ProblemsetComponent({ shouldCountDispatch, resetTimerDispatch }) {
   const { user } = useContext(UserContext);
+  const [isAtTop, setIsAtTop] = useState(true);
+
   const cardVariants = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -61,11 +61,25 @@ function ProblemsetComponent({ shouldCountDispatch, resetTimerDispatch }) {
     shouldCountDispatch(false);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleScroll = () => {
+    setIsAtTop(window.scrollY === 0);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
     <div>
       <header className="bg-white shadow-md px-4 py-2 border-b flex justify-between items-center">
         <img src={Naresh_IT_Logo} alt="Naresh IT Logo" className="h-[5.8vh]" />
-
         <p className="text-lg font-medium">{`Welcome, ${
           user?.username || "Guest"
         }`}</p>
@@ -116,7 +130,6 @@ function ProblemsetComponent({ shouldCountDispatch, resetTimerDispatch }) {
                           color="textSecondary"
                           component="p"
                         >
-                          {/* Add problem description or additional details here */}
                           {problem.description}
                         </Typography>
                       </CardContent>
@@ -127,6 +140,26 @@ function ProblemsetComponent({ shouldCountDispatch, resetTimerDispatch }) {
             ))}
           </Grid>
         </Container>
+
+        <AnimatePresence>
+          <Grid
+            position="fixed"
+            bottom={16}
+            right={16}
+            sx={{ display: isAtTop ? "none" : "block" }}
+          >
+            <motion.div
+              animate={{ opacity: !isAtTop ? 1 : 0, scale: !isAtTop ? 1 : 0.8 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Fab size="small" onClick={scrollToTop}>
+                <UpIcon />
+              </Fab>
+            </motion.div>
+          </Grid>
+        </AnimatePresence>
       </div>
     </div>
   );

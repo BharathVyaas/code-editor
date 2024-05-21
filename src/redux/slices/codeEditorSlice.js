@@ -1,17 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
 import { createPostSlice } from "../util/createSliceUtil";
-
-export const codeEditorSlice = createSlice({
-  name: "codeEditor",
-  initialState: {
-    userCode: ``,
-  },
-  reducers: {
-    updateUserCode: (state, action) => {
-      state.userCode = action.payload;
-    },
-  },
-});
 
 export const retrieveDetailsSlice = createPostSlice({
   name: "retrieveDetails",
@@ -19,14 +6,12 @@ export const retrieveDetailsSlice = createPostSlice({
 export const retrieveTestCasesSlice = createPostSlice({
   name: "retrieveTestCases",
 });
-export const submitCodeSlice = createPostSlice({ name: "submitCode" });
 export const submitCsharpCodeSlice = createPostSlice({
   name: "submitCsharpCode",
 });
 export const submitTestSlice = createPostSlice({ name: "submitTest" });
 
 // actions
-export const { updateUserCode } = codeEditorSlice.actions;
 
 export const {
   fetchDataRequest: retrieveDetailsRequest,
@@ -41,13 +26,6 @@ export const {
   fetchDataError: retrieveTestCasesError,
   resetState: retrieveTestCasesReset,
 } = retrieveTestCasesSlice.actions;
-
-export const {
-  fetchDataRequest: submitCodeRequest,
-  fetchDataSuccess: submitCodeSuccess,
-  fetchDataError: submitCodeError,
-  resetState: submitCodeReset,
-} = submitCodeSlice.actions;
 
 export const {
   fetchDataRequest: submitCsharpCodeRequest,

@@ -23,11 +23,10 @@ import {
 import {
   retrieveDetailsReset,
   retrieveTestCasesReset,
-  submitCodeReset,
   submitCsharpCodeReset,
   submitTestReset,
 } from "../redux/slices/codeEditorSlice";
-import { setShouldCount } from "../redux/slices/examSlice";
+import { setShouldCount, submitCodeReset } from "../redux/slices/examSlice";
 
 function CodeEditorComponent({
   isDataRetrieving,
@@ -36,18 +35,19 @@ function CodeEditorComponent({
   retrieveDataState,
   shouldCountDispatch,
 }) {
+  const [showTerms, setShowTerms] = useState(false);
+  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const { user } = useContext(UserContext);
+  const dispatch = useDispatch();
   const {
     isError: isTestCasesRetrievingFailed,
     isLoading: isTestCasesRetrieving,
   } = useSelector((store) => store.retrieveTestCases);
-  const { user } = useContext(UserContext);
-  const [showTerms, setShowTerms] = useState(false);
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
   const programId = useParams().problemId;
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    setShowTerms(true);
+    //setShowTerms(true);
+    setShowTerms(false);
     dispatch(retrieveDetailsReset());
     dispatch(retrieveTestCasesReset());
     dispatch(submitCodeReset());
@@ -58,18 +58,6 @@ function CodeEditorComponent({
   useEffect(() => {
     if (programId) retrieveDataDispatch(programId);
   }, [retrieveDataDispatch, programId]);
-
-  useEffect(() => {
-    const handleRightClick = (event) => {
-      if (event.button === 2) {
-        event.preventDefault();
-      }
-    };
-
-    window.addEventListener("mousedown", handleRightClick);
-
-    return () => window.removeEventListener("mousedown", handleRightClick);
-  }, []);
 
   if (isTestCasesRetrievingFailed || isDataRetrievingFailed) return <Error />;
 
@@ -124,8 +112,8 @@ function CodeEditorComponent({
               top: "50%",
               left: "50%",
               transform: "translate(-50%, -50%)",
-              width: "90%", // Adjusted for responsiveness
-              maxWidth: "600px", // Maximum width
+              width: "90%",
+              maxWidth: "600px",
               bgcolor: "background.paper",
               boxShadow: 24,
               p: 4,

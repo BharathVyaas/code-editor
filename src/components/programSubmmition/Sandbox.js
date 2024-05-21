@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
-import { updateUserCode } from "../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
 import { Editor } from "@monaco-editor/react";
+import { updateUserCode } from "../../redux/slices/examSlice";
 
 const programmingLanguages = [
   { id: 1, name: "python" },

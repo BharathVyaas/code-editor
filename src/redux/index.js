@@ -8,9 +8,9 @@ import storage from "redux-persist/lib/storage";
 const sagaMiddleware = createSagaMiddleware();
 
 const persistConfig = {
-  key: "timer-state",
+  key: "exam-state:0.0.1",
   storage,
-  whitelist: ["timer"],
+  whitelist: ["timer", "monacoReducer"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

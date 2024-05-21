@@ -80,8 +80,8 @@ const mapState = (state) => ({
 });
 
 const mapDispatch = {
-  submitCodeDispatch: (item) => submitCode(item),
-  submitCsharpCodeDispatch: (item) => submitCsharpCode(item),
+  submitCodeDispatch: submitCode,
+  submitCsharpCodeDispatch: submitCsharpCode,
 };
 
 const SubmitHandler = connect(mapState, mapDispatch)(SubmitHandlerComponent);

@@ -8,10 +8,10 @@ import {
   CardContent,
   Card,
 } from "@mui/material";
-import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
+import { updateUserCode } from "../../../redux/slices/examSlice";
 
 function StdInOutComponent({
   submitCodeData,

@@ -1,15 +1,5 @@
+import { takeLatest, put, call, select } from "redux-saga/effects";
 import {
-  retrieveDetailsApi,
-  retrieveTestCasesApi,
-  submitTestApi,
-  submitUserCCodeApi1,
-  submitUserCodeApi,
-} from "../../services/api";
-import { types } from "../actions/types";
-import {
-  submitCodeRequest,
-  submitCodeSuccess,
-  submitCodeError,
   retrieveDetailsRequest,
   retrieveDetailsSuccess,
   retrieveDetailsError,
@@ -20,7 +10,23 @@ import {
   submitTestSuccess,
   submitTestError,
 } from "../slices/codeEditorSlice";
-import { takeLatest, put, call } from "redux-saga/effects";
+import { types } from "../actions/types";
+import {
+  submitUserCodeApi,
+  submitUserCCodeApi1,
+  retrieveDetailsApi,
+  retrieveTestCasesApi,
+  submitTestApi,
+} from "../../services/api";
+import {
+  setSavingError,
+  setIsSavingLoading,
+  setMonacoSliceItem,
+  setSelectedLanguage,
+  submitCodeError,
+  submitCodeRequest,
+  submitCodeSuccess,
+} from "../slices/examSlice";
 
 function* submitUserCodeSaga(action) {
   try {
@@ -165,6 +171,49 @@ function* retieveDetailsTestCasesSaga(action) {
   }
 }
 
+// UTILS
+export function* selectedLanguageUtilSaga(action) {
+  try {
+    yield put(setIsSavingLoading(true));
+    const { userCode, selectedLanguage } = yield select(
+      (state) => state.codeEditor
+    );
+
+    yield put(
+      setMonacoSliceItem({
+        key: action.payload.key,
+        code: userCode,
+        language: selectedLanguage,
+      })
+    );
+
+    yield put(setSelectedLanguage(action.payload.language));
+    yield put(setIsSavingLoading(false));
+  } catch (err) {
+    console.error("Error in selectedLanguageUtilSaga", err);
+    yield put(setSavingError({ flag: true, errorMsg: err.message }));
+  }
+}
+
+export function* saveCurrentCodeUtilSaga(action) {
+  try {
+    yield put(setIsSavingLoading(true));
+
+    yield put(
+      setMonacoSliceItem({
+        key: action.payload.key,
+        code: action.payload.code,
+        language: action.payload.language,
+      })
+    );
+
+    yield put(setIsSavingLoading(false));
+  } catch (err) {
+    console.error("Error Saving current code.", err);
+    yield put(setSavingError({ flag: true, errorMsg: err.message }));
+  }
+}
+
 export function* watcherSaga() {
   yield takeLatest(types.SUBMIT_CODE, submitUserCodeSaga);
   yield takeLatest(types.SUBMIT_CSHARP_CODE, submitUserCsharpCodeSaga);
@@ -175,4 +224,6 @@ export function* watcherSaga() {
     types.RETRIEVE_DETAILS_TESTCASES,
     retieveDetailsTestCasesSaga
   );
+  yield takeLatest(types.SELECTEDLANGUAGE_UTIL, selectedLanguageUtilSaga);
+  yield takeLatest(types.SAVE_CURRENT_CODE_UTIL, saveCurrentCodeUtilSaga);
 }

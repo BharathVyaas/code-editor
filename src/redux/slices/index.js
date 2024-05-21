@@ -1,13 +1,16 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import {
-  codeEditorSlice,
   retrieveDetailsSlice,
   retrieveTestCasesSlice,
-  submitCodeSlice,
   submitCsharpCodeSlice,
   submitTestSlice,
 } from "./codeEditorSlice";
-import { timerSlice } from "./examSlice";
+import {
+  codeEditorSlice,
+  monacoSlice,
+  submitCodeSlice,
+  timerSlice,
+} from "./examSlice";
 
 export const reducer = combineReducers({
   // CodeEditor
@@ -18,6 +21,7 @@ export const reducer = combineReducers({
   retrieveTestCases: retrieveTestCasesSlice.reducer,
   submitCsharpCode: submitCsharpCodeSlice.reducer,
 
-  // Timer
+  // Exam
   timer: timerSlice.reducer,
+  monacoReducer: monacoSlice.reducer,
 });

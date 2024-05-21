@@ -2,8 +2,8 @@ import { Editor } from "@monaco-editor/react";
 import { Button } from "@mui/material";
 import { useCallback, useEffect, useRef } from "react";
 import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
-import { updateUserCode } from "../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
+import { updateUserCode } from "../redux/slices/examSlice";
 
 function CodeEditorModalComponent({
   userCode,

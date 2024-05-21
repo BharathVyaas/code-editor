@@ -12,8 +12,12 @@ import { UserContext } from "../../../../context/UserContext";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { submitTestReset } from "../../../../redux/slices/codeEditorSlice";
-import { resetTimer, setShouldCount } from "../../../../redux/slices/examSlice";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
+import {
+  resetMonacoSliceCodeItem,
+  resetTimer,
+  setShouldCount,
+} from "../../../../redux/slices/examSlice";
 
 function SubmitTestComponent({
   testCasesOutput,
@@ -21,6 +25,8 @@ function SubmitTestComponent({
   isLoading,
   submitTestState,
   shouldCountDispatch,
+  submitState,
+  resetItemDispatch,
 }) {
   const problemId = useParams().problemId;
   const { user } = useContext(UserContext);
@@ -58,6 +64,12 @@ function SubmitTestComponent({
     });
     shouldCountDispatch(false);
   };
+
+  useEffect(() => {
+    if (submitTestState === "reslove") {
+      resetItemDispatch(problemId);
+    }
+  }, [submitTestState, resetItemDispatch, problemId]);
 
   return (
     <>
@@ -155,6 +167,7 @@ const mapDispatch = {
   submitTestDispatch: submitTest,
   resetTimerDispatch: resetTimer,
   shouldCountDispatch: setShouldCount,
+  resetItemDispatch: resetMonacoSliceCodeItem,
 };
 
 const SubmitTest = connect(mapState, mapDispatch)(SubmitTestComponent);

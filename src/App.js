@@ -2,13 +2,13 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import CodeEditor from "./pages/CodeEditor";
 import { store } from "./redux";
 import { Provider } from "react-redux";
-import NotFound from "./pages/404 NotFound/NotFound";
 import ProgramSubmmition from "./pages/Admin/ProgramSubmmition";
 import ErrorBoundary from "./shared/ErrorBoundary";
 import Auth from "./pages/Auth/Auth";
 import { UserProvider } from "./context/UserContext";
 import Problemset from "./pages/Problemset";
 import LandingPage from "./pages/Home/LandingPage";
+import NotFound from "./pages/404 NotFound/NotFound";
 
 function App() {
   const router = createBrowserRouter([
