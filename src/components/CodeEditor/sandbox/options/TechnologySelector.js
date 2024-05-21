@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router";
+import { UserContext } from "../../../../context/UserContext";
 
 function TechnologySelector({
   programmingLanguages,
@@ -7,8 +8,13 @@ function TechnologySelector({
   setSelectedLanguage,
 }) {
   const { problemId } = useParams();
+  const { user } = useContext(UserContext);
+
   const handleChange = (event) => {
-    setSelectedLanguage({ key: problemId, language: event.target.value });
+    setSelectedLanguage({
+      key: problemId + "::" + String(user?.username || "guest"),
+      language: event.target.value,
+    });
   };
 
   return (

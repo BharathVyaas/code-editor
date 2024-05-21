@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import { setAutoSave } from "../../../../redux/slices/examSlice";
 import { saveCurrentCode } from "../../../../redux/actions/types";
 import { useParams } from "react-router";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../../../context/UserContext";
 
 const StyledBadgeSaving = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -53,10 +54,15 @@ function SaveComponent({
   setAutoSave,
 }) {
   const [isMouseDown, setIsMouseDown] = useState(false);
+  const { user } = useContext(UserContext);
   const { problemId: key } = useParams();
 
   const onSave = () => {
-    saveCurrentCode({ key, code, language });
+    saveCurrentCode({
+      key: key + "::" + String(user.username || "guest"),
+      code,
+      language,
+    });
   };
 
   const onAutoSave = () => {

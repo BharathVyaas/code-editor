@@ -1,5 +1,5 @@
 import MonacoEditor from "./sandbox/MonacoEditor";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
 import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
@@ -11,6 +11,7 @@ import {
   updateUserCode,
 } from "../../redux/slices/examSlice";
 import { useParams } from "react-router";
+import { UserContext } from "../../context/UserContext";
 
 function SandboxComponent({
   retrievedDetails,
@@ -23,6 +24,7 @@ function SandboxComponent({
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
   const [testCasesOutput, setTestCasesOutput] = useState({});
+  const { user } = useContext(UserContext);
   const { problemId } = useParams();
 
   const programmingLanguages = useMemo(() => {
@@ -53,8 +55,12 @@ function SandboxComponent({
 
   useEffect(() => {
     setUserCode(
-      savedCode[problemId]?.[selectedLanguage]
-        ? savedCode[problemId][selectedLanguage]
+      savedCode[problemId + "::" + String(user?.username || "guest")]?.[
+        selectedLanguage
+      ]
+        ? savedCode[problemId + "::" + String(user?.username || "guest")][
+            selectedLanguage
+          ]
         : DefaultPrograms[
             programmingLanguages.find(
               (language) => language.id === selectedLanguage
@@ -67,7 +73,7 @@ function SandboxComponent({
     DefaultPrograms,
     programmingLanguages,
     problemId,
-    savedCode,
+    user,
   ]);
 
   const onReset = () => {
@@ -100,7 +106,7 @@ function SandboxComponent({
 
   return (
     <div className="flex flex-col overflow-auto bg-gray-100">
-      <div className="bg-white border-b border-gray-200 w-full md:px-4 py-2 flex items-center justify-between gap-y-3 flex-wrap lg:flex-nowrap overflow-auto hide-scroll align-middle shadow-md">
+      <div className="bg-white border-b border-gray-200 w-full md:px-1 xl:px-2 py-2 flex items-center justify-between gap-y-3 flex-wrap overflow-auto hide-scroll align-middle shadow-md">
         <Options
           programmingLanguages={programmingLanguages}
           selectedLanguage={selectedLanguage}
@@ -151,7 +157,6 @@ function SandboxComponent({
 }
 
 const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.userCode,
   selectedLanguage: state.codeEditor.selectedLanguage,
   retrievedDetails: state.retrieveDetails.data,
   savedCode: state.monacoReducer.code,

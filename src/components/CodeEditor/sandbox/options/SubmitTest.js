@@ -65,12 +65,6 @@ function SubmitTestComponent({
     shouldCountDispatch(false);
   };
 
-  useEffect(() => {
-    if (submitTestState === "reslove") {
-      resetItemDispatch(problemId);
-    }
-  }, [submitTestState, resetItemDispatch, problemId]);
-
   return (
     <>
       <Button
@@ -95,6 +89,7 @@ function SubmitTestComponent({
         onClose={() => {
           setOpen(false);
           navigate("/problemset");
+          resetItemDispatch(problemId);
         }}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
@@ -144,6 +139,7 @@ function SubmitTestComponent({
                   submitHanlder();
                 } else {
                   navigate("/problemset");
+                  resetItemDispatch(problemId);
                 }
               }}
             >
