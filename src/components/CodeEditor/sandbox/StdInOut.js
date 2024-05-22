@@ -166,7 +166,7 @@ function StdInOutComponent({
 
   useEffect(() => {
     if (
-      Object.values(testCasesOutput).filter((testCase) => testCase.flag)
+      Object.values(testCasesOutput).filter((testCase) => testCase?.flag)
         .length > 0
     ) {
       outputRef.current.scrollIntoView({ behavior: "smooth" });
@@ -205,7 +205,7 @@ function StdInOutComponent({
                     ({" "}
                     {
                       Object.values(testCasesOutput).filter(
-                        (testCase) => testCase.flag
+                        (testCase) => testCase?.flag
                       ).length
                     }{" "}
                     / {retrievedTestCases.length} )
@@ -226,7 +226,7 @@ function StdInOutComponent({
                   />
                 ) : Object.values(testCasesOutput).length ? (
                   Object.values(testCasesOutput).filter(
-                    (testCase) => testCase.flag
+                    (testCase) => testCase?.flag
                   ).length === retrievedTestCases.length ? (
                     <DoneIcon
                       sx={{
