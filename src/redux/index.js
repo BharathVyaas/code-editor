@@ -10,7 +10,7 @@ const sagaMiddleware = createSagaMiddleware();
 const persistConfig = {
   key: "exam-state:0.0.1",
   storage,
-  whitelist: ["timer", "monacoReducer"],
+  whitelist: ["timer", "monacoReducer", "retrieveDetails", "retrieveTestCases"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);

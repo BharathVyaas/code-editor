@@ -9,7 +9,7 @@ import BackupIcon from "@mui/icons-material/Backup";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { submitTest } from "../../../../redux/actions";
 import { UserContext } from "../../../../context/UserContext";
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { submitTestReset } from "../../../../redux/slices/codeEditorSlice";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
@@ -18,6 +18,7 @@ import {
   resetTimer,
   setShouldCount,
 } from "../../../../redux/slices/examSlice";
+import { persistor } from "../../../../redux";
 
 function SubmitTestComponent({
   testCasesOutput,
@@ -27,6 +28,7 @@ function SubmitTestComponent({
   shouldCountDispatch,
   submitState,
   resetItemDispatch,
+  resetPersistStore,
 }) {
   const problemId = useParams().problemId;
   const { user } = useContext(UserContext);
@@ -35,11 +37,17 @@ function SubmitTestComponent({
   const [open, setOpen] = useState(false);
   const { isError } = useSelector((store) => store.submitTest);
 
+  const persistPurge = useCallback(async () => {
+    await persistor.purge();
+    resetPersistStore();
+  }, [resetPersistStore]);
+
   useEffect(() => {
     if (submitTestState === "reslove" || isError) {
       setOpen(true);
+      persistPurge();
     }
-  }, [submitTestState, isError]);
+  }, [submitTestState, isError, persistPurge]);
 
   useEffect(() => {
     dispatch(submitTestReset());
@@ -164,6 +172,9 @@ const mapDispatch = {
   resetTimerDispatch: resetTimer,
   shouldCountDispatch: setShouldCount,
   resetItemDispatch: resetMonacoSliceCodeItem,
+  resetPersistStore: () => ({
+    type: "RESET_STATE",
+  }),
 };
 
 const SubmitTest = connect(mapState, mapDispatch)(SubmitTestComponent);

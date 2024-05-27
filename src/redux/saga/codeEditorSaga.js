@@ -139,10 +139,28 @@ function* retrieveTestCasesSaga(action) {
 
 function* retieveDetailsTestCasesSaga(action) {
   try {
+    let persistedData;
+
+    if (localStorage.getItem("persist:exam-state:0.0.1"))
+      persistedData = JSON.parse(
+        JSON.parse(localStorage.getItem("persist:exam-state:0.0.1"))
+          ?.retrieveTestCases
+      );
+
     yield put(retrieveDetailsRequest());
     yield put(retrieveTestCasesRequest());
 
-    let res = yield call(retrieveTestCasesApi, action.payload);
+    let res;
+
+    if (persistedData && persistedData.data) {
+      res = {
+        data: { dbresult: persistedData.data },
+        status: persistedData.status,
+        statusMessage: persistedData.statusMessage,
+      };
+    } else {
+      res = yield call(retrieveTestCasesApi, action.payload);
+    }
 
     yield put(
       retrieveTestCasesSuccess({
@@ -152,7 +170,22 @@ function* retieveDetailsTestCasesSaga(action) {
       })
     );
 
-    res = yield call(retrieveDetailsApi, action.payload);
+    if (localStorage.getItem("persist:exam-state:0.0.1"))
+      persistedData = JSON.parse(
+        JSON.parse(localStorage.getItem("persist:exam-state:0.0.1"))
+          ?.retrieveDetails
+      );
+
+    if (persistedData && persistedData.data) {
+      res = {
+        data: { dbresult: [persistedData.data] },
+        status: persistedData.status,
+        statusMessage: persistedData.statusMessage,
+      };
+    } else {
+      console.log("hit");
+      res = yield call(retrieveDetailsApi, action.payload);
+    }
 
     yield put(
       retrieveDetailsSuccess({
@@ -162,6 +195,7 @@ function* retieveDetailsTestCasesSaga(action) {
       })
     );
   } catch (error) {
+    console.error(error);
     yield put(
       retrieveTestCasesError({
         status: error.status,
