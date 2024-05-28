@@ -124,7 +124,7 @@ const mapState = (state) => ({
   submitCodeIsLoading: state.submitCode.isLoading,
   submitCodeIsStatus: state.submitCode.status,
   submitCodeIsError: state.submitCode.isError,
-  userCode: state.codeEditor.present.userCode,
+  userCode: state.codeEditor.userCode,
 });
 
 const mapDispatch = {

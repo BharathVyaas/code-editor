@@ -1,46 +1,29 @@
 import { useRef, useEffect, useState } from "react";
 import { Editor } from "@monaco-editor/react";
-import { updateUserCode } from "../../../redux/slices/codeEditorSlice";
 import { connect } from "react-redux";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Modal, Typography } from "@mui/material";
+import { updateUserCode } from "../../../redux/slices/examSlice";
 
 function MonacoEditorComponent({
   language,
   userCode,
-  defaultCode,
   selectedTheme,
-  pastUserCode,
   setUserCode,
-  containerHeight,
 }) {
   const editorRef = useRef(null);
-  const pasteRef = useRef(0);
-  const [didPaste, setDidPaste] = useState(0);
-  const [showWarning, setShowWarning] = useState(false);
-
-  const handlePaste = () => {
-    setDidPaste((prev) => prev + 1);
-    setShowWarning(true); // Show the warning message
-  };
-
-  useEffect(() => {
-    if (didPaste > 0 && pasteRef.current !== didPaste) {
-      pasteRef.current = didPaste;
-      setUserCode(pastUserCode || defaultCode); // Reset code on paste
-    }
-  }, [didPaste, pastUserCode, defaultCode, pasteRef, setUserCode]);
+  const [showWarn, setShowWarn] = useState(false);
 
   const onMount = (editor) => {
     editorRef.current = editor;
     editor.focus();
-    editor.onDidPaste(() => handlePaste());
+
+    // editor.onKeyDown((event) => {
+    //   const { keyCode, ctrlKey, metaKey } = event;
+    //   if ((keyCode === 33 || keyCode === 52) && (metaKey || ctrlKey)) {
+    //     setShowWarn(true);
+    //     event.preventDefault();
+    //   }
+    // });
   };
 
   useEffect(() => {
@@ -53,20 +36,11 @@ function MonacoEditorComponent({
     setUserCode(newCode);
   };
 
-  const warningDialogStyles = {
-    "& .MuiDialogTitle-root": {
-      backgroundColor: "#ffe0e0", // Light red background
-      padding: "16px 24px", // Adjust padding for content
-    },
-    "& .MuiDialogContent-root": {
-      padding: "16px 24px", // Adjust padding for content
-    },
-  };
-
   return (
     <>
       <Editor
         width="100%"
+        height="100%"
         value={userCode}
         language={language}
         options={{
@@ -79,21 +53,21 @@ function MonacoEditorComponent({
           colorDecorators: true,
           contextmenu: true,
           cursorBlinking: "blink",
-          cursorSmoothCaretAnimation: false,
+          cursorSmoothCaretAnimation: true,
           cursorStyle: "line",
           disableLayerHinting: false,
           disableMonospaceOptimizations: false,
-          dragAndDrop: false,
-          fixedOverflowWidgets: false,
+          dragAndDrop: true,
+          fixedOverflowWidgets: true,
           folding: true,
           foldingStrategy: "auto",
-          fontLigatures: false,
-          formatOnPaste: false,
+          fontLigatures: true,
+          formatOnPaste: true,
           formatOnType: false,
           hideCursorInOverviewRuler: false,
           highlightActiveIndentGuide: true,
           links: true,
-          mouseWheelZoom: false,
+          mouseWheelZoom: true,
           multiCursorMergeOverlapping: true,
           multiCursorModifier: "alt",
           overviewRulerBorder: true,
@@ -112,14 +86,14 @@ function MonacoEditorComponent({
           scrollBeyondLastColumn: 5,
           scrollBeyondLastLine: true,
           selectOnLineNumbers: true,
-          selectionClipboard: false,
+          selectionClipboard: true,
           selectionHighlight: true,
           showFoldingControls: "mouseover",
           smoothScrolling: true,
           suggestOnTriggerCharacters: true,
           wordBasedSuggestions: true,
           wordSeparators: "~!@#$%^&*()-=+[{]}|;:'\",.<>/?",
-          wordWrap: "off",
+          wordWrap: "on",
           wordWrapBreakAfterCharacters: "\t})]?|&,;",
           wordWrapBreakBeforeCharacters: "{([+",
           wordWrapBreakObtrusiveCharacters: ".",
@@ -127,7 +101,6 @@ function MonacoEditorComponent({
           wordWrapMinified: true,
           wrappingIndent: "none",
           fontSize: 16,
-          minimap: { enabled: true },
         }}
         onMount={onMount}
         onChange={handleEditorChange}
@@ -135,32 +108,45 @@ function MonacoEditorComponent({
         editorRef={editorRef}
       />
 
-      {showWarning && (
-        <Dialog open={showWarning}>
-          <DialogTitle sx={warningDialogStyles}>
-            <Typography variant="body3" color="error">
-              Warning!
-            </Typography>
-          </DialogTitle>
-          <DialogContent>
-            <Typography variant="body1">
-              Copying and pasting code during the test is not allowed.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setShowWarning(false)}>OK</Button>
-          </DialogActions>
-        </Dialog>
-      )}
+      <Modal open={showWarn} onClose={() => setShowWarn(false)}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 500, // Adjust width for better readability
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 5, // Add border radius for a softer look
+            textAlign: "center",
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Warning
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Copying and pasting is disabled during test.
+          </Typography>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "red",
+              ":hover": { backgroundColor: "red" },
+            }}
+            onClick={() => setShowWarn(false)}
+          >
+            Close
+          </Button>
+        </Box>
+      </Modal>
     </>
   );
 }
 
 const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.present.userCode,
-  pastUserCode:
-    state.codeEditor.past?.[1]?.userCode ||
-    state.codeEditor.past?.[0]?.userCode,
+  userCode: state.codeEditor.userCode,
 });
 
 const mapDispatchToProps = {

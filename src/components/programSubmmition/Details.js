@@ -1,93 +1,161 @@
-import { Paper, Grid } from "@mui/material";
+import { Paper, Grid, TextField, Typography, Box } from "@mui/material";
+import { useState } from "react";
+import Image from "./Details/Image";
 
 function Details() {
+  const [problemName, setProblemName] = useState("");
+  const [problemDescription, setProblemDescription] = useState("");
+  const [sampleInput, setSampleInput] = useState("");
+  const [sampleOutput, setSampleOutput] = useState("");
+  const [explanation, setExplanation] = useState("");
+
+  const onProblemName = (e) => {
+    setProblemName(e.target.value);
+  };
+  const onProblemDescription = (e) => {
+    setProblemDescription(e.target.value);
+  };
+  const onSampleInput = (e) => {
+    setSampleInput(e.target.value);
+  };
+  const onSampleOutput = (e) => {
+    setSampleOutput(e.target.value);
+  };
+  const onExplanation = (e) => {
+    setExplanation(e.target.value);
+  };
+
   return (
-    <article className="p-4 pt-0 overflow-auto ">
-      <h1 className="text-3xl font-bold mb-2 text-gray-900">
+    <Box className="p-4 pt-0 overflow-auto">
+      <Typography variant="h3" className="mb-4 text-gray-900">
         Program Question
-      </h1>
+      </Typography>
       <hr className="border-gray-300 my-4" />
-      <section className="mt-4 mb-6">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900">
-          Finding Window
-        </h2>
-        <textarea style={{ width: "100%" }} className="bg-gray-100" />
-      </section>
+      <Box className="mt-4 mb-6">
+        <TextField
+          value={problemName}
+          onChange={onProblemName}
+          className="bg-gray-100"
+          placeholder="Problem name"
+          variant="outlined"
+          fullWidth
+        />
+        <TextField
+          margin="normal"
+          value={problemDescription}
+          className="bg-gray-100"
+          onChange={onProblemDescription}
+          placeholder="Problem Description"
+          variant="outlined"
+          fullWidth
+          multiline
+          rows={4}
+        />
+      </Box>
+      <hr className="border-gray-300 my-4" />
+      <Image />
       <hr className="border-gray-300 my-4" />
       <Grid container spacing={4}>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Paper elevation={3} className="p-4">
-            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+            <Typography variant="h5" className="mb-2 text-gray-900">
               Sample Input
-            </h3>
-            <textarea style={{ width: "100%" }} className="bg-gray-100" />
+            </Typography>
+            <TextField
+              value={sampleInput}
+              onChange={onSampleInput}
+              className="bg-gray-100"
+              placeholder="Sample Input"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+            />
           </Paper>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <Paper elevation={3} className="p-4">
-            <h3 className="text-xl font-semibold mb-2 text-gray-900">
+            <Typography variant="h5" className="mb-2 text-gray-900">
               Sample Output
-            </h3>
-            <textarea style={{ width: "100%" }} className="bg-gray-100" />
+            </Typography>
+            <TextField
+              value={sampleOutput}
+              onChange={onSampleOutput}
+              className="bg-gray-100"
+              placeholder="Sample Output"
+              variant="outlined"
+              fullWidth
+              multiline
+              rows={4}
+            />
           </Paper>
         </Grid>
       </Grid>
       <hr className="border-gray-300 my-4" />
-      <section className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-900">Explanation</h2>
+      <Box className="mb-6">
+        <Typography variant="h5" className="mb-4 text-gray-900">
+          Explanation
+        </Typography>
         <Paper elevation={3} className="p-4 bg-gray-100 rounded mt-4">
-          <code className="text-sm text-gray-700">
-            <textarea
-              style={{ width: "100%" }}
-              className="bg-gray-100"
-              rows={4}
-            />
-          </code>
+          <TextField
+            value={explanation}
+            onChange={onExplanation}
+            className="bg-gray-100"
+            placeholder="Explanation..."
+            variant="outlined"
+            fullWidth
+            multiline
+            rows={4}
+          />
         </Paper>
-      </section>
+      </Box>
       <hr className="border-gray-300 my-4" />
-      <article>
-        <h2 className="text-2xl font-semibold text-gray-900">Note:</h2>
-        <p className="text-base text-gray-700">
+      <Box>
+        <Typography variant="h5" className="mb-4 text-gray-900">
+          Note:
+        </Typography>
+        <Typography variant="body1" className="text-gray-700 mb-4">
           Your code must be able to print the sample output from the provided
           sample input. However, your code is run against multiple hidden test
           cases. Therefore, your code must pass these hidden test cases to solve
           the problem statement.
-        </p>
-        <ul className="p-0">
-          <h3 className="text-xl font-semibold text-gray-900">Limits</h3>
-          <li>
-            <p className="text-sm text-gray-700">
-              <i>Time Limit: 1.0 sec(s) for each input file</i>
-            </p>
-          </li>
-          <li>
-            <p className="text-sm text-gray-700">
-              <i>Memory Limit: 256 MB</i>
-            </p>
-          </li>
-          <li>
-            <p className="text-sm text-gray-700">
-              <i>Source Limit: 1024 KB</i>
-            </p>
-          </li>
-        </ul>
-        <article>
-          <h3 className="text-xl font-semibold text-gray-900">Scoring</h3>
-          <p className="text-sm text-gray-700">
+        </Typography>
+        <Box className="mb-4">
+          <Typography variant="h6" className="text-gray-900">
+            Limits
+          </Typography>
+          <ul className="list-disc pl-5 text-gray-700">
+            <li>
+              <Typography variant="body2">
+                Time Limit: 1.0 sec(s) for each input file
+              </Typography>
+            </li>
+            <li>
+              <Typography variant="body2">Memory Limit: 256 MB</Typography>
+            </li>
+            <li>
+              <Typography variant="body2">Source Limit: 1024 KB</Typography>
+            </li>
+          </ul>
+        </Box>
+        <Box className="mb-4">
+          <Typography variant="h6" className="text-gray-900">
+            Scoring
+          </Typography>
+          <Typography variant="body2" className="text-gray-700">
             Score is assigned if any testcase passes
-          </p>
-        </article>
-        <article>
-          <h3 className="text-xl font-semibold text-gray-900">
+          </Typography>
+        </Box>
+        <Box>
+          <Typography variant="h6" className="text-gray-900">
             Allowed Languages
-          </h3>
-          <p className="text-sm text-gray-700">
+          </Typography>
+          <Typography variant="body2" className="text-gray-700">
             Bash, C, C++14, C++17, Clojure, C#, D
-          </p>
-        </article>
-      </article>
-    </article>
+          </Typography>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

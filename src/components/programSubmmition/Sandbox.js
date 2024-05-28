@@ -1,68 +1,102 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useContext } from "react";
+import { useParams } from "react-router";
 import Options from "./sandbox/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
 import { connect } from "react-redux";
-import { Editor } from "@monaco-editor/react";
-import { updateUserCode } from "../../redux/slices/examSlice";
+import {
+  updateUserCode,
+  setSelectedLanguage as setDefaultLanguage,
+} from "../../redux/slices/examSlice";
+import MonacoEditor from "./sandbox/MonacoEditor";
+import { setSelectedLanguage } from "../../redux/actions/types";
+import { UserContext } from "../../context/UserContext";
 
-const programmingLanguages = [
-  { id: 1, name: "python" },
-  { id: 2, name: "javascript" },
-  { id: 3, name: "java" },
-  { id: 4, name: "c" },
-  { id: 5, name: "csharp" },
-];
-
-const initialCodes = {
-  python: `print("Hello, world!")`,
-  javascript: `console.log("Hello, world!");`,
-  java: `public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
-    }
-}`,
-  c: `#include <stdio.h>
-
-  int main() {
-      printf("Hello, world!\n");
-      return 0;
-  }`,
-  csharp: `using System;
-
-  class Program
-  {
-      static void Main(string[] args)
-      {
-          Console.WriteLine("Hello, world!");
-      }
-  }`,
-};
-
-function SandboxComponent({ userCode: _, setUserCode, containerHeight }) {
-  const [selectedLanguage, setSelectedLanguage] = useState(1);
+function SandboxComponent({
+  retrievedDetails,
+  setUserCode,
+  savedCode,
+  selectedLanguage,
+  setSelectedLanguage,
+  setDefaultLanguageDispatch,
+}) {
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
+  const [testCasesOutput, setTestCasesOutput] = useState({});
+  const { user } = useContext(UserContext);
+  const { problemId } = useParams();
+
+  console.log(testCasesOutput);
+
+  const programmingLanguages = useMemo(() => {
+    return (
+      retrievedDetails?.Languages?.split(",")?.map((language) => ({
+        id: language,
+        name: language,
+      })) || []
+    );
+  }, [retrievedDetails]);
+
+  const DefaultPrograms = useMemo(
+    () =>
+      retrievedDetails?.DefaultProgram
+        ? JSON.parse(retrievedDetails.DefaultProgram)
+        : "",
+    [retrievedDetails]
+  );
 
   useEffect(() => {
     setUserCode(
-      initialCodes[
+      DefaultPrograms[
         programmingLanguages.find(
           (language) => language.id === selectedLanguage
         )?.name
       ]
     );
-  }, [selectedLanguage, setUserCode]);
+  }, [selectedLanguage, setUserCode, DefaultPrograms, programmingLanguages]);
+
+  useEffect(() => {
+    if (programmingLanguages)
+      setDefaultLanguageDispatch(programmingLanguages?.[0]?.id);
+  }, [programmingLanguages, setSelectedLanguage, setDefaultLanguageDispatch]);
 
   const onReset = () => {
     setUserCode(
-      initialCodes[
+      DefaultPrograms[
         programmingLanguages.find(
           (language) => language.id === selectedLanguage
         )?.name
       ]
     );
   };
+
+  useEffect(() => {
+    setTestCasesOutput({});
+  }, []);
+
+  useEffect(() => {
+    setUserCode(
+      savedCode[problemId + "::" + String(user?.username || "guest")]?.[
+        selectedLanguage
+      ]
+        ? savedCode[problemId + "::" + String(user?.username || "guest")][
+            selectedLanguage
+          ]
+        : DefaultPrograms[
+            programmingLanguages.find(
+              (language) => language.id === selectedLanguage
+            )?.name || ""
+          ] || ""
+    );
+  }, [
+    selectedLanguage,
+    setUserCode,
+    savedCode,
+    DefaultPrograms,
+    problemId,
+    user,
+    programmingLanguages,
+  ]);
 
   if (codeEditorExtend) {
     return (
@@ -100,16 +134,20 @@ function SandboxComponent({ userCode: _, setUserCode, containerHeight }) {
       </div>
       <div style={{ width: "100%", height: "88%", backgroundColor: "#FFFFFF" }}>
         {/* Adjust the backgroundColor value to the desired color */}
-        <Editor
-          width={"100%"}
-          height={"100%"}
-          options={{ fontSize: 16 }}
-          theme={selectedTheme}
+        <MonacoEditor
           language={
             programmingLanguages.find(
               (language) => language.id === selectedLanguage
-            )?.name
+            )?.name || ""
           }
+          defaultCode={
+            DefaultPrograms[
+              programmingLanguages.find(
+                (language) => language.id === selectedLanguage
+              )?.name || ""
+            ]
+          }
+          selectedTheme={selectedTheme}
         />
       </div>
     </div>
@@ -117,11 +155,15 @@ function SandboxComponent({ userCode: _, setUserCode, containerHeight }) {
 }
 
 const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.present.userCode,
+  selectedLanguage: state.codeEditor.selectedLanguage,
+  retrievedDetails: state.retrieveDetails.data,
+  savedCode: state.monacoReducer.code,
 });
 
 const mapDispatchToProps = {
-  setUserCode: (updatedCode) => updateUserCode(updatedCode),
+  setUserCode: updateUserCode,
+  setSelectedLanguage,
+  setDefaultLanguageDispatch: setDefaultLanguage,
 };
 
 const Sandbox = connect(mapStateToProps, mapDispatchToProps)(SandboxComponent);

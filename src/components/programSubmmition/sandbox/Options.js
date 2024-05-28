@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import BackupIcon from "@mui/icons-material/Backup";
+import Save from "./options/Save";
 
 const themes = ["vs-dark", "hc-light", "hc-black"];
 
@@ -73,6 +74,10 @@ function Options({
             setSelectedTheme={setSelectedTheme}
           />
         </div>
+
+        <span>
+          <Save />
+        </span>
 
         <span
           onClick={onCodeEditorExpand}
