@@ -16,43 +16,20 @@ import Save from "./options/Save";
 
 const themes = ["vs-dark", "hc-light", "hc-black"];
 
-function Options({
-  programmingLanguages,
-  selectedLanguage,
-  setSelectedLanguage,
-  selectedTheme,
-  setSelectedTheme,
-  onReset,
-  setCodeEditorExtend,
-}) {
-  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+function Options({}) {
+  const handleReset = () => {};
 
-  const handleReset = () => {
-    setOpenConfirmationModal(true);
-  };
+  const handleResetConfirmed = () => {};
 
-  const handleResetConfirmed = () => {
-    onReset();
-    setOpenConfirmationModal(false);
-  };
+  const handleResetCancelled = () => {};
 
-  const handleResetCancelled = () => {
-    setOpenConfirmationModal(false);
-  };
-
-  const onCodeEditorExpand = () => {
-    setCodeEditorExtend(true);
-  };
+  const onCodeEditorExpand = () => {};
 
   return (
     <>
       <div className="flex items-center space-x-2">
         <label className="text-sm font-medium text-gray-600">Language:</label>
-        <TechnologySelector
-          programmingLanguages={programmingLanguages}
-          selectedLanguage={selectedLanguage}
-          setSelectedLanguage={setSelectedLanguage}
-        />
+        <TechnologySelector />
       </div>
 
       <div className="flex space-x-4 items-center justify-between">
@@ -68,11 +45,7 @@ function Options({
 
         <div className="flex items-center space-x-2">
           <label className="text-sm font-medium text-gray-600">Theme:</label>
-          <ThemeSelector
-            themes={themes}
-            selectedTheme={selectedTheme}
-            setSelectedTheme={setSelectedTheme}
-          />
+          <ThemeSelector />
         </div>
 
         <span>
@@ -95,7 +68,6 @@ function Options({
       </div>
 
       <Dialog
-        open={openConfirmationModal}
         onClose={handleResetCancelled}
         aria-labelledby="reset-confirmation-modal"
       >

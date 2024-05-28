@@ -4,14 +4,8 @@ import { connect } from "react-redux";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { updateUserCode } from "../../../redux/slices/examSlice";
 
-function MonacoEditorComponent({
-  language,
-  userCode,
-  selectedTheme,
-  setUserCode,
-}) {
+function MonacoEditorComponent({}) {
   const editorRef = useRef(null);
-  const [showWarn, setShowWarn] = useState(false);
 
   const onMount = (editor) => {
     editorRef.current = editor;
@@ -30,19 +24,13 @@ function MonacoEditorComponent({
     if (editorRef.current) {
       editorRef.current.focus();
     }
-  }, [editorRef, language]);
-
-  const handleEditorChange = (newCode) => {
-    setUserCode(newCode);
-  };
+  }, [editorRef]);
 
   return (
     <>
       <Editor
         width="100%"
         height="100%"
-        value={userCode}
-        language={language}
         options={{
           acceptSuggestionOnCommitCharacter: true,
           acceptSuggestionOnEnter: "on",
@@ -103,12 +91,10 @@ function MonacoEditorComponent({
           fontSize: 16,
         }}
         onMount={onMount}
-        onChange={handleEditorChange}
-        theme={selectedTheme}
         editorRef={editorRef}
       />
 
-      <Modal open={showWarn} onClose={() => setShowWarn(false)}>
+      {/* <Modal open={showWarn} onClose={() => setShowWarn(false)}>
         <Box
           sx={{
             position: "absolute",
@@ -135,23 +121,18 @@ function MonacoEditorComponent({
               backgroundColor: "red",
               ":hover": { backgroundColor: "red" },
             }}
-            onClick={() => setShowWarn(false)}
           >
             Close
           </Button>
         </Box>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
 
-const mapStateToProps = (state) => ({
-  userCode: state.codeEditor.userCode,
-});
+const mapStateToProps = (state) => ({});
 
-const mapDispatchToProps = {
-  setUserCode: (updatedCode) => updateUserCode(updatedCode),
-};
+const mapDispatchToProps = {};
 
 const MonacoEditor = connect(
   mapStateToProps,
