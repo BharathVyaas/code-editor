@@ -1,15 +1,17 @@
-function ThemeSelector({}) {
+function ThemeSelector({ themes, theme, onThemeChange }) {
   return (
     <div className="relative">
       <select
         id="theme-select"
+        value={theme}
+        onChange={onThemeChange}
         className="w-[10rem] block appearance-none bg-white border border-gray-300 text-gray-700 rounded-md  py-[4px] px-2 text-sm leading-tight focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-transparent"
       >
-        {/* {themes.map((option) => (
+        {themes.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
-        ))} */}
+        ))}
       </select>
       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
         <svg

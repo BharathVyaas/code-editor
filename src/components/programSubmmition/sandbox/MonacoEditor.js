@@ -4,8 +4,13 @@ import { connect } from "react-redux";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { updateUserCode } from "../../../redux/slices/examSlice";
 
-function MonacoEditorComponent({}) {
+function MonacoEditorComponent({ theme, files, selectedFile }) {
+  const [value, setValue] = useState();
   const editorRef = useRef(null);
+
+  useEffect(() => {
+    setValue(files[selectedFile !== null ? selectedFile : 0]?.code || "");
+  }, [files, selectedFile]);
 
   const onMount = (editor) => {
     editorRef.current = editor;
@@ -90,6 +95,8 @@ function MonacoEditorComponent({}) {
           wrappingIndent: "none",
           fontSize: 16,
         }}
+        value={value}
+        theme={theme}
         onMount={onMount}
         editorRef={editorRef}
       />
@@ -130,7 +137,10 @@ function MonacoEditorComponent({}) {
   );
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  files: state.programSubmmition.files,
+  selectedFile: state.programSubmmition.selectedFile,
+});
 
 const mapDispatchToProps = {};
 

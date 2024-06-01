@@ -13,10 +13,11 @@ import {
 import { useState } from "react";
 import BackupIcon from "@mui/icons-material/Backup";
 import Save from "./options/Save";
+import FileSelector from "./options/FileSelector";
 
 const themes = ["vs-dark", "hc-light", "hc-black"];
 
-function Options({}) {
+function Options({ theme, setTheme }) {
   const handleReset = () => {};
 
   const handleResetConfirmed = () => {};
@@ -25,11 +26,17 @@ function Options({}) {
 
   const onCodeEditorExpand = () => {};
 
+  const onThemeChange = (e) => {
+    setTheme(e.target.value);
+  };
+
   return (
     <>
       <div className="flex items-center space-x-2">
-        <label className="text-sm font-medium text-gray-600">Language:</label>
-        <TechnologySelector />
+        <label className="text-sm font-medium text-gray-600">
+          Choose file:
+        </label>
+        <FileSelector />
       </div>
 
       <div className="flex space-x-4 items-center justify-between">
@@ -45,7 +52,11 @@ function Options({}) {
 
         <div className="flex items-center space-x-2">
           <label className="text-sm font-medium text-gray-600">Theme:</label>
-          <ThemeSelector />
+          <ThemeSelector
+            themes={themes}
+            onThemeChange={onThemeChange}
+            theme={theme}
+          />
         </div>
 
         <span>

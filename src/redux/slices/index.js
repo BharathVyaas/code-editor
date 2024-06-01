@@ -11,6 +11,8 @@ import {
   submitCodeSlice,
   timerSlice,
 } from "./examSlice";
+import { programSubmmitionSlice } from "./ProgramSubmmitionSlice";
+import { executeCodeSlice } from "./programSubmmition/executeCodeSlice";
 
 export const reducer = combineReducers({
   // CodeEditor
@@ -24,4 +26,8 @@ export const reducer = combineReducers({
   // Exam
   timer: timerSlice.reducer,
   monacoReducer: monacoSlice.reducer,
+
+  // Program Submmiton
+  programSubmmition: programSubmmitionSlice.reducer,
+  executeCode: executeCodeSlice.reducer,
 });

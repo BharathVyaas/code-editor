@@ -17,6 +17,15 @@ export const submitUserCodeApi = async (payload) => {
   }
 };
 
+export const executeCodeApi = async (payload) => {
+  try {
+    const response = await compilerApi.post("api/codeexecute", payload);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const submitUserCCodeApi1 = async (payload) => {
   try {
     const response1 = await apiCS.post("/", payload);

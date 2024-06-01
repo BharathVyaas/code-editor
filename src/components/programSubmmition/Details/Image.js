@@ -1,9 +1,6 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 
-function Image() {
-  const [image, setImage] = useState();
-
+function Image({ image, setImage }) {
   const handleChange = (event) => {
     const file = event.target.files[0];
 

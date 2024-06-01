@@ -183,7 +183,6 @@ function* retieveDetailsTestCasesSaga(action) {
         statusMessage: persistedData.statusMessage,
       };
     } else {
-      console.log("hit");
       res = yield call(retrieveDetailsApi, action.payload);
     }
 

@@ -12,22 +12,42 @@ import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
 import { updateUserCode } from "../../../redux/slices/examSlice";
+import TestCasesTabs from "./StdInOut/TestCasesTabs";
+import {
+  setTestCaseItem,
+  setTestCaseItemData,
+  setTestCases,
+} from "../../../redux/slices/ProgramSubmmitionSlice";
 
 function StdInOutComponent({
   submitCodeData,
   submitCodeIsLoading,
   submitCodeIsStatus,
   submitCodeIsError,
+  testCases,
+  setTestCaseItemDataDispatch,
 }) {
   const [selectedTab, setSelectedTab] = useState("Test Cases");
-  const [selectedTask, setSelectedTask] = useState(0); // Initial task
+  const [selectedTask, setSelectedTask] = useState(0);
 
   const handleChange = (_, newTab) => {
     setSelectedTab(newTab);
   };
 
-  const handleTaskChange = (_, newTask) => {
-    setSelectedTask(newTask);
+  const onInputChange = (e) => {
+    setTestCaseItemDataDispatch({
+      key: selectedTask,
+      property: "input",
+      value: e.target.value,
+    });
+  };
+
+  const onOutputChange = (e) => {
+    setTestCaseItemDataDispatch({
+      key: selectedTask,
+      property: "output",
+      value: e.target.value,
+    });
   };
 
   return (
@@ -44,12 +64,13 @@ function StdInOutComponent({
       <div className="bg-gray-100 w-full mt-2">
         <Paper elevation={3}>
           {selectedTab === "Test Cases" && (
-            <Tabs value={selectedTask} onChange={handleTaskChange}>
-              <Tab label="Task 1" value={0} />
-              <Tab label="Task 2" value={1} />
-              <Tab label="Task 3" value={2} />
-              <Tab label="Task 4" value={3} />
-            </Tabs>
+            <div className="flex">
+              <TestCasesTabs
+                selectedTask={selectedTask}
+                setSelectedTask={setSelectedTask}
+                tabs={testCases}
+              />
+            </div>
           )}
         </Paper>
         <Card className="w-full mt-2">
@@ -60,13 +81,22 @@ function StdInOutComponent({
                   <Typography variant="subtitle1" fontWeight="bold">
                     Input:
                   </Typography>
-                  <textarea style={{ width: "100%" }} className="bg-gray-100" />
+                  <textarea
+                    style={{ width: "100%" }}
+                    className="bg-gray-100"
+                    value={testCases[selectedTask]?.input}
+                    onChange={onInputChange}
+                  />
                 </Box>
                 <Box className="flex flex-col gap-2">
                   <Typography variant="subtitle1" fontWeight="bold">
                     Output:
                   </Typography>
-                  <textarea className="bg-gray-100 p-3 rounded" />
+                  <textarea
+                    className="bg-gray-100 p-3 rounded"
+                    value={testCases[selectedTask]?.output || ""}
+                    onChange={onOutputChange}
+                  />
                 </Box>
               </Box>
             )}
@@ -125,11 +155,13 @@ const mapState = (state) => ({
   submitCodeIsStatus: state.submitCode.status,
   submitCodeIsError: state.submitCode.isError,
   userCode: state.codeEditor.userCode,
+  testCases: state.programSubmmition.testCases,
 });
 
 const mapDispatch = {
   submitCode: (item) => submitCode(item),
   setUserCode: (updatedCode) => updateUserCode(updatedCode),
+  setTestCaseItemDataDispatch: setTestCaseItemData,
 };
 
 const StdInOut = connect(mapState, mapDispatch)(StdInOutComponent);

@@ -1,28 +1,26 @@
 import { Paper, Grid, TextField, Typography, Box } from "@mui/material";
-import { useState } from "react";
+import { connect } from "react-redux";
 import Image from "./Details/Image";
+import { setFormItem } from "../../redux/slices/ProgramSubmmitionSlice";
 
-function Details() {
-  const [problemName, setProblemName] = useState("");
-  const [problemDescription, setProblemDescription] = useState("");
-  const [sampleInput, setSampleInput] = useState("");
-  const [sampleOutput, setSampleOutput] = useState("");
-  const [explanation, setExplanation] = useState("");
-
+function DetilsComponent({ formData, setFormItem }) {
   const onProblemName = (e) => {
-    setProblemName(e.target.value);
+    setFormItem({ key: "problemName", value: e.target.value });
   };
   const onProblemDescription = (e) => {
-    setProblemDescription(e.target.value);
+    setFormItem({ key: "problemDescription", value: e.target.value });
   };
   const onSampleInput = (e) => {
-    setSampleInput(e.target.value);
+    setFormItem({ key: "sampleInput", value: e.target.value });
   };
   const onSampleOutput = (e) => {
-    setSampleOutput(e.target.value);
+    setFormItem({ key: "sampleOutput", value: e.target.value });
   };
   const onExplanation = (e) => {
-    setExplanation(e.target.value);
+    setFormItem({ key: "explanation", value: e.target.value });
+  };
+  const setImage = (newImage) => {
+    setFormItem({ key: "image", value: newImage });
   };
 
   return (
@@ -32,28 +30,24 @@ function Details() {
       </Typography>
       <hr className="border-gray-300 my-4" />
       <Box className="mt-4 mb-6">
-        <TextField
-          value={problemName}
-          onChange={onProblemName}
-          className="bg-gray-100"
-          placeholder="Problem name"
-          variant="outlined"
-          fullWidth
-        />
-        <TextField
-          margin="normal"
-          value={problemDescription}
-          className="bg-gray-100"
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900">
+          <input
+            value={formData.problemName}
+            onChange={onProblemName}
+            placeholder="Problem name"
+            className="bg-gray-100 p-2 px-4 w-full  text-lg font-normal"
+          />
+        </h2>
+        <textarea
+          value={formData.problemDescription}
           onChange={onProblemDescription}
-          placeholder="Problem Description"
-          variant="outlined"
-          fullWidth
-          multiline
-          rows={4}
+          placeholder="Problem Description..."
+          style={{ width: "100%" }}
+          className="bg-gray-100 p-2 px-4 text-lg"
         />
       </Box>
       <hr className="border-gray-300 my-4" />
-      <Image />
+      <Image image={formData.image} setImage={setImage} />
       <hr className="border-gray-300 my-4" />
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
@@ -61,15 +55,12 @@ function Details() {
             <Typography variant="h5" className="mb-2 text-gray-900">
               Sample Input
             </Typography>
-            <TextField
-              value={sampleInput}
+            <textarea
+              value={formData.sampleInput}
               onChange={onSampleInput}
-              className="bg-gray-100"
               placeholder="Sample Input"
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={4}
+              style={{ width: "100%" }}
+              className="bg-gray-100 p-2 px-4 text-lg"
             />
           </Paper>
         </Grid>
@@ -78,15 +69,12 @@ function Details() {
             <Typography variant="h5" className="mb-2 text-gray-900">
               Sample Output
             </Typography>
-            <TextField
-              value={sampleOutput}
+            <textarea
+              value={formData.sampleOutput}
               onChange={onSampleOutput}
-              className="bg-gray-100"
               placeholder="Sample Output"
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={4}
+              style={{ width: "100%" }}
+              className="bg-gray-100 p-2 px-4 text-lg"
             />
           </Paper>
         </Grid>
@@ -97,14 +85,12 @@ function Details() {
           Explanation
         </Typography>
         <Paper elevation={3} className="p-4 bg-gray-100 rounded mt-4">
-          <TextField
-            value={explanation}
+          <textarea
+            value={formData.explanation}
             onChange={onExplanation}
-            className="bg-gray-100"
             placeholder="Explanation..."
-            variant="outlined"
-            fullWidth
-            multiline
+            style={{ width: "100%" }}
+            className="bg-gray-100 p-2 px-4 text-lg"
             rows={4}
           />
         </Paper>
@@ -158,5 +144,15 @@ function Details() {
     </Box>
   );
 }
+
+const mapState = (state) => ({
+  formData: state.programSubmmition.formData,
+});
+
+const mapDispatch = {
+  setFormItem,
+};
+
+const Details = connect(mapState, mapDispatch)(DetilsComponent);
 
 export default Details;

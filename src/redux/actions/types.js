@@ -7,6 +7,9 @@ export const types = {
   RETRIEVE_TESTCASES: "retrieve_testcases",
   RETRIEVE_DETAILS_TESTCASES: "retrieve_details_testcases",
 
+  // program submmition
+  CODEEXECUTE_UTIL: "codeexecute_util",
+
   // UTILS
   // -- CODE EDITOR
   SELECTEDLANGUAGE_UTIL: "selected_language_util",

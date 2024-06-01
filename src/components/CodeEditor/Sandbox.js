@@ -89,6 +89,7 @@ function SandboxComponent({
   if (codeEditorExtend) {
     return (
       <Modal
+        open={codeEditorExtend}
         ModalView={() => (
           <CodeEditorModal
             language={
