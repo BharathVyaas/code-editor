@@ -29,6 +29,7 @@ function SubmitTestComponent({
   submitState,
   resetItemDispatch,
   resetPersistStore,
+  userCode,
 }) {
   const problemId = useParams().problemId;
   const { user } = useContext(UserContext);
@@ -63,12 +64,14 @@ function SubmitTestComponent({
   ).length;
 
   const submitHanlder = () => {
+    console.log("submnit");
     submitTestDispatch({
       Email: userEmail,
       StudentName: userName,
       ProgramId: problemId,
       No_TestCasesPassed: testCasesPassCount,
       No_TestCasesFailed: testCasesFailCount,
+      UserCode: userCode,
     });
     shouldCountDispatch(false);
   };
@@ -165,6 +168,7 @@ const mapState = (state) => ({
   submitTestData: state.submitTest.data,
   submitTestState: state.submitTest.state,
   shouldTimerCount: state.timer.shouldCount,
+  userCode: state.codeEditor.userCode,
 });
 
 const mapDispatch = {
