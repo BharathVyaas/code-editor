@@ -148,7 +148,7 @@ function* retieveDetailsTestCasesSaga(action) {
       retrieveTestCasesSuccess({
         data: res.data.dbresult,
         status: res.status,
-        statusMessage: res.data.message,
+        statusMessage: [],
       })
     );
 

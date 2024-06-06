@@ -304,6 +304,8 @@ function StdInOutComponent({
                       }
                     />
                   );
+                } else {
+                  return null;
                 }
               })}
             </Tabs>
