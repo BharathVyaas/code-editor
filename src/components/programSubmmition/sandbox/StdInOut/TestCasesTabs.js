@@ -32,6 +32,7 @@ function TestCasesTabsComponect({
   selectedTask,
   setSelectedTask,
   tabs,
+  programName,
   executeCodeDispatch,
   files,
   selectedFile,
@@ -50,11 +51,16 @@ function TestCasesTabsComponect({
   const executeHandler = (id) => {
     const Code = files[selectedFile]?.code;
     const Language = files[selectedFile]?.language;
-    const ProgramName = files[selectedFile]?.formData?.problemName;
     const UserName = user?.username || "Guest";
     const Parameters = files[selectedFile]?.testCases?.[id]?.input || "";
 
-    executeCodeDispatch({ Code, Language, ProgramName, UserName, Parameters });
+    executeCodeDispatch({
+      Code,
+      Language,
+      ProgramName: programName,
+      UserName,
+      Parameters,
+    });
   };
 
   const handleAdd = () => {
@@ -130,6 +136,7 @@ function TestCasesTabsComponect({
 
 const mapState = (state) => ({
   files: state.programSubmmition.files,
+  programName: state.programSubmmition.formData.problemName,
   selectedFile: state.programSubmmition.selectedFile,
   executeCodeResponse: state.executeCode.data,
   executingCode: state.executeCode.isLoading,

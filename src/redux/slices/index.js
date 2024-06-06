@@ -13,6 +13,7 @@ import {
 } from "./examSlice";
 import { programSubmmitionSlice } from "./ProgramSubmmitionSlice";
 import { executeCodeSlice } from "./programSubmmition/executeCodeSlice";
+import { prog_submitCodeSlice } from "./programSubmmition/submitCodeSlice";
 
 export const reducer = combineReducers({
   // CodeEditor
@@ -30,4 +31,6 @@ export const reducer = combineReducers({
   // Program Submmiton
   programSubmmition: programSubmmitionSlice.reducer,
   executeCode: executeCodeSlice.reducer,
+
+  prog_submitcode: prog_submitCodeSlice.reducer
 });

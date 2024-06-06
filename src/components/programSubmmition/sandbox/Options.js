@@ -10,14 +10,14 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
-import BackupIcon from "@mui/icons-material/Backup";
 import Save from "./options/Save";
 import FileSelector from "./options/FileSelector";
+import { connect } from "react-redux";
+import SubmitHandler from "./options/SubmitHandler";
 
 const themes = ["vs-dark", "hc-light", "hc-black"];
 
-function Options({ theme, setTheme }) {
+function OptionsComponent({ theme, setTheme }) {
   const handleReset = () => {};
 
   const handleResetConfirmed = () => {};
@@ -41,13 +41,7 @@ function Options({ theme, setTheme }) {
 
       <div className="flex space-x-4 items-center justify-between">
         <div>
-          <Button
-            className="text-green-400 cursor-pointer"
-            color="success"
-            startIcon={<BackupIcon />}
-          >
-            Submit
-          </Button>
+          <SubmitHandler />
         </div>
 
         <div className="flex items-center space-x-2">
@@ -105,5 +99,7 @@ function Options({ theme, setTheme }) {
     </>
   );
 }
+
+const Options = connect(null, null)(OptionsComponent);
 
 export default Options;

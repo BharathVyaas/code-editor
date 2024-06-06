@@ -139,28 +139,10 @@ function* retrieveTestCasesSaga(action) {
 
 function* retieveDetailsTestCasesSaga(action) {
   try {
-    let persistedData;
-
-    if (localStorage.getItem("persist:exam-state:0.0.1"))
-      persistedData = JSON.parse(
-        JSON.parse(localStorage.getItem("persist:exam-state:0.0.1"))
-          ?.retrieveTestCases
-      );
-
     yield put(retrieveDetailsRequest());
     yield put(retrieveTestCasesRequest());
 
-    let res;
-
-    if (persistedData && persistedData.data) {
-      res = {
-        data: { dbresult: persistedData.data },
-        status: persistedData.status,
-        statusMessage: persistedData.statusMessage,
-      };
-    } else {
-      res = yield call(retrieveTestCasesApi, action.payload);
-    }
+    let res = yield call(retrieveTestCasesApi, action.payload);
 
     yield put(
       retrieveTestCasesSuccess({
@@ -170,21 +152,7 @@ function* retieveDetailsTestCasesSaga(action) {
       })
     );
 
-    if (localStorage.getItem("persist:exam-state:0.0.1"))
-      persistedData = JSON.parse(
-        JSON.parse(localStorage.getItem("persist:exam-state:0.0.1"))
-          ?.retrieveDetails
-      );
-
-    if (persistedData && persistedData.data) {
-      res = {
-        data: { dbresult: [persistedData.data] },
-        status: persistedData.status,
-        statusMessage: persistedData.statusMessage,
-      };
-    } else {
-      res = yield call(retrieveDetailsApi, action.payload);
-    }
+    res = yield call(retrieveDetailsApi, action.payload);
 
     yield put(
       retrieveDetailsSuccess({

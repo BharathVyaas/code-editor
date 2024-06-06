@@ -7,9 +7,12 @@ import {
   Typography,
   CardContent,
   Card,
+  Button,
+  Collapse,
+  TextField,
 } from "@mui/material";
 import { submitCode } from "../../../redux/actions";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
 import { updateUserCode } from "../../../redux/slices/examSlice";
 import TestCasesTabs from "./StdInOut/TestCasesTabs";
@@ -18,6 +21,10 @@ import {
   setTestCaseItemData,
   setTestCases,
 } from "../../../redux/slices/ProgramSubmmitionSlice";
+import ExecuteCode from "./StdInOut/ExecuteCode";
+import DoneIcon from "@mui/icons-material/Done";
+import ClearIcon from "@mui/icons-material/Clear";
+import HourglassBottomIcon from "@mui/icons-material/HourglassBottom";
 
 function StdInOutComponent({
   submitCodeData,
@@ -26,9 +33,15 @@ function StdInOutComponent({
   submitCodeIsError,
   testCases,
   setTestCaseItemDataDispatch,
+  executedData,
+  executingCode,
+  executingError,
+  executedStatus,
 }) {
   const [selectedTab, setSelectedTab] = useState("Test Cases");
   const [selectedTask, setSelectedTask] = useState(0);
+  const [userInput, setUserInput] = useState("");
+  const [showUserInput, setShowUserInput] = useState(false);
 
   const handleChange = (_, newTab) => {
     setSelectedTab(newTab);
@@ -52,14 +65,49 @@ function StdInOutComponent({
 
   return (
     <div className="flex flex-col w-full">
-      <Tabs
-        value={selectedTab}
-        onChange={handleChange}
-        sx={{ minHeight: "unset", minWidth: "unset" }}
-      >
-        <Tab label="Test Cases" value="Test Cases" />
-        <Tab label="Test Results" value="Test Results" />
-      </Tabs>
+      <div>
+        <Collapse in={showUserInput}>
+          <TextField
+            sx={{ marginBlock: ".4rem" }}
+            id="standard-multiline-static"
+            value={userInput}
+            onChange={(eventData) => {
+              setUserInput(eventData.target.value);
+            }}
+            label="Enter your input"
+            multiline
+            fullWidth
+            rows={4}
+            variant="filled"
+          />
+        </Collapse>
+      </div>
+
+      <div className="flex justify-between items-center">
+        <Tabs
+          value={selectedTab}
+          onChange={handleChange}
+          sx={{ minHeight: "unset", minWidth: "unset" }}
+        >
+          <Tab label="Test Cases" value="Test Cases" />
+          <Tab label="Output View" value="Output View" />
+        </Tabs>
+
+        <div className="me-3 flex space-x-4">
+          <div>
+            <ExecuteCode userInput={userInput} />
+          </div>
+          <div>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => setShowUserInput((prev) => !prev)}
+            >
+              Add Input
+            </Button>
+          </div>
+        </div>
+      </div>
 
       <div className="bg-gray-100 w-full mt-2">
         <Paper elevation={3}>
@@ -90,7 +138,7 @@ function StdInOutComponent({
                 </Box>
                 <Box className="flex flex-col gap-2">
                   <Typography variant="subtitle1" fontWeight="bold">
-                    Output:
+                    Expected:
                   </Typography>
                   <textarea
                     className="bg-gray-100 p-3 rounded"
@@ -98,33 +146,44 @@ function StdInOutComponent({
                     onChange={onOutputChange}
                   />
                 </Box>
+                <Box className="flex flex-col gap-2">
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    Output:
+                    {executingCode ? (
+                      <HourglassBottomIcon color="primary" fontSize="small" />
+                    ) : testCases[selectedTask]?.output ===
+                      (executedData?.errorMessage ||
+                        executedData?.output?.trim()) ? (
+                      <DoneIcon sx={{ color: "green", mb: 0.3 }} />
+                    ) : (
+                      <ClearIcon sx={{ color: "red", mb: 0.3 }} />
+                    )}
+                  </Typography>
+                  <pre
+                    style={{
+                      color: executedData?.responseCode !== 201 && "red",
+                    }}
+                    className="bg-gray-100 min-h-12 p-3 rounded"
+                  >
+                    {executedData?.errorMessage || executedData?.output}
+                  </pre>
+                </Box>
               </Box>
             )}
-            {selectedTab === "Test Results" && (
-              <div className="flex flex-col gap-4">
-                <Typography
-                  variant="h6"
-                  component="h2"
-                  className="text-gray-800"
-                >
-                  Test Results:
-                </Typography>
-                <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
+            {selectedTab === "Output View" && (
+              <div>
+                <div className="bg-gray-200 rounded-lg p-6 h-[260px] overflow-y-auto">
                   <code className="text-sm text-gray-800 flex">
-                    {submitCodeIsStatus !== 300 && (
-                      <>
-                        <span className="text-[#1976d2]">user@nareshit:</span>
-                        <span className="text-[#eb4034]">~$</span>
-                      </>
-                    )}
-                    {submitCodeIsStatus === 200 && (
+                    {executedData?.responseCode === 201 && (
                       <span className="text-gray-600 ms-2">
-                        <pre>{submitCodeData}</pre>
+                        <pre>{executedData?.output}</pre>
                       </span>
                     )}
-                    {submitCodeIsStatus === 300 && (
+                    {executedData?.responseCode === 301 && (
                       <span className="text-red-600">
-                        <pre>{submitCodeData}</pre>
+                        <pre>
+                          {executedData?.errorMessage || executedData?.output}
+                        </pre>
                       </span>
                     )}
                     {submitCodeIsError ? (
@@ -154,6 +213,10 @@ const mapState = (state) => ({
   submitCodeIsLoading: state.submitCode.isLoading,
   submitCodeIsStatus: state.submitCode.status,
   submitCodeIsError: state.submitCode.isError,
+  executedData: state.executeCode.data,
+  executingCode: state.executeCode.isLoading,
+  executingError: state.executeCode.isError,
+  executedStatus: state.executeCode.status,
   userCode: state.codeEditor.userCode,
   testCases: state.programSubmmition.testCases,
 });

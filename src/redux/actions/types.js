@@ -9,6 +9,8 @@ export const types = {
 
   // program submmition
   CODEEXECUTE_UTIL: "codeexecute_util",
+  CODEEXECUTE_C_UTIL: "codeexecute_c_util",
+  P_SUBMIT_CODE: "p_submit_code",
 
   // UTILS
   // -- CODE EDITOR

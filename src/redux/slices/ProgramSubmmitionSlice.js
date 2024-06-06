@@ -64,6 +64,12 @@ export const programSubmmitionSlice = createSlice({
         code,
       };
     },
+    setCode(state, action) {
+      if (!state.files?.[state.selectedFile])
+        throw new Error("something went wrong trying to update code.");
+
+      state.files[state.selectedFile].code = action.payload;
+    },
     setSelectedFile(state, action) {
       state.selectedFile = action.payload;
     },
@@ -126,4 +132,5 @@ export const {
   setTestCases,
   setTestCaseItemData,
   removeTestCaseItem,
+  setCode: setUserCode,
 } = programSubmmitionSlice.actions;

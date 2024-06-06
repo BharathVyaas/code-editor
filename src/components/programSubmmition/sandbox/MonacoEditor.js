@@ -3,8 +3,14 @@ import { Editor } from "@monaco-editor/react";
 import { connect } from "react-redux";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { updateUserCode } from "../../../redux/slices/examSlice";
+import { setUserCode } from "../../../redux/slices/ProgramSubmmitionSlice";
 
-function MonacoEditorComponent({ theme, files, selectedFile }) {
+function MonacoEditorComponent({
+  theme,
+  files,
+  selectedFile,
+  setUserCodeDispatch,
+}) {
   const [value, setValue] = useState();
   const editorRef = useRef(null);
 
@@ -99,6 +105,7 @@ function MonacoEditorComponent({ theme, files, selectedFile }) {
         theme={theme}
         onMount={onMount}
         editorRef={editorRef}
+        onChange={setUserCodeDispatch}
       />
 
       {/* <Modal open={showWarn} onClose={() => setShowWarn(false)}>
@@ -142,7 +149,7 @@ const mapStateToProps = (state) => ({
   selectedFile: state.programSubmmition.selectedFile,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { setUserCodeDispatch: setUserCode };
 
 const MonacoEditor = connect(
   mapStateToProps,

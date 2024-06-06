@@ -6,4 +6,5 @@ export const {
   fetchDataRequest: executeCodeRequest,
   fetchDataSuccess: executeCodeSuccess,
   fetchDataError: executeCodeError,
+  resetState: resetExecuteCodeSlice,
 } = executeCodeSlice.actions;

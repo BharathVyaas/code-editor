@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://www.nareshit.net/";
+const baseURL = "http://localhost:3009";
 const compilerURL = "http://49.207.10.13:3008/";
 const compilerC = "http://49.207.10.13:8080/";
 
@@ -26,6 +26,15 @@ export const executeCodeApi = async (payload) => {
   }
 };
 
+export const executeCCodeApi = async (payload) => {
+  try {
+    const response = await compilerApi.post("api/codeexecute", payload);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const submitUserCCodeApi1 = async (payload) => {
   try {
     const response1 = await apiCS.post("/", payload);
@@ -38,6 +47,15 @@ export const submitUserCCodeApi1 = async (payload) => {
 export const submitTestApi = async (payload) => {
   try {
     const response = await api.post("Insertion_StudentProgramDeatils", payload);
+    return response;
+  } catch (error) {
+    throw error; // Throw the error to be caught by Redux Saga
+  }
+};
+
+export const p_submitCode = async (payload) => {
+  try {
+    const response = await api.post("/api/program/new-program", payload);
     return response;
   } catch (error) {
     throw error; // Throw the error to be caught by Redux Saga

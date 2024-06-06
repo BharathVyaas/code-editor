@@ -2,8 +2,8 @@ import React, { createContext, useState } from "react";
 
 const UserContext = createContext({
   user: {
-    username: localStorage.getItem("auth")?.username || null,
-    email: localStorage.getItem("auth")?.email || null,
+    username: JSON.parse(localStorage.getItem("auth"))?.username || null,
+    email: JSON.parse(localStorage.getItem("auth"))?.email || null,
   },
   error: null,
   login: () => {},
@@ -13,8 +13,8 @@ const UserContext = createContext({
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
-    username: localStorage.getItem("auth")?.username || null,
-    email: localStorage.getItem("auth")?.email || null,
+    username: JSON.parse(localStorage.getItem("auth"))?.username || null,
+    email: JSON.parse(localStorage.getItem("auth"))?.email || null,
   });
   const [error, setError] = useState(null);
 

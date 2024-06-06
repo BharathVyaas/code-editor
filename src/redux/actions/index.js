@@ -15,6 +15,11 @@ export const submitTest = (payload) => ({
   payload,
 });
 
+export const p_submitCode = (payload) => ({
+  type: types.P_SUBMIT_CODE,
+  payload,
+});
+
 export const executeCode = (payload) => {
   // Parameters userInput.replaceAll("\n", " ").split(" "),
   // ProgramId "NA",
@@ -24,10 +29,22 @@ export const executeCode = (payload) => {
       payload.Code ||
       payload.Language ||
       payload.ProgramName ||
-      payload.UserName
+      payload.UserName ||
+      typeof Parameters !== "string"
     )
   )
     throw new Error("Must pass valid data to execute code");
+
+  if (payload.Language === "c") {
+    return {
+      type: types.CODEEXECUTE_C_UTIL,
+      payload: {
+        ...payload,
+        Parameters: payload.Parameters.replaceAll("\n", " ").split(" "),
+        ProgramId: "NA",
+      },
+    };
+  }
 
   return {
     type: types.CODEEXECUTE_UTIL,
