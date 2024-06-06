@@ -66,7 +66,7 @@ function CodeEditorComponent({
   return (
     retrieveDataState === "reslove" && (
       <>
-        <div className="flex flex-col bg-gray-100 hide-scroll">
+        <div className="flex flex-col bg-gray-100 hide-scroll min-h-screen">
           {/* Header */}
           <header className="bg-white shadow-md px-4 py-2 border-b flex justify-between items-center">
             {/* Logo and Username */}

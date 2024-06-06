@@ -51,6 +51,7 @@ function SubmitHandlerComponent({
   return (
     <>
       <Button
+        disabled={!userInput}
         color="success"
         variant="contained"
         sx={{ paddingBlock: 0.6 }}

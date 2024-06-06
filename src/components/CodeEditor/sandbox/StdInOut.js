@@ -9,7 +9,6 @@ import {
   Card,
   TextField,
   Collapse,
-  CircularProgress,
 } from "@mui/material";
 import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
@@ -96,7 +95,6 @@ function StdInOutComponent({
   const [testCasesEvel, setTestCasesEvel] = useState(false);
   const outputRef = useRef(null);
   const [userInput, setUserInput] = useState(``);
-  const collapseRef = useRef(false);
   const { user } = useContext(UserContext);
   const userName = user?.username;
 
@@ -112,11 +110,11 @@ function StdInOutComponent({
     errorMessage: null,
   };
 
-  useEffect(() => {
-    if (selectedTab === "Test Cases") {
-      setTakeInput(false);
-    }
-  }, [selectedTab]);
+  // useEffect(() => {
+  //   if (selectedTab === "Test Cases") {
+  //     setTakeInput(false);
+  //   }
+  // }, [selectedTab]);
 
   // useEffect(() => {
   //   if (submitCodeIsState === "reslove") {
@@ -138,11 +136,11 @@ function StdInOutComponent({
     }
   }, [testCasesOutput, retrievedTestCases, testCasesEvel]);
 
-  useEffect(() => {
-    if (collapseRef.current && selectedTab === "Test Results") {
-      setTakeInput(true);
-    }
-  }, [collapseRef, selectedTab]);
+  // useEffect(() => {
+  //   if (collapseRef.current && selectedTab === "Test Results") {
+  //     setTakeInput(true);
+  //   }
+  // }, [collapseRef, selectedTab]);
 
   useEffect(() => {
     if (responseCode === 201) {
@@ -186,69 +184,8 @@ function StdInOutComponent({
   return (
     <div className="flex flex-col w-full">
       <div className="">
-        <div className="flex flex-wrap-reverse justify-between">
-          <Tabs
-            value={selectedTab}
-            onChange={handleChange}
-            sx={{
-              minHeight: "unset",
-              minWidth: "unset",
-              height: Object.values(testCasesOutput).length ? "4rem" : "3.2rem",
-            }}
-          >
-            <Tab label="Test Results" value="Test Results" />
-            <Tab
-              label={
-                <>
-                  <p>Test Cases</p>
-                  <p className="ms-2">
-                    ({" "}
-                    {
-                      Object.values(testCasesOutput).filter(
-                        (testCase) => testCase?.flag
-                      ).length
-                    }{" "}
-                    / {retrievedTestCases.length} )
-                  </p>
-                </>
-              }
-              value="Test Cases"
-              iconPosition="end"
-              icon={
-                testCasesEvel ? (
-                  <CircularProgress
-                    size={20}
-                    sx={{
-                      color: "default",
-                      mb: 0,
-                      padding: 0,
-                    }}
-                  />
-                ) : Object.values(testCasesOutput).length ? (
-                  Object.values(testCasesOutput).filter(
-                    (testCase) => testCase?.flag
-                  ).length === retrievedTestCases.length ? (
-                    <DoneIcon
-                      sx={{
-                        color: "green",
-                        mb: 0,
-                        padding: 0,
-                      }}
-                    />
-                  ) : (
-                    <ClearIcon
-                      sx={{
-                        color: "red",
-                        mb: 0,
-                        padding: 0,
-                      }}
-                    />
-                  )
-                ) : null
-              }
-            />
-          </Tabs>
-          <div className="my-auto flex flex-wrap">
+        <div className="flex flex-wrap-reverse justify-end">
+          <div className="my-auto flex flex-wrap mt-1">
             <SubmitHandler
               setTestCasesOutput={setTestCasesOutput}
               userInput={userInput}
@@ -379,7 +316,7 @@ function StdInOutComponent({
                       component="h2"
                       className="text-gray-800"
                     >
-                      Test Results:
+                      Output:
                     </Typography>
                   )}
                   <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">
