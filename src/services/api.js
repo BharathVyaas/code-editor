@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "http://nareshit.net";
+const baseURL = "http://49.207.10.13:3012";
 const compilerURL = "http://49.207.10.13:3008/";
 const compilerC = "http://49.207.10.13:8080/";
 

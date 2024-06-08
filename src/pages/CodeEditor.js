@@ -6,7 +6,7 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import { types } from "../redux/actions/types";
 import Loading from "../shared/Loading";
 import Error from "../shared/Error";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import {
   Box,
@@ -27,6 +27,7 @@ import {
   submitTestReset,
 } from "../redux/slices/codeEditorSlice";
 import { setShouldCount, submitCodeReset } from "../redux/slices/examSlice";
+import SandboxTestCases from "../components/CodeEditor/SandboxTestCases";
 
 function CodeEditorComponent({
   isDataRetrieving,
@@ -38,6 +39,11 @@ function CodeEditorComponent({
   const [showTerms, setShowTerms] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const { user } = useContext(UserContext);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const testCases = queryParams.get("testCases") === "true" ? true : false;
+
   const dispatch = useDispatch();
   const {
     isError: isTestCasesRetrievingFailed,
@@ -89,7 +95,7 @@ function CodeEditorComponent({
 
             {/* Code Editor */}
             <section className="w-full lg:w-1/2 p-6 border-b-2 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
-              <Sandbox />
+              {testCases ? <Sandbox /> : <SandboxTestCases />}
             </section>
           </main>
 
