@@ -1,12 +1,14 @@
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import Sandbox from "../components/CodeEditor/Sandbox";
 import Details from "../components/CodeEditor/Details";
 import Naresh_IT_Logo from "../assets/Naresh_IT_Logo.png";
-import { useContext, useEffect, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
 import { types } from "../redux/actions/types";
 import Loading from "../shared/Loading";
 import Error from "../shared/Error";
-import { useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import {
   Box,
@@ -35,15 +37,28 @@ function CodeEditorComponent({
   retrieveDataState,
   shouldCountDispatch,
 }) {
+  const dispatch = useDispatch();
   const [showTerms, setShowTerms] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const { user } = useContext(UserContext);
-  const dispatch = useDispatch();
+  const programId = useParams().problemId;
+  const { user, login } = useContext(UserContext);
+  const navigate = useNavigate();
   const {
     isError: isTestCasesRetrievingFailed,
     isLoading: isTestCasesRetrieving,
   } = useSelector((store) => store.retrieveTestCases);
-  const programId = useParams().problemId;
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const q_email = queryParams.get("email");
+  const q_username = queryParams.get("username");
+
+  useEffect(() => {
+    if (q_email && q_username) login({ email: q_email, username: q_username });
+    else {
+      if (!(user.username && user.email)) navigate("/login");
+    }
+  }, []);
 
   useEffect(() => {
     //setShowTerms(true);
