@@ -5,6 +5,10 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { UserContext } from "../../../context/UserContext";
 import { useContext } from "react";
 import { submitTestReset } from "../../../redux/slices/codeEditorSlice";
+import {
+  increaseRunCount,
+  resetRunCount,
+} from "../../../redux/slices/examSlice";
 
 function SubmitHandlerComponent({
   userCode,
@@ -15,6 +19,7 @@ function SubmitHandlerComponent({
   submitCodeDispatch,
   submitCsharpCodeDispatch,
   setTestCasesOutput,
+  increaseRunCountDispatch,
 }) {
   const { user } = useContext(UserContext);
   const userName = user?.username;
@@ -22,6 +27,7 @@ function SubmitHandlerComponent({
 
   const submitHandler = async () => {
     try {
+      increaseRunCountDispatch();
       if (language === "c") {
         submitCsharpCodeDispatch({
           Code: userCode,
@@ -42,6 +48,7 @@ function SubmitHandlerComponent({
         });
       }
       dispatch(submitTestReset());
+      dispatch(resetRunCount());
       setTestCasesOutput({});
     } catch (error) {
       console.error(error);
@@ -53,7 +60,7 @@ function SubmitHandlerComponent({
       <Button
         color="success"
         variant="contained"
-        sx={{ paddingBlock: 0.6 }}
+        sx={{ paddingBlock: 0.6, marginInlineStart: 1.4 }}
         onClick={submitHandler}
         startIcon={
           <PlayArrowIcon fontSize="20" sx={{ padding: 0, margin: 0 }} />
@@ -82,6 +89,7 @@ const mapState = (state) => ({
 const mapDispatch = {
   submitCodeDispatch: submitCode,
   submitCsharpCodeDispatch: submitCsharpCode,
+  increaseRunCountDispatch: increaseRunCount,
 };
 
 const SubmitHandler = connect(mapState, mapDispatch)(SubmitHandlerComponent);

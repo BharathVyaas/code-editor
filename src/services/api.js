@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseURL = "http://49.207.10.13:3009";
-const compilerURL = "http://49.207.10.13:3008/";
+const compilerURL = "http://49.207.10.13:5000/";
 const compilerC = "http://49.207.10.13:8080/";
 
 const api = axios.create({ baseURL });
@@ -46,7 +46,7 @@ export const submitUserCCodeApi1 = async (payload) => {
 
 export const submitTestApi = async (payload) => {
   try {
-    const response = await api.post("Insertion_StudentProgramDeatils", payload);
+    const response = await api.post("StudentProgramTestCases", payload);
     return response;
   } catch (error) {
     throw error; // Throw the error to be caught by Redux Saga

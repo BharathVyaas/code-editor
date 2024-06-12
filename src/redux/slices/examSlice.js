@@ -8,6 +8,7 @@ const initialMonacoState = {
   isSavingError: false,
   isSavingLoading: false,
   codeSavingError: null,
+  runCount: 0,
   autoSave: true,
 };
 
@@ -15,18 +16,21 @@ export const timerSlice = createSlice({
   name: "timer",
   initialState: {
     timer: 0,
-    shouldCount: false,
+    shouldCount: true,
   },
   reducers: {
     setTimer(state, action) {
       state.timer = action.payload;
     },
     setShouldCount(state, action) {
-      //state.shouldCount = action.payload;
-      state.shouldCount = false;
+      console.log(action.payload);
+      state.shouldCount = action.payload;
     },
     resetTimer(state) {
       state.timer = 0;
+    },
+    resetRunCount(state) {
+      state.runCount = 0;
     },
   },
 });
@@ -53,6 +57,9 @@ export const monacoSlice = createSlice({
   name: "monacoSlice",
   initialState: initialMonacoState,
   reducers: {
+    increaseRunCount(state) {
+      state.runCount = state.runCount + 1;
+    },
     setItem(state, action) {
       const key = action.payload.key;
       const language = action.payload.language;
@@ -118,6 +125,8 @@ export const {
   setIsSavingLoading,
   setSavingError,
   setAutoSave,
+  increaseRunCount,
 } = monacoSlice.actions;
 
-export const { setTimer, resetTimer, setShouldCount } = timerSlice.actions;
+export const { setTimer, resetTimer, setShouldCount, resetRunCount } =
+  timerSlice.actions;

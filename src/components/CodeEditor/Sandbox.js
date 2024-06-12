@@ -7,7 +7,9 @@ import StdInOutComponent from "./sandbox/StdInOut";
 import { connect } from "react-redux";
 import { setSelectedLanguage } from "../../redux/actions/types";
 import {
+  resetRunCount,
   setSelectedLanguage as setDefaultLanguage,
+  setShouldCount,
   updateUserCode,
 } from "../../redux/slices/examSlice";
 import { useParams } from "react-router";
@@ -20,6 +22,7 @@ function SandboxComponent({
   selectedLanguage,
   setSelectedLanguage,
   setDefaultLanguageDispatch,
+  resetRunCountDispatch,
 }) {
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
@@ -37,6 +40,10 @@ function SandboxComponent({
   }, [retrievedDetails]);
 
   useEffect(() => {
+    setShouldCount(true);
+  }, [setShouldCount]);
+
+  useEffect(() => {
     if (programmingLanguages)
       setDefaultLanguageDispatch(programmingLanguages?.[0]?.id);
   }, [programmingLanguages, setSelectedLanguage, setDefaultLanguageDispatch]);
@@ -51,6 +58,7 @@ function SandboxComponent({
 
   useEffect(() => {
     setTestCasesOutput({});
+    resetRunCountDispatch();
   }, []);
 
   useEffect(() => {
@@ -166,6 +174,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setUserCode: updateUserCode,
   setSelectedLanguage,
+  resetRunCountDispatch: resetRunCount,
   setDefaultLanguageDispatch: setDefaultLanguage,
 };
 
