@@ -77,7 +77,7 @@ function SubmitTestComponent({
           ProgramId: problemId,
           TestCaseId: testCasesOutput[index].testCaseId,
           Output: testCasesOutput[index].output,
-          Result: testCasesOutput[index].flag ? "Pass" : "Fail",
+          Result: testCasesOutput[index].flag ? 1 : 0,
         };
       }),
       Email: userEmail,

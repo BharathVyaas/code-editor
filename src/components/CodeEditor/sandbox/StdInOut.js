@@ -34,25 +34,14 @@ async function onTestCases(
       const output = testCase.output;
       const id = testCase.id;
 
-      const res = await axios.post(
-        language === "c"
-          ? "http://49.207.10.13:8080/"
-          : "http://49.207.10.13:5000/api/codeexecute",
-        language !== "c"
-          ? {
-              Code: userCode,
-              Parameters: input.split("\n"),
-              Language: language,
-              ProgramName: retrievedDetails.ProgramName,
-              ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
-              UserName: userName,
-            }
-          : {
-              code: userCode,
-              Parameters: input.split("\n"),
-              UserName: userName,
-            }
-      );
+      const res = await axios.post("http://49.207.10.13:5000/api/codeexecute", {
+        Code: userCode,
+        Parameters: input.split("\n"),
+        Language: language,
+        ProgramName: retrievedDetails.ProgramName,
+        ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
+        UserName: userName,
+      });
 
       if (res.data.output?.trim() === output.trim()) {
         handler({
