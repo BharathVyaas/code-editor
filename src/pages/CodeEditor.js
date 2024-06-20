@@ -1,12 +1,14 @@
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import Sandbox from "../components/CodeEditor/Sandbox";
 import Details from "../components/CodeEditor/Details";
 import Naresh_IT_Logo from "../assets/Naresh_IT_Logo.png";
-import { useContext, useEffect, useState } from "react";
-import { connect, useDispatch, useSelector } from "react-redux";
 import { types } from "../redux/actions/types";
 import Loading from "../shared/Loading";
 import Error from "../shared/Error";
-import { useLocation, useParams } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import {
   Box,
@@ -36,20 +38,28 @@ function CodeEditorComponent({
   retrieveDataState,
   shouldCountDispatch,
 }) {
+  const dispatch = useDispatch();
   const [showTerms, setShowTerms] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const { user } = useContext(UserContext);
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const testCases = queryParams.get("testCases") === "true" ? true : false;
-
-  const dispatch = useDispatch();
+  const programId = useParams().problemId;
+  const { user, login } = useContext(UserContext);
+  const navigate = useNavigate();
   const {
     isError: isTestCasesRetrievingFailed,
     isLoading: isTestCasesRetrieving,
   } = useSelector((store) => store.retrieveTestCases);
-  const programId = useParams().problemId;
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const q_email = queryParams.get("email");
+  const q_username = queryParams.get("username");
+
+  useEffect(() => {
+    if (q_email && q_username) login({ email: q_email, username: q_username });
+    else {
+      if (!(user.username && user.email)) navigate("/login");
+    }
+  }, []);
 
   useEffect(() => {
     //setShowTerms(true);
@@ -89,13 +99,13 @@ function CodeEditorComponent({
           {/* Main Content */}
           <main className="flex-1 pt-2 lg:pt-0 lg:flex flex-col lg:flex-row max-h-[92vh] overflow-hidden">
             {/* Sidebar */}
-            <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6  border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
+            <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6 border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
               <Details />
             </aside>
 
             {/* Code Editor */}
-            <section className="w-full lg:w-1/2 p-6 border-b-2 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
-              {testCases ? <Sandbox /> : <SandboxTestCases />}
+            <section className="w-full lg:w-1/2 border-b-2 p-6 pt-4 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
+              {true ? <Sandbox /> : <SandboxTestCases />}
             </section>
           </main>
 

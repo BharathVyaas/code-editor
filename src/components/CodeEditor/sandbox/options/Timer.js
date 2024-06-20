@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { setShouldCount, setTimer } from "../../../../redux/slices/examSlice";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import React, { useEffect } from "react";
 import { Typography } from "@mui/material";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+
+import { setShouldCount, setTimer } from "../../../../redux/slices/examSlice";
 
 function Timer({ timer, shouldTimerCount, setTimerDispatch }) {
   useEffect(() => {

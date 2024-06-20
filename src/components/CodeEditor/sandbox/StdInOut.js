@@ -20,6 +20,7 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { UserContext } from "../../../context/UserContext";
 import { updateUserCode } from "../../../redux/slices/examSlice";
+import { useParams } from "react-router-dom";
 
 async function onTestCases(
   testCases,
@@ -35,7 +36,7 @@ async function onTestCases(
       const res = await axios.post(
         language === "c"
           ? "http://49.207.10.13:8080/"
-          : "http://49.207.10.13:3008/api/codeexecute",
+          : "http://49.207.10.13:5000/api/codeexecute",
         language !== "c"
           ? {
               Code: userCode,
@@ -93,9 +94,11 @@ function StdInOutComponent({
   const [selectedTask, setSelectedTask] = useState(0);
   const [takeInput, setTakeInput] = useState(false);
   const [testCasesEvel, setTestCasesEvel] = useState(false);
-  const outputRef = useRef(null);
   const [userInput, setUserInput] = useState(``);
+  const outputRef = useRef(null);
+  const collapseRef = useRef(false);
   const { user } = useContext(UserContext);
+  const { problemId } = useParams();
   const userName = user?.username;
 
   useEffect(() => {

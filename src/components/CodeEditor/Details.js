@@ -50,7 +50,7 @@ function DetailsComponent({ retrievedDetails }) {
               Sample Input
             </h3>
             <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[1rem] lg:min-h-[2rem]">
-              <p className="text-sm text-gray-700">{SampleInput}</p>
+              <pre className="text-sm text-gray-700">{SampleInput}</pre>
             </div>
           </Paper>
         </Grid>
@@ -60,7 +60,7 @@ function DetailsComponent({ retrievedDetails }) {
               Sample Output
             </h3>
             <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[1rem] lg:min-h-[2rem]">
-              <p className="text-sm text-gray-700">{SampleOutput}</p>
+              <pre className="text-sm text-gray-700">{SampleOutput}</pre>
             </div>
           </Paper>
         </Grid>

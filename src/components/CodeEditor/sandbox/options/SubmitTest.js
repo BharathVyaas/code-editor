@@ -1,24 +1,26 @@
 import {
   Box,
-  Button,
-  CircularProgress,
   Modal,
+  Button,
   Typography,
+  CircularProgress,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import BackupIcon from "@mui/icons-material/Backup";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { submitTest } from "../../../../redux/actions";
-import { UserContext } from "../../../../context/UserContext";
 import { useCallback, useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { submitTestReset } from "../../../../redux/slices/codeEditorSlice";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
+
 import {
-  resetMonacoSliceCodeItem,
   resetTimer,
   setShouldCount,
+  resetMonacoSliceCodeItem,
 } from "../../../../redux/slices/examSlice";
 import { persistor } from "../../../../redux";
+import { useNavigate, useParams } from "react-router";
+import { submitTest } from "../../../../redux/actions";
+import { UserContext } from "../../../../context/UserContext";
+import { submitTestReset } from "../../../../redux/slices/codeEditorSlice";
 
 function SubmitTestComponent({
   testCasesOutput,
@@ -26,17 +28,21 @@ function SubmitTestComponent({
   isLoading,
   submitTestState,
   shouldCountDispatch,
-  submitState,
   resetItemDispatch,
   resetPersistStore,
   userCode,
+  runCount,
 }) {
   const problemId = useParams().problemId;
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const source = queryParams.get("source");
   const { user } = useContext(UserContext);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const { isError } = useSelector((store) => store.submitTest);
+  console.log(source);
 
   const persistPurge = useCallback(async () => {
     await persistor.purge();
@@ -64,9 +70,18 @@ function SubmitTestComponent({
   ).length;
 
   const submitHanlder = () => {
-    console.log("submnit");
     submitTestDispatch({
+      data: Object.keys(testCasesOutput).map((index) => {
+        return {
+          Email: userEmail,
+          ProgramId: problemId,
+          TestCaseId: testCasesOutput[index].testCaseId,
+          Output: testCasesOutput[index].output,
+          Result: testCasesOutput[index].flag ? "Pass" : "Fail",
+        };
+      }),
       Email: userEmail,
+      No_Attempts: runCount,
       StudentName: userName,
       ProgramId: problemId,
       No_TestCasesPassed: testCasesPassCount,
@@ -97,11 +112,7 @@ function SubmitTestComponent({
       </Button>
       <Modal
         open={open}
-        onClose={() => {
-          setOpen(false);
-          navigate("/problemset");
-          resetItemDispatch(problemId);
-        }}
+        onClose={() => {}}
         aria-labelledby="modal-title"
         aria-describedby="modal-description"
       >
@@ -140,23 +151,46 @@ function SubmitTestComponent({
               ? "Your test has been successfully submitted."
               : "Failed to submit your test. Please try again."}
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-            <Button
-              variant="contained"
-              color={submitTestState === "reslove" ? "success" : "error"}
-              onClick={() => {
-                setOpen(false);
-                if (isError) {
-                  submitHanlder();
-                } else {
-                  navigate("/problemset");
-                  resetItemDispatch(problemId);
-                }
-              }}
-            >
-              {submitTestState === "reslove" ? "View Problems" : "Retry"}
-            </Button>
-          </Box>
+          {source ? (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Button
+                variant="contained"
+                color={submitTestState === "reslove" ? "success" : "error"}
+                onClick={() => {
+                  setOpen(false);
+                  if (isError) {
+                    submitHanlder();
+                  } else {
+                    if (source === "dashboard") {
+                      window.close();
+                    }
+                    navigate("/problemset");
+                    resetItemDispatch(problemId);
+                  }
+                }}
+              >
+                {submitTestState === "reslove" ? "Go To Dashboard" : "Retry"}
+              </Button>
+            </Box>
+          ) : (
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Button
+                variant="contained"
+                color={submitTestState === "reslove" ? "success" : "error"}
+                onClick={() => {
+                  setOpen(false);
+                  if (isError) {
+                    submitHanlder();
+                  } else {
+                    navigate("/problemset");
+                    resetItemDispatch(problemId);
+                  }
+                }}
+              >
+                {submitTestState === "reslove" ? "View Problems" : "Retry"}
+              </Button>
+            </Box>
+          )}
         </Box>
       </Modal>
     </>
@@ -169,6 +203,7 @@ const mapState = (state) => ({
   submitTestState: state.submitTest.state,
   shouldTimerCount: state.timer.shouldCount,
   userCode: state.codeEditor.userCode,
+  runCount: state.monacoReducer.runCount,
 });
 
 const mapDispatch = {

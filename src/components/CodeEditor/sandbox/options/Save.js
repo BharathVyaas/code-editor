@@ -47,18 +47,18 @@ const StyledBadgeError = styled(Badge)(({ theme }) => ({
 function SaveComponent({
   isSaving,
   isSavingError,
-  saveCurrentCode,
+  saveCodeDispatch,
   language,
   code,
   autoSave,
-  setAutoSave,
+  setAutoSaveDispatch,
 }) {
   const [isMouseDown, setIsMouseDown] = useState(false);
   const { user } = useContext(UserContext);
   const { problemId: key } = useParams();
 
   const onSave = () => {
-    saveCurrentCode({
+    saveCodeDispatch({
       key: key + "::" + String(user.username || "guest"),
       code,
       language,
@@ -66,21 +66,29 @@ function SaveComponent({
   };
 
   const onAutoSave = () => {
-    setAutoSave(!autoSave);
+    setAutoSaveDispatch(!autoSave);
   };
 
   useEffect(() => {
     let intervalId;
     if (autoSave && language) {
       intervalId = setInterval(() => {
-        saveCurrentCode({ key, code, language });
-      }, 1000 * 60);
+        saveCodeDispatch({
+          key: key + "::" + String(user.username || "guest"),
+          code,
+          language,
+        });
+      }, 2 * 60);
     }
 
     return () => {
       clearInterval(intervalId);
     };
-  }, [language, key, code, autoSave, saveCurrentCode]);
+  }, [language, key, code, autoSave, saveCodeDispatch]);
+
+  // useEffect(() => {
+  //   saveCodeDispatch({ key, code, language });
+  // }, [code, saveCodeDispatch, key, language]);
 
   return isSaving ? (
     <StyledBadgeSaving
@@ -130,8 +138,8 @@ const mapState = (state) => ({
 });
 
 const mapDispatch = {
-  saveCurrentCode,
-  setAutoSave,
+  saveCodeDispatch: saveCurrentCode,
+  setAutoSaveDispatch: setAutoSave,
 };
 
 const Save = connect(mapState, mapDispatch)(SaveComponent);
