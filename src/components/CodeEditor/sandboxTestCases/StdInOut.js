@@ -9,6 +9,7 @@ import {
   Card,
   TextField,
   Collapse,
+  CircularProgress,
 } from "@mui/material";
 import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
@@ -20,7 +21,6 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { UserContext } from "../../../context/UserContext";
 import { updateUserCode } from "../../../redux/slices/examSlice";
-import { useParams } from "react-router-dom";
 
 async function onTestCases(
   testCases,
@@ -33,14 +33,25 @@ async function onTestCases(
       const output = testCase.output;
       const id = testCase.id;
 
-      const res = await axios.post("http://49.207.10.13:5000/api/codeexecute", {
-        Code: userCode,
-        Parameters: input.split("\n"),
-        Language: language,
-        ProgramName: retrievedDetails.ProgramName,
-        ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
-        UserName: userName,
-      });
+      const res = await axios.post(
+        language === "c"
+          ? "http://49.207.10.13:8080/"
+          : "http://49.207.10.13:3008/api/codeexecute",
+        language !== "c"
+          ? {
+              Code: userCode,
+              Parameters: input.split("\n"),
+              Language: language,
+              ProgramName: retrievedDetails.ProgramName,
+              ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
+              UserName: userName,
+            }
+          : {
+              code: userCode,
+              Parameters: input.split("\n"),
+              UserName: userName,
+            }
+      );
 
       if (res.data.output?.trim() === output.trim()) {
         handler({
@@ -83,11 +94,10 @@ function StdInOutComponent({
   const [selectedTask, setSelectedTask] = useState(0);
   const [takeInput, setTakeInput] = useState(false);
   const [testCasesEvel, setTestCasesEvel] = useState(false);
-  const [userInput, setUserInput] = useState(``);
   const outputRef = useRef(null);
+  const [userInput, setUserInput] = useState(``);
   const collapseRef = useRef(false);
   const { user } = useContext(UserContext);
-  const { problemId } = useParams();
   const userName = user?.username;
 
   useEffect(() => {
@@ -102,11 +112,11 @@ function StdInOutComponent({
     errorMessage: null,
   };
 
-  // useEffect(() => {
-  //   if (selectedTab === "Test Cases") {
-  //     setTakeInput(false);
-  //   }
-  // }, [selectedTab]);
+  useEffect(() => {
+    if (selectedTab === "Test Cases") {
+      setTakeInput(false);
+    }
+  }, [selectedTab]);
 
   // useEffect(() => {
   //   if (submitCodeIsState === "reslove") {
@@ -128,11 +138,11 @@ function StdInOutComponent({
     }
   }, [testCasesOutput, retrievedTestCases, testCasesEvel]);
 
-  // useEffect(() => {
-  //   if (collapseRef.current && selectedTab === "Test Results") {
-  //     setTakeInput(true);
-  //   }
-  // }, [collapseRef, selectedTab]);
+  useEffect(() => {
+    if (collapseRef.current && selectedTab === "Test Results") {
+      setTakeInput(true);
+    }
+  }, [collapseRef, selectedTab]);
 
   useEffect(() => {
     if (responseCode === 201) {
@@ -176,8 +186,69 @@ function StdInOutComponent({
   return (
     <div className="flex flex-col w-full">
       <div className="">
-        <div className="flex flex-wrap-reverse justify-end">
-          <div className="my-auto flex flex-wrap mt-1">
+        <div className="flex flex-wrap-reverse justify-between">
+          <Tabs
+            value={selectedTab}
+            onChange={handleChange}
+            sx={{
+              minHeight: "unset",
+              minWidth: "unset",
+              height: Object.values(testCasesOutput).length ? "4rem" : "3.2rem",
+            }}
+          >
+            <Tab label="Test Results" value="Test Results" />
+            <Tab
+              label={
+                <>
+                  <p>Test Cases</p>
+                  <p className="ms-2">
+                    ({" "}
+                    {
+                      Object.values(testCasesOutput).filter(
+                        (testCase) => testCase?.flag
+                      ).length
+                    }{" "}
+                    / {retrievedTestCases.length} )
+                  </p>
+                </>
+              }
+              value="Test Cases"
+              iconPosition="end"
+              icon={
+                testCasesEvel ? (
+                  <CircularProgress
+                    size={20}
+                    sx={{
+                      color: "default",
+                      mb: 0,
+                      padding: 0,
+                    }}
+                  />
+                ) : Object.values(testCasesOutput).length ? (
+                  Object.values(testCasesOutput).filter(
+                    (testCase) => testCase?.flag
+                  ).length === retrievedTestCases.length ? (
+                    <DoneIcon
+                      sx={{
+                        color: "green",
+                        mb: 0,
+                        padding: 0,
+                      }}
+                    />
+                  ) : (
+                    <ClearIcon
+                      sx={{
+                        color: "red",
+                        mb: 0,
+                        padding: 0,
+                      }}
+                    />
+                  )
+                ) : null
+              }
+            />
+          </Tabs>
+          <div className="my-auto flex flex-wrap">
             <SubmitHandler
               setTestCasesOutput={setTestCasesOutput}
               userInput={userInput}
@@ -233,8 +304,6 @@ function StdInOutComponent({
                       }
                     />
                   );
-                } else {
-                  return null;
                 }
               })}
             </Tabs>
@@ -308,7 +377,7 @@ function StdInOutComponent({
                       component="h2"
                       className="text-gray-800"
                     >
-                      Output:
+                      Test Results:
                     </Typography>
                   )}
                   <div className="bg-gray-200 rounded-lg p-6 h-[180px] overflow-y-auto">

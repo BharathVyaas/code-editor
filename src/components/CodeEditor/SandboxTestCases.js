@@ -1,38 +1,31 @@
-import MonacoEditor from "./sandbox/MonacoEditor";
+import MonacoEditor from "./sandboxTestCases/MonacoEditor";
 import { useState, useEffect, useMemo, useContext } from "react";
-import Options from "./sandbox/Options";
+import Options from "./sandboxTestCases/Options";
 import Modal from "../../ui/Modal";
 import CodeEditorModal from "../../ui/CodeEditorModal";
-import StdInOutComponent from "./sandbox/StdInOut";
+import StdInOutComponent from "./sandboxTestCases/StdInOut";
 import { connect } from "react-redux";
 import { setSelectedLanguage } from "../../redux/actions/types";
 import {
-  resetRunCount,
   setSelectedLanguage as setDefaultLanguage,
-  setShouldCount,
   updateUserCode,
 } from "../../redux/slices/examSlice";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import { UserContext } from "../../context/UserContext";
-import Button from "@mui/material/Button";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 function SandboxComponent({
   retrievedDetails,
   setUserCode,
   savedCode,
-  startClock,
   selectedLanguage,
   setSelectedLanguage,
   setDefaultLanguageDispatch,
-  resetRunCountDispatch,
 }) {
   const [selectedTheme, setSelectedTheme] = useState("vs-dark");
   const [codeEditorExtend, setCodeEditorExtend] = useState(false);
   const [testCasesOutput, setTestCasesOutput] = useState({});
-  const navigate = useNavigate();
-  const { problemId } = useParams();
   const { user } = useContext(UserContext);
+  const { problemId } = useParams();
 
   const programmingLanguages = useMemo(() => {
     return (
@@ -42,10 +35,6 @@ function SandboxComponent({
       })) || []
     );
   }, [retrievedDetails]);
-
-  useEffect(() => {
-    setShouldCount(true);
-  }, [setShouldCount]);
 
   useEffect(() => {
     if (programmingLanguages)
@@ -61,9 +50,7 @@ function SandboxComponent({
   );
 
   useEffect(() => {
-    startClock(true);
     setTestCasesOutput({});
-    resetRunCountDispatch();
   }, []);
 
   useEffect(() => {
@@ -121,15 +108,6 @@ function SandboxComponent({
 
   return (
     <div className="flex flex-col overflow-auto bg-gray-100">
-      <div className="flex justify-end mb-2">
-        <Button
-          onClick={() => navigate("/problemset")}
-          startIcon={<KeyboardBackspaceIcon />}
-        >
-          More Problems
-        </Button>
-      </div>
-
       <div className="bg-white w-full md:px-1 xl:px-2 py-2 flex items-center justify-between gap-y-3 flex-wrap overflow-auto hide-scroll align-middle shadow-md">
         <Options
           programmingLanguages={programmingLanguages}
@@ -189,8 +167,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   setUserCode: updateUserCode,
   setSelectedLanguage,
-  startClock: setShouldCount,
-  resetRunCountDispatch: resetRunCount,
   setDefaultLanguageDispatch: setDefaultLanguage,
 };
 

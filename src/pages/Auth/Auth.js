@@ -88,18 +88,6 @@ const Login = () => {
         </Box>
         <form onSubmit={handleSubmit}>
           <TextField
-            label="Email"
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            value={credentials.email}
-            onChange={handleChange}
-            name="email"
-            required
-            error={!isEmailValid}
-            helperText={!isEmailValid ? "Invalid email format" : ""}
-          />
-          <TextField
             label="Username"
             variant="outlined"
             margin="normal"
@@ -113,6 +101,19 @@ const Login = () => {
               !isUsernameValid ? "Username must be at least 4 characters" : ""
             }
           />
+          <TextField
+            label="Email"
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            value={credentials.email}
+            onChange={handleChange}
+            name="email"
+            required
+            error={!isEmailValid}
+            helperText={!isEmailValid ? "Invalid email format" : ""}
+          />
+
           <Box mt={2} display="flex" justifyContent="center">
             <Button
               variant="contained"

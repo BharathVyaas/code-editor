@@ -29,6 +29,7 @@ import {
   submitTestReset,
 } from "../redux/slices/codeEditorSlice";
 import { setShouldCount, submitCodeReset } from "../redux/slices/examSlice";
+import SandboxTestCases from "../components/CodeEditor/SandboxTestCases";
 
 function CodeEditorComponent({
   isDataRetrieving,
@@ -81,7 +82,7 @@ function CodeEditorComponent({
   return (
     retrieveDataState === "reslove" && (
       <>
-        <div className="flex flex-col bg-gray-100 hide-scroll">
+        <div className="flex flex-col bg-gray-100 hide-scroll min-h-screen">
           {/* Header */}
           <header className="bg-white shadow-md px-4 py-2 border-b flex justify-between items-center">
             {/* Logo and Username */}
@@ -98,13 +99,13 @@ function CodeEditorComponent({
           {/* Main Content */}
           <main className="flex-1 pt-2 lg:pt-0 lg:flex flex-col lg:flex-row max-h-[92vh] overflow-hidden">
             {/* Sidebar */}
-            <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6  border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
+            <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6 border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
               <Details />
             </aside>
 
             {/* Code Editor */}
-            <section className="w-full lg:w-1/2 p-6 border-b-2 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
-              <Sandbox />
+            <section className="w-full lg:w-1/2 border-b-2 p-6 pt-4 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
+              {true ? <Sandbox /> : <SandboxTestCases />}
             </section>
           </main>
 

@@ -23,7 +23,6 @@ export const timerSlice = createSlice({
       state.timer = action.payload;
     },
     setShouldCount(state, action) {
-      console.log(action.payload);
       state.shouldCount = action.payload;
     },
     resetTimer(state) {

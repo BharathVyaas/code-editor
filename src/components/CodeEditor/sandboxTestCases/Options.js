@@ -105,6 +105,16 @@ function Options({
         <Grid
           display={"flex"}
           justifyContent={"space-between"}
+          alignItems="center"
+        >
+          <Tooltip sx={{ marginInlineEnd: "-12px" }} title="Submit">
+            <SubmitTest testCasesOutput={testCasesOutput} />
+          </Tooltip>
+        </Grid>
+
+        <Grid
+          display={"flex"}
+          justifyContent={"space-between"}
           sx={isSmallScreen && { width: "50%" }}
         >
           <Tooltip title="Save">
