@@ -137,20 +137,20 @@ function StdInOutComponent({
   useEffect(() => {
     if (responseCode === 201) {
       setTestCasesEvel(true);
-      onTestCases(
-        retrievedTestCases.map((testCase) => ({
-          input: testCase.SampleInputValue,
-          output: testCase.SampleOutputValue,
-          id: testCase?.TestCaseId || -1,
-        })),
-        { userCode, language, retrievedDetails, userName },
-        ({ err: _, data }) => {
-          setTestCasesOutput((prev) => ({
-            ...prev,
-            [data?.testCaseId || -1]: data,
-          }));
-        }
-      );
+      // onTestCases(
+      //   retrievedTestCases.map((testCase) => ({
+      //     input: testCase.SampleInputValue,
+      //     output: testCase.SampleOutputValue,
+      //     id: testCase?.TestCaseId || -1,
+      //   })),
+      //   { userCode, language, retrievedDetails, userName },
+      //   ({ err: _, data }) => {
+      //     setTestCasesOutput((prev) => ({
+      //       ...prev,
+      //       [data?.testCaseId || -1]: data,
+      //     }));
+      //   }
+      // );
     }
   }, [responseCode]);
 
@@ -286,11 +286,11 @@ function StdInOutComponent({
             <div ref={outputRef}>
               {selectedTab === "Test Results" && (
                 <div className="flex flex-col gap-4">
-                  {responseCode === 301 ? (
+                  {responseCode === 202 ? (
                     <Typography
                       variant="h6"
                       component="h2"
-                      className="text-red-700"
+                      className="text-yellow-700"
                     >
                       Build Failed:
                     </Typography>
@@ -301,6 +301,14 @@ function StdInOutComponent({
                       className="text-green-800"
                     >
                       Build Success:
+                    </Typography>
+                  ) : responseCode === 203 ? (
+                    <Typography
+                      variant="h6"
+                      component="h2"
+                      className="text-orange-600"
+                    >
+                      Warning:
                     </Typography>
                   ) : (
                     <Typography
@@ -318,8 +326,17 @@ function StdInOutComponent({
                           <pre>{output}</pre>
                         </span>
                       )}
-                      {responseCode === 301 && (
-                        <span className="text-red-600">
+                      {responseCode === 202 && (
+                        <span className="text-yellow-800">
+                          <pre>
+                            {typeof errorMessage === "string"
+                              ? errorMessage
+                              : JSON.stringify(errorMessage)}
+                          </pre>
+                        </span>
+                      )}
+                      {responseCode === 203 && (
+                        <span className="text-orange-700">
                           <pre>
                             {typeof errorMessage === "string"
                               ? errorMessage
@@ -332,7 +349,7 @@ function StdInOutComponent({
                           Error occurred.
                         </span>
                       ) : submitCodeIsLoading ? (
-                        <span className="text-yellow-400 ms-2">Loading...</span>
+                        <span className="text-yellow-600 ms-2">Loading...</span>
                       ) : null}
                     </code>
                   </div>

@@ -319,7 +319,7 @@ function StdInOutComponent({
                     Input:
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm text-gray-700 min-h-3">
+                    <p className="text-sm text-gray-8 min-h-3">
                       {retrievedTestCases[selectedTask]?.SampleInputValue}
                     </p>
                   </div>
@@ -329,7 +329,7 @@ function StdInOutComponent({
                     Expected Output:
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm text-gray-700 min-h-3">
+                    <p className="text-sm text-gray-8 min-h-3">
                       {retrievedTestCases[selectedTask]?.SampleOutputValue}
                     </p>
                   </div>
@@ -339,7 +339,7 @@ function StdInOutComponent({
                     Output:
                   </Typography>
                   <div className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm text-gray-700 min-h-3">
+                    <p className="text-sm text-gray-8 min-h-3">
                       {testCasesOutput?.[
                         retrievedTestCases[selectedTask]?.TestCaseId
                       ]?.output ||
@@ -355,11 +355,11 @@ function StdInOutComponent({
             <div ref={outputRef}>
               {selectedTab === "Test Results" && (
                 <div className="flex flex-col gap-4">
-                  {responseCode === 301 ? (
+                  {responseCode === 202 ? (
                     <Typography
                       variant="h6"
                       component="h2"
-                      className="text-red-700"
+                      className="text-orange-800"
                     >
                       Build Failed:
                     </Typography>
@@ -387,7 +387,7 @@ function StdInOutComponent({
                           <pre>{output}</pre>
                         </span>
                       )}
-                      {responseCode === 301 && (
+                      {responseCode === 202 && (
                         <span className="text-red-600">
                           <pre>
                             {typeof errorMessage === "string"

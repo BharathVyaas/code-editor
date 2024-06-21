@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { Paper, Grid } from "@mui/material";
 import { connect } from "react-redux";
 
@@ -11,6 +12,15 @@ function DetailsComponent({ retrievedDetails }) {
     Image,
     Constraints,
   } = retrievedDetails;
+
+  const outputRef = useRef(null);
+  const [inputHeight, setInputHeight] = useState("auto");
+
+  useEffect(() => {
+    if (outputRef.current) {
+      setInputHeight(outputRef.current.clientHeight);
+    }
+  }, [SampleOutput]);
 
   return (
     <article className="p-4 pt-0 overflow-auto">
@@ -49,7 +59,10 @@ function DetailsComponent({ retrievedDetails }) {
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Input
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[1rem] lg:min-h-[2rem]">
+            <div
+              className="bg-gray-100 p-3 rounded mt-3 overflow-auto"
+              style={{ height: inputHeight }}
+            >
               <pre className="text-sm text-gray-700">{SampleInput}</pre>
             </div>
           </Paper>
@@ -59,7 +72,10 @@ function DetailsComponent({ retrievedDetails }) {
             <h3 className="text-xl font-semibold mb-2 text-gray-900">
               Sample Output
             </h3>
-            <div className="bg-gray-100 p-3 rounded mt-3 overflow-auto min-h-[1rem] lg:min-h-[2rem]">
+            <div
+              className="bg-gray-100 p-3 rounded mt-3 overflow-auto"
+              ref={outputRef}
+            >
               <pre className="text-sm text-gray-700">{SampleOutput}</pre>
             </div>
           </Paper>

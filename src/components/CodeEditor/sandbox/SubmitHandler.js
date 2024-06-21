@@ -28,16 +28,25 @@ function SubmitHandlerComponent({
   const submitHandler = async () => {
     try {
       increaseRunCountDispatch();
-
-      submitCodeDispatch({
-        Code: userCode,
-        Parameters: userInput.replaceAll("\n", " ").split(" "),
-        Language: language,
-        ProgramName: retrievedDetails.ProgramName,
-        ProgramId: "NA",
-        UserName: userName,
-      });
-
+      if (language === "c") {
+        submitCsharpCodeDispatch({
+          Code: userCode,
+          Parameters: userInput.replaceAll("\n", " ").split(" "),
+          Language: language,
+          ProgramName: retrievedDetails.ProgramName,
+          ProgramId: "NA",
+          UserName: userName,
+        });
+      } else {
+        submitCodeDispatch({
+          Code: userCode,
+          Parameters: userInput.replaceAll("\n", " ").split(" "),
+          Language: language,
+          ProgramName: retrievedDetails.ProgramName,
+          ProgramId: "NA",
+          UserName: userName,
+        });
+      }
       dispatch(submitTestReset());
       dispatch(resetRunCount());
       setTestCasesOutput({});

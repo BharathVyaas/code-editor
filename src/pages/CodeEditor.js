@@ -104,7 +104,7 @@ function CodeEditorComponent({
             </aside>
 
             {/* Code Editor */}
-            <section className="w-full lg:w-1/2 border-b-2 p-6 pt-4 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[100%]">
+            <section className="w-full lg:w-1/2 border-b-2 p-6 pt-4 relative overflow-y-auto hide-scroll max-h-[60vh] md:max-h-[60vh] lg:max-h-full">
               {true ? <Sandbox /> : <SandboxTestCases />}
             </section>
           </main>
