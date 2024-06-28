@@ -98,6 +98,9 @@ function CodeEditorComponent({
 
           {/* Main Content */}
           <main className="flex-1 pt-2 lg:pt-0 lg:flex flex-col lg:flex-row max-h-[92vh] overflow-hidden">
+            {/* More Problems */}
+            <section></section>
+
             {/* Sidebar */}
             <aside className="w-full lg:w-1/2 border-r-2 border-gray-200 p-6 border-b-2 borderb-black overflow-y-auto hide-scroll mb-4 max-h-[30vh] lg:max-h-[100%] lg:mb-0">
               <Details />

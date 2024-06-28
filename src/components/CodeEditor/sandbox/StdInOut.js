@@ -39,7 +39,7 @@ async function onTestCases(
         Parameters: input.split("\n"),
         Language: language,
         ProgramName: retrievedDetails.ProgramName,
-        ProgramId: "64F43AC3-3799-4EE8-98DE-603FED13FA83",
+        ProgramId: "NA",
         UserName: userName,
       });
 

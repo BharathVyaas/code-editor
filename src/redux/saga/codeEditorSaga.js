@@ -72,10 +72,7 @@ function* submitUserCsharpCodeSaga(action) {
   try {
     yield put(submitCodeRequest());
 
-    const res = yield call(submitUserCCodeApi1, {
-      code: action.payload.Code,
-      Parameters: action.payload.Parameters,
-    });
+    const res = yield call(submitUserCCodeApi1, action.payload);
 
     yield put(
       submitCodeSuccess({
