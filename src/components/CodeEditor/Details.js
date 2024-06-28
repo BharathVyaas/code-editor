@@ -113,12 +113,12 @@ function DetailsComponent({ retrievedDetails }) {
           <h3 className="text-xl font-semibold text-gray-900">Limits</h3>
           <li>
             <p className="text-sm text-gray-700">
-              <i>Memory Limit: 256 MB</i>
+              <i>Memory Limit: 1 MB</i>
             </p>
           </li>
           <li>
             <p className="text-sm text-gray-700">
-              <i>Source Limit: 1024 KB</i>
+              <i>Time Limit: 60 ms</i>
             </p>
           </li>
         </ul>

@@ -66,21 +66,10 @@ function Options({
           marginInline: isSmallScreen ? "1rem" : "",
         }}
       >
-        <Grid item>
-          <Grid
-            display="flex"
-            alignItems="center"
-            className="cursor-not-allowed"
-          >
-            <Timer />
-          </Grid>
-        </Grid>
         <Grid item display="flex" alignItems="center">
-          {isSmallScreen && (
-            <Typography variant="body4" marginInlineEnd={0.4}>
-              Language:
-            </Typography>
-          )}
+          <Typography variant="body4" marginInlineEnd={0.6}>
+            Language:
+          </Typography>
           <TechnologySelector
             programmingLanguages={programmingLanguages}
             selectedLanguage={selectedLanguage}

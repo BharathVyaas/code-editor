@@ -1,13 +1,12 @@
-function Error() {
+// Remove Technical Difficulty
+import { CircularProgress } from "@mui/material";
+
+function Loading() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-3xl font-bold text-red-600 mb-4">
-        Technical Difficulties
-      </h1>
-      <p className="text-gray-700">We apologize, but an error occurred.</p>
-      <p className="text-gray-700">Please try again later.</p>
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-200 bg-opacity-75 z-50">
+      <CircularProgress color="primary" size={50} thickness={4} />
     </div>
   );
 }
 
-export default Error;
+export default Loading;

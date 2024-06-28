@@ -61,7 +61,7 @@ function SandboxComponent({
   );
 
   useEffect(() => {
-    startClock(true);
+    //startClock(true);
     setTestCasesOutput({});
     resetRunCountDispatch();
   }, []);
@@ -123,7 +123,7 @@ function SandboxComponent({
     <div className="flex flex-col overflow-auto bg-gray-100">
       <div className="flex justify-end mb-2">
         <Button
-          onClick={() => navigate("/problemset")}
+          onClick={() => window.close()}
           startIcon={<KeyboardBackspaceIcon />}
         >
           More Problems

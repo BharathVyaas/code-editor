@@ -10,17 +10,18 @@ import {
   TextField,
   Collapse,
 } from "@mui/material";
-import { submitCode } from "../../../redux/actions";
 import { connect } from "react-redux";
 import { InfoOutlined } from "@mui/icons-material";
 import DoneIcon from "@mui/icons-material/Done";
 import ClearIcon from "@mui/icons-material/Clear";
 import SubmitHandler from "./SubmitHandler";
 import { useNavigate } from "react-router";
-import axios from "axios";
+import { useParams } from "react-router-dom";
+
+import { submitCode } from "../../../redux/actions";
+import { compilerApi } from "../../../services/api";
 import { UserContext } from "../../../context/UserContext";
 import { updateUserCode } from "../../../redux/slices/examSlice";
-import { useParams } from "react-router-dom";
 
 async function onTestCases(
   testCases,
@@ -33,7 +34,7 @@ async function onTestCases(
       const output = testCase.output;
       const id = testCase.id;
 
-      const res = await axios.post("http://49.207.10.13:5000/api/codeexecute", {
+      const res = await compilerApi.post("/", {
         Code: userCode,
         Parameters: input.split("\n"),
         Language: language,
@@ -329,9 +330,11 @@ function StdInOutComponent({
                       {responseCode === 202 && (
                         <span className="text-yellow-800">
                           <pre>
-                            {typeof errorMessage === "string"
-                              ? errorMessage
-                              : JSON.stringify(errorMessage)}
+                            {errorMessage
+                              ? typeof errorMessage === "string"
+                                ? errorMessage
+                                : JSON.stringify(errorMessage)
+                              : "request timeout, verify your code it may be an infinate loop or long processing one."}
                           </pre>
                         </span>
                       )}
@@ -345,8 +348,8 @@ function StdInOutComponent({
                         </span>
                       )}
                       {submitCodeIsError ? (
-                        <span className="text-red-400 ms-2">
-                          Error occurred.
+                        <span className="text-green-800 ms-2">
+                          please retry.
                         </span>
                       ) : submitCodeIsLoading ? (
                         <span className="text-yellow-600 ms-2">Loading...</span>
@@ -354,8 +357,8 @@ function StdInOutComponent({
                     </code>
                   </div>
                   {submitCodeIsError && (
-                    <Typography variant="body2" color="error">
-                      Error occurred. <InfoOutlined fontSize="small" />
+                    <Typography variant="body2" color="success">
+                      Please Retry. <InfoOutlined fontSize="small" />
                     </Typography>
                   )}
                 </div>
